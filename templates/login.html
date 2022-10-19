@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library - Login</title>
+    <link rel="stylesheet" href="css/skeleton.min.css" />
+  </head>
+  <style>
+    body {
+      background-image: url("images/library.jpg");
+      backdrop-filter: blur(3px);
+      margin: 0;
+      height: 100vh;
+      width: 100%;
+    }
+
+    .centered {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    #form {
+      background-color: #fefefe;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border: 1px solid #cacaca;
+    }
+
+    #box-title {
+      text-align: center;
+      font-weight: 200;
+      font-size: 25px;
+    }
+
+    hr {
+      margin: 0;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      border-color: rgb(126, 117, 117);
+    }
+  </style>
+  <body>
+    <div class="centered">
+      <form action="/login" method="post" id="form">
+        <span id="box-title">Login</span>
+        <hr />
+        <label for="email">Your email</label>
+        <input
+          type="email"
+          placeholder="test@mailbox.com"
+          id="email"
+          name="email"
+        />
+        <label for="password">Your Password</label>
+        <input
+          type="password"
+          placeholder="1234"
+          id="password"
+          name="password"
+        />
+        <label>{{ error }}</label>
+        <input class="button-primary" type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>
