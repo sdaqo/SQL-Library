@@ -1,0 +1,41 @@
+dbdiagram.io
+Table Person {
+  id int [pk]
+  Vormame varchar
+  Nachname varchar
+  PersonType int [ref: > PersonType.id]
+}
+
+Table PersonType {
+  id int [pk]
+  name varchar
+}
+
+Table Artikel {
+  id int [pk]
+  title int
+  ArtikelType int [ref: > ArtikelTypen.id]
+  ISBN int
+  AltersBeschraenkung int
+  Ausleihgebuehr int
+}
+
+Table ArtikelTypen {
+  id int [pk]
+  name varchar
+}
+
+Table Ausleihungen {
+  id int [pk]
+  ArtikelId int [ref: > Artikel.id]
+  PersonId int [ref: > Person.id]
+  Datum int
+}
+
+Table Rechungen {
+  id int [pk]
+  ArtikelId int [ref: > Artikel.id]
+  PersonId int [ref: > Person.id]
+  Ausleihung int [ref: > Ausleihungen.id]
+  
+} 
