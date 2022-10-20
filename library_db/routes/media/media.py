@@ -66,7 +66,6 @@ def get_media_list(
         LIMIT ?
         OFFSET ?
         """
-    print(statement)
 
     cur = con.cursor()
     res = cur.execute(statement, ("%" + query + "%", limit, offset))

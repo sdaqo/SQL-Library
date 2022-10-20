@@ -183,7 +183,6 @@
       document
         .getElementById("darkmode-switch")
         .addEventListener("input", function (event) {
-          var query = event.target[1].value;
           var newURL = new URL(window.location);
           newURL.pathname = "/darkmode";
           newURL.search = `?ref=${window.location.pathname}`;
@@ -203,7 +202,7 @@
           } else {
             newURL.searchParams.delete("media_type");
           }
-
+          newURL.pathname = "/medialist";
           window.location = newURL.toString();
         });
     </script>

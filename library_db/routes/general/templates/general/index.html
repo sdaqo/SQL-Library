@@ -15,102 +15,137 @@
     </style>
   </head>
   <body>
-    <nav
-      class="navbar navbar-expand-lg bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
-    >
-      <div class="container-fluid">
-        <a class="navbar-brand active" href="/">SQL Library</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="/medialist">Medialist</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Account
-              </a>
-
-              <ul class="dropdown-menu">
-                {% if logged_in %}
-                <li><a class="dropdown-item" href="/me">User Panel</a></li>
-                <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <span class="dropdown-item" disabled>Hello, {{ name }}</span>
-                </li>
-                {% if is_admin %}
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
-                {% endif %} {% if is_staff %}
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="/staff">Staff Panel</a></li>
-                {% endif %} {% else %}
-                <li><a class="dropdown-item" href="/login">Login</a></li>
-                <li><a class="dropdown-item" href="/signin">Signin</a></li>
-
-                {% endif %}
-              </ul>
-            </li>
-          </ul>
-          <div
-            class="form-check form-switch me-2 {% if darkmode %} text-white {% endif %}"
+    <body>
+      <nav
+        class="navbar navbar-expand-lg bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">SQL Library</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="darkmode-switch"
-              {%if
-              darkmode
-              %}
-              checked
-              {%
-              endif
-              %}
-            />
-            <label class="form-check-label" for="darkmode-switch"
-              >Darkmode</label
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="/medialist">Medialist</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Account
+                </a>
+  
+                <ul class="dropdown-menu">
+                  {% if logged_in %}
+                  <li><a class="dropdown-item" href="/me">User Panel</a></li>
+                  <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <span class="dropdown-item" disabled>Hello, {{ name }}</span>
+                  </li>
+                  {% if is_admin %}
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                  {% endif %} {% if is_staff %}
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a class="dropdown-item" href="/staff">Staff Panel</a></li>
+                  {% endif %} {% else %}
+                  <li><a class="dropdown-item" href="/login">Login</a></li>
+                  <li><a class="dropdown-item" href="/signin">Signin</a></li>
+  
+                  {% endif %}
+                </ul>
+              </li>
+            </ul>
+  
+            <div
+              class="form-check form-switch me-2 {% if darkmode %} text-white {% endif %}"
             >
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="darkmode-switch"
+                {%if
+                darkmode
+                %}
+                checked
+                {%
+                endif
+                %}
+              />
+              {%if darkmode %}<i class="fa-solid fa-moon"></i>{%else%}<i
+                class="fa-solid fa-sun"
+              ></i
+              >{%endif%}
+            </div>
+  
+            <form class="d-flex" role="search" id="search-form">
+              <select
+                class="form-select {%if darkmode%} bg-dark text-white {%endif%}"
+                aria-label="Default select example"
+                style="border-radius: 0.375rem 0rem 0rem 0.375rem"
+                name="media_type"
+              >
+                <option selected>All</option>
+                <option value="Book">Book</option>
+                <option value="DVD">DVD</option>
+                <option value="CD">CD</option>
+                <option value="Blu-Ray">Blu-Ray</option>
+              </select>
+              <input
+                class="form-control me-2 {%if darkmode%} bg-dark text-white {%endif%}"
+                style="border-radius: 0rem.375rem 0.375rem 0rem"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
           </div>
-          <script>
-            document
-              .getElementById("darkmode-switch")
-              .addEventListener("input", function (event) {
-                var newURL = new URL(window.location);
-                newURL.pathname = "/darkmode";
-                newURL.search = `?ref=${window.location.pathname}`;
-                window.location = newURL.toString();
-              });
-          </script>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
         </div>
-      </div>
-    </nav>
+      </nav>
+      <script>
+        document
+          .getElementById("darkmode-switch")
+          .addEventListener("input", function (event) {
+            var newURL = new URL(window.location);
+            newURL.pathname = "/darkmode";
+            newURL.search = `?ref=${window.location.pathname}`;
+            window.location = newURL.toString();
+          });
+  
+        document
+          .getElementById("search-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            var media_type = event.target[0].value;
+            var query = event.target[1].value;
+            var newURL = new URL(window.location);
+            newURL.searchParams.set("query", query);
+            if (media_type != "All") {
+              newURL.searchParams.set("media_type", media_type);
+            } else {
+              newURL.searchParams.delete("media_type");
+            }
+            newURL.pathname = "/medialist";
+            window.location = newURL.toString();
+          });
+      </script>
   </body>
 </html>
