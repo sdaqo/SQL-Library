@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect
+from flask import Blueprint, session, redirect, request
 
 misc_bluep = Blueprint("misc_bluep", __name__, template_folder="templates")
 

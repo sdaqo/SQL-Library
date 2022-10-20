@@ -34,6 +34,8 @@ def get_person_data(email: str) -> dict[str, int | str]:
     if res:
         return {users_attrs[i]: res[i] for i, _ in enumerate(users_attrs)}
 
+    return {}
+
 
 def is_loggedin(session):
     try:
@@ -87,4 +89,5 @@ def get_template_vars(session) -> dict:
     template_vars["is_admin"] = is_admin(session)
     template_vars["is_staff"] = is_staff(session)
     template_vars["darkmode"] = session.get("darkmode")
+    template_vars["name"] = get_person_data(session.get("email")).get("name")
     return template_vars

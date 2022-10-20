@@ -6,7 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
     <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <link href="/static/fontawesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="/static/fontawesome/css/brands.css" rel="stylesheet" />
+    <link href="/static/fontawesome/css/solid.css" rel="stylesheet" />
     <title>Library</title>
+    <style>
+      body {
+        {%if darkmode%}
+        background-color: #121212;
+        {%endif%}
+      }
+      .sort-arrow {
+      }
+      .sort-arrow::after {
+        content: "\f0dc";
+        color: #808080;
+        font-size: 0.85em;
+      }
+    </style>
   </head>
   <body>
     <nav
@@ -63,6 +80,7 @@
               </ul>
             </li>
           </ul>
+
           <div
             class="form-check form-switch me-2 {% if darkmode %} text-white {% endif %}"
           >
@@ -79,23 +97,28 @@
               endif
               %}
             />
-            <label class="form-check-label" for="darkmode-switch"
-              >Darkmode</label
-            >
+            {%if darkmode%}<i class="fa-solid fa-moon"></i>{%else%}<i
+              class="fa-solid fa-sun"
+            ></i
+            >{%endif%}
           </div>
-          <script>
-            document
-              .getElementById("darkmode-switch")
-              .addEventListener("input", function (event) {
-                var newURL = new URL(window.location);
-                newURL.pathname = "/darkmode";
-                newURL.search = `?ref=${window.location.pathname}`;
-                window.location = newURL.toString();
-              });
-          </script>
-          <form class="d-flex" role="search">
+
+          <form class="d-flex" role="search" id="search-form">
+            <select
+              class="form-select {%if darkmode%} bg-dark text-white {%endif%}"
+              aria-label="Default select example"
+              style="border-radius: 0.375rem 0rem 0rem 0.375rem"
+              name="media_type"
+            >
+              <option selected>All</option>
+              <option value="Book">Book</option>
+              <option value="DVD">DVD</option>
+              <option value="CD">CD</option>
+              <option value="Blu-Ray">Blu-Ray</option>
+            </select>
             <input
-              class="form-control me-2"
+              class="form-control me-2 {%if darkmode%} bg-dark text-white {%endif%}"
+              style="border-radius: 0rem.375rem 0.375rem 0rem"
               type="search"
               placeholder="Search"
               aria-label="Search"
@@ -107,5 +130,82 @@
         </div>
       </div>
     </nav>
+
+    <div class="container mt-3">
+      <table
+        class="table table-striped table-bordered rounded table-hover {% if darkmode %} table-dark {%endif%}"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Type</th>
+            <th scope="col">
+              <a
+                href="/medialist?sort=title"
+                class="text-decoration-none text-reset"
+                >Title&nbsp;<i class="fa-solid fa-sort"></i
+              ></a>
+            </th>
+            <th scope="col">
+              <a
+                href="/medialist?sort=author"
+                class="text-decoration-none text-reset"
+                >Author&nbsp;<i class="fa-solid fa-sort"></i
+              ></a>
+            </th>
+
+            <th scope="col">
+              <a
+                href="/medialist?sort=age_limit"
+                class="text-decoration-none text-reset"
+                >Age Limit&nbsp;<i class="fa-solid fa-sort"></i
+              ></a>
+            </th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in table_data %}
+          <tr>
+            <td>{{ i.media_type }}</td>
+            <th scope="row">{{ i.title }}</th>
+            <td>{{ i.author }}</td>
+
+            <td>{{ i.age_limit }}</td>
+            <td>
+              {% if i.is_borrowed %} Borrowed {% else %} Avalible {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script>
+      document
+        .getElementById("darkmode-switch")
+        .addEventListener("input", function (event) {
+          var query = event.target[1].value;
+          var newURL = new URL(window.location);
+          newURL.pathname = "/darkmode";
+          newURL.search = `?ref=${window.location.pathname}`;
+          window.location = newURL.toString();
+        });
+
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var media_type = event.target[0].value;
+          var query = event.target[1].value;
+          var newURL = new URL(window.location);
+          newURL.searchParams.set("query", query);
+          if (media_type != "All") {
+            newURL.searchParams.set("media_type", media_type);
+          } else {
+            newURL.searchParams.delete("media_type");
+          }
+
+          window.location = newURL.toString();
+        });
+    </script>
   </body>
 </html>
