@@ -54,7 +54,3 @@ def return_book(media_id):
         return {"status": "success"}
     else:
         return {"error": "Borrowing Not Found"}, 400
- 	1984 	George Orwell 	15 	Borrowed
-Book 	Harry Potter and the Chamber of Secrets 	J. K Rowling 	12 	Borrowed
-Book 	Harry Potter and the Sorcerer's Stone 	J. K Rowling 	12 	Borrowed
-Book 	The Power of Habit: Why We Do What We Do in Life and Business 	Charles Duhigg 	0 	Avalible 
