@@ -9,7 +9,7 @@ pip install -r requirements.txt
 ```
 #### Database:
 
-You can either use the sample Database in  [library_db/library.db](https://github.com/sdaqo/library_website/blob/main/library_db/library.db) or create your own one with the structur given in the [db_create.sql](https://github.com/sdaqo/library_website/blob/main/db_create.sql) file and copy it to **library_db/library.db**
+You can either use the sample Database in  [library_db/library.db](https://github.com/sdaqo/library_website/blob/main/library_db/library.db) or create your own one with the structure given in the [db_create.sql](https://github.com/sdaqo/library_website/blob/main/db_create.sql) file and copy it to **library_db/library.db**
 
 ## Start
 
