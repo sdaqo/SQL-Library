@@ -1,6 +1,7 @@
 CREATE TABLE "user_types" (
 	"id"	INTEGER,
 	"title"	TEXT,
+	"deadline" INTEGER,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
@@ -9,6 +10,12 @@ CREATE TABLE "media_types" (
 	"title"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+CREATE TABLE "authors" (
+	"id" INTEGER,
+	"name" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+)
 
 CREATE TABLE "users" (
 	"id"	INTEGER,
@@ -28,7 +35,9 @@ CREATE TABLE "media" (
 	"media_type_id"	INTEGER,
 	"isbn"	INTEGER UNIQUE,
 	"age_limit"	INTEGER,
+	"author_id" INTEGER,
 	FOREIGN KEY("media_type_id") REFERENCES "media_types"("id"),
+	FOREIGN KEY("author_id") REFERENCES "authors"("id"),
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 

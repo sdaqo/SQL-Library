@@ -1,92 +1,50 @@
-from flask import Blueprint, session, redirect, render_template, request
-from library_db.utils import get_template_vars
+import re
+from flask import Blueprint, session, redirect, render_template, request, url_for
+from copy import deepcopy
+
+from library_db.utils.utils import get_template_vars
 from library_db.database import get_db_connection
-from dataclasses import dataclass
+from library_db.utils.db_utils import get_media_list, is_media_borrowed
 
 media_bluep = Blueprint("media_bluep", __name__, template_folder="templates")
 con = get_db_connection()
 
 PAGE_SIZE = 30
-
-
-@dataclass
-class MediaItem:
-    id: int
-    title: str | None
-    age_limit: int | None
-    media_type: str | None
-    author: str | None
-    is_borrowed: bool | None
-
-
-def is_media_borrowed(media_id: int) -> bool:
-    statement = """
-        SELECT borrow_date
-        FROM borrowings
-        WHERE media_id = ? AND return_date IS NULL
-        """
-    cur = con.cursor()
-    res = cur.execute(statement, (media_id,))
-    res = res.fetchone()
-    if res:
-        return True
-
-    return False
-
-
-def get_media_list(
-    limit: int,
-    offset: int,
-    media_type: str = None,
-    query: str = "",
-    sort: str = "title",
-    sort_type: int = 0,
-) -> [MediaItem]:
-
-    media_types = ["Book", "DVD", "CD", "Blu-Ray"]
-    sorts = {
-        "id": "media.id",
-        "title": "media.title",
-        "age_limit": "age_limit",
-        "author": "authors.name",
-    }
-
-    if sort_type == 1:
-        sort_type = "DESC"
-    else:
-        sort_type = "ASC"
-
-    statement = f"""
-        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name
-        FROM media
-        JOIN media_types ON media.media_type_id  = media_types.id
-        JOIN authors ON media.author_id = authors.id
-        WHERE media.title LIKE ? {"AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
-        ORDER BY {"%s %s" % (sorts[sort], sort_type) if sort in sorts.keys() else "%s %s" % (sorts["title"], sort_type)}
-        LIMIT ?
-        OFFSET ?
-        """
-
-    cur = con.cursor()
-    res = cur.execute(statement, ("%" + query + "%", limit, offset))
-    res = res.fetchall()
-
-    if res:
-        return [
-            MediaItem(*item, is_borrowed=is_media_borrowed(item[0])) for item in res
-        ]
-
-    return []
+AUTHOR_REGEX = r".*by\((.*)\).*"
 
 
 @media_bluep.route("/medialist", methods=["GET"])
 def show_medialist():
+    #TODO: PAGINATION
     allowed_query_params = ["sort", "query", "media_type", "sort_type"]
+
     query_params = {}
     for name, value in request.args.items():
         if name in allowed_query_params:
             query_params.update({name: value})
-    #TODO author querying
+
+    table_data_prams = deepcopy(query_params)
+    next_query_params = {
+        "query": query_params.get("query", None),
+        "media_type": query_params.get("media_type", None),
+    }
+
+    author_query_match = re.match(AUTHOR_REGEX, query_params.get("query", ""))
+    if author_query_match:
+        table_data_prams.update({"author_query": author_query_match.group(1)})
+        table_data_prams["query"] = re.sub(AUTHOR_REGEX, "", table_data_prams["query"])
+        table_data_prams["query"] = table_data_prams["query"].strip()
+
+    table_data = get_media_list(10, 0, **table_data_prams)
     template_vars = get_template_vars(session)
-    template_vars["table_data"] = get_media_list(10, 0, **query_params)
+    template_vars["table_data"] = table_data[0]
+    template_vars["query"] = query_params.get("query", None)
+    template_vars["media_type_selection"] = query_params.get("media_type", None)
+    template_vars["sort_field"] = table_data[1]
+    template_vars["sort_dir"] = table_data[2]
+    template_vars["next_query_params"] = next_query_params
+    template_vars["is_media_borrowed"] = is_media_borrowed
+
     return render_template("media/medialist.html", **template_vars)
+
+

@@ -3,7 +3,8 @@ from hashlib import md5
 from datetime import datetime
 
 from library_db.database import get_db_connection
-from library_db.utils import get_template_vars, get_person_data
+from library_db.utils.utils import get_template_vars
+from library_db.utils.db_utils import get_user_data
 
 auth_bluep = Blueprint("auth_bluep", __name__, template_folder="templates")
 con = get_db_connection()
@@ -34,7 +35,7 @@ def login():
     except KeyError:
         return ret_error("invalid form data")
 
-    pwdhash = get_person_data(email).get("pwdhash")
+    pwdhash = get_user_data(email).get("pwdhash")
 
     if not pwdhash:
         return ret_error("email not found")
@@ -74,7 +75,7 @@ def signin():
     if not re.fullmatch(EMAIL_REGEX, email):
         return ret_error("invalid email")
 
-    if get_person_data(email):
+    if get_user_data(email):
         return ret_error("this email exsits already")
 
     if not usertype in ["Default", "Teacher", "Student"]:
