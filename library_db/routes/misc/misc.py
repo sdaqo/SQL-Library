@@ -8,4 +8,4 @@ def toggle_darkmode():
     darkmode = session.get("darkmode", False)
     session["darkmode"] = not darkmode
 
-    return redirect(request.args.get("ref", "/"))
+    return redirect(request.args.get("next", "/"))

@@ -1,0 +1,86 @@
+{% extends "base.html"%} {% block title %} User Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+        border-color: #373b3e;
+    }
+
+    .nav-item > .nav-link {
+      background-color:  transparent;
+      border-color: none;
+    }
+
+    .nav-item > .nav-link.active {
+        background-color:  #212529;
+        color: white;
+        border-color: #373b3e #373b3e #212529 #373b3e ;
+    }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
+        aria-current="page"
+        href="{{url_for('panel_bluep.user_profile')}}"
+        >User</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="">Borrowings</a>
+    </li>
+  </ul>
+  <div>
+    <table
+      class="table table-striped table-bordered rounded table-hover {% if darkmode %} table-dark {%endif%}"
+    >
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Borrow Date</th>
+          <th scope="col">Return Due Date</th>
+          <th scope="col">Return</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for borrowing, media, eta in table_data %}
+        <tr>
+          <td>{{media.media_type}}</td>
+          <td>{{media.title}}</td>
+          <td>{{media.author}}</td>
+          <td>{{borrowing.borrow_date}}</td>
+          <td>{{eta}}</td>
+          <td class="d-grid">
+            <form
+              action="{{url_for('media_bluep.return_borrowed_media', next=url_for('panel_bluep.user_borrowings'))}}"
+              method="post"
+            >
+              <button
+                name="borrowing_id"
+                type="submit"
+                value="{{borrowing.id}}"
+                class="d-grid btn btn-danger"
+                style="height: 28px; font-size: 12px"
+              >
+                <span>Return Book</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+{%endblock%}

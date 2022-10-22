@@ -129,7 +129,7 @@
         .addEventListener("input", function (event) {
           var newURL = new URL(window.location);
           newURL.pathname = "/darkmode";
-          newURL.search = `?ref=${window.location.pathname}`;
+          newURL.search = `?next=${window.location.pathname}`;
           window.location = newURL.toString();
         });
 

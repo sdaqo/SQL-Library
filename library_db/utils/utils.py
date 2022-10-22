@@ -1,3 +1,4 @@
+from urllib.parse import urlparse, parse_qs, urlunparse, urlencode
 from library_db.utils.db_utils import get_user_data, get_user_type, get_media_types
 
 
@@ -56,3 +57,18 @@ def get_template_vars(session) -> dict:
     template_vars["name"] = get_user_data(session.get("email")).get("name")
     template_vars["media_types"] = [i[0] for i in get_media_types()]
     return template_vars
+
+
+def update_query_params(url: str, **params):
+    parsed_url = urlparse(url)
+    parsed_query = dict(parse_qs(parsed_url.query), **params)
+    return urlunparse(
+        (
+            parsed_url.scheme,
+            parsed_url.netloc,
+            parsed_url.path,
+            parsed_url.params,
+            urlencode(parsed_query, doseq=True),
+            parsed_url.fragment,
+        )
+    )

@@ -6,6 +6,7 @@ from library_db.routes import (
     misc_bluep,
     media_bluep,
     api_bluep,
+    panel_bluep,
 )
 
 
@@ -15,10 +16,12 @@ def create_app():
     app.config["CORS_HEADER"] = "Content-Type"
 
     app.secret_key = "c4c4f1e8c78c2a52ee46"
+
     app.register_blueprint(auth_bluep)
     app.register_blueprint(general_bluep)
     app.register_blueprint(misc_bluep)
     app.register_blueprint(media_bluep)
+    app.register_blueprint(panel_bluep)
     app.register_blueprint(api_bluep, url_prefix="/api")
 
     return app

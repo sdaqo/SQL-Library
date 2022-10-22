@@ -63,6 +63,30 @@ def is_media_borrowed(media_id: int) -> bool:
     return False
 
 
+def get_media_query_count(
+    query: str = "", author_query: str = "", media_type: str = None
+) -> int:
+    media_types = ["Book", "DVD", "CD", "Blu-Ray"]
+
+    statement = f"""
+        SELECT COUNT(media.title) query_count
+        FROM media
+        JOIN media_types ON media.media_type_id  = media_types.id
+        JOIN authors ON media.author_id = authors.id
+        WHERE media.title LIKE ? AND authors.name LIKE ? 
+            {"AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, ("%" + query + "%", "%" + author_query + "%"))
+    res = res.fetchone()
+
+    if res:
+        return res[0]
+
+    return 0
+
+
 def get_media_list(
     limit: int,
     offset: int,
@@ -132,7 +156,22 @@ def get_media(media_id: int) -> MediaItem | None:
     return None
 
 
-def get_borrowing(media_id: int, user_id: int):
+def get_user_borrowings(email: str) -> [Borrowing]:
+    statement = """
+        SELECT borrowings.id, media_id, user_id, borrow_date, return_date
+        FROM borrowings
+        JOIN users on borrowings.user_id = users.id
+        WHERE users.email = ? AND return_date IS NULL
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, (email,))
+    res = res.fetchall()
+
+    return [Borrowing(*item) for item in res]
+
+
+def get_borrowing(media_id: int, user_id: int) -> Borrowing:
     statement = """
         SELECT * 
         FROM borrowings
@@ -195,15 +234,40 @@ def borrow_book(media_id: int, user_id: int):
     con.commit()
 
 
-def return_book(borrowing_id: int):
+def return_media(borrowing_id: int, user_id: int):
     statement = """
         UPDATE borrowings
         SET return_date = ?
-        WHERE id = ?
+        WHERE id = ? AND user_id = ?
         """
 
     today = date.today().__str__()
     cur = con.cursor()
-    cur.execute(statement, (today, borrowing_id))
+    cur.execute(statement, (today, borrowing_id, user_id))
+
+    con.commit()
+
+
+def update_user(user_id: int, attribute: str, value: str):
+    statement = f"""
+        UPDATE users
+        SET {attribute} = ?
+        WHERE id = ?
+        """
+
+    cur = con.cursor()
+    cur.execute(statement, (value, user_id))
+
+    con.commit()
+
+
+def delete_user(user_id: int):
+    statement = """
+        DELETE FROM users
+        WHERE users.id = ?
+        """
+
+    cur = con.cursor()
+    cur.execute(statement, (user_id,))
 
     con.commit()

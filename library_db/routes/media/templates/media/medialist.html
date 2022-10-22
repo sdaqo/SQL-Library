@@ -5,13 +5,38 @@ head %} {{ super() }}
   body {
     background-color: #121212;
   }
+
+  .pagination > .page-item > .page-link
+  {
+    background-color: #212529;
+    color: white;
+    border-color: #373b3e;
+  }
+
+
+  .pagination > .page-item > .page-link:focus,
+  .pagination > .page-item  > .page-link:hover
+  {
+      color: white;
+      background-color: #2c3034;
+      border-color: #373b3e;
+  }
   {%endif%}
+
+  .pagination > .active > .page-link
+  {
+    background-color: #0d6efd;
+    color: white;
+  }
 
   .title_text {
     cursor: pointer;
   }
+
+
 </style>
- {% endblock %} {% block content %}
+{% endblock %}
+{% block content %}
 
 <div class="modal fade " id="mediaModal" tabindex="-1" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog modal-dialog-centered ">
@@ -43,7 +68,9 @@ head %} {{ super() }}
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#dc3545"></rect></svg>
+      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="100%" height="100%" fill="#dc3545"></rect>
+      </svg>
       <strong class="me-auto">Error</strong>
       <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
@@ -54,7 +81,9 @@ head %} {{ super() }}
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="infoToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="700">
     <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#007aff"></rect></svg>
+      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="100%" height="100%" fill="#007aff"></rect>
+      </svg>
       <strong class="me-auto">Info</strong>
       <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
@@ -71,7 +100,7 @@ head %} {{ super() }}
         <th scope="col">Type</th>
         <th scope="col">
           <a
-            href="{{url_for(endpoint="media_bluep.show_medialist", sort="title", sort_type="DESC" if sort_field=='title' and sort_dir == 'ASC' else "ASC", **next_query_params)}}"
+            href="{{update_query_params(url, sort="title", sort_type="DESC" if sort_field=='title' and sort_dir == 'ASC' else "ASC")}}"
             class="text-decoration-none text-reset"
             >Title&nbsp; {%if sort_field == "title"%} {% if sort_dir == "ASC" %}
             <i class="fa-solid fa-sort-down"></i> {% else %}
@@ -81,7 +110,7 @@ head %} {{ super() }}
         </th>
         <th scope="col">
           <a
-            href="{{url_for(endpoint="media_bluep.show_medialist", sort="author", sort_type="DESC" if sort_field=='author' and sort_dir == 'ASC' else "ASC", **next_query_params)}}"
+            href="{{update_query_params(url, sort="author", sort_type="DESC" if sort_field=='author' and sort_dir == 'ASC' else "ASC")}}"
             class="text-decoration-none text-reset"
             >Author&nbsp;{%if sort_field == "author"%} {% if sort_dir == "ASC" %}
             <i class="fa-solid fa-sort-down"></i> 
@@ -93,7 +122,7 @@ head %} {{ super() }}
 
         <th scope="col">
           <a
-            href="{{url_for(endpoint="media_bluep.show_medialist", sort="age_limit", sort_type="DESC" if sort_field=='age_limit' and sort_dir == 'ASC' else "ASC", **next_query_params)}}"
+            href="{{update_query_params(url, sort="age_limit", sort_type="DESC" if sort_field=='age_limit' and sort_dir == 'ASC' else "ASC")}}"
             class="text-decoration-none text-reset"
             >Age Limit&nbsp;{%if sort_field == "age_limit"%} {% if sort_dir ==
             "ASC" %} <i class="fa-solid fa-sort-down"></i> {% else %}
@@ -117,6 +146,26 @@ head %} {{ super() }}
       {% endfor %}
     </tbody>
   </table>
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if page + 1 == 1 %} disabled {% endif %}">
+        <a class="page-link" href="{{update_query_params(url, page=page - 1)}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% for i in range(page_count) %}
+      <li class="page-item {% if i == page %} active disabled {%endif%}">
+        <a class="page-link" href="{{update_query_params(url, page=i)}}">{{i + 1}}</a>
+      </li>
+      {% endfor %}
+      <li class="page-item {% if page + 1 == page_count %} disabled {% endif %}">
+        <a class="page-link" href="{{update_query_params(url, page=page + 1)}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+  
+    </ul>
+
   <script>
     function show_modal(media_id) {
       const mediaModal = new bootstrap.Modal(document.getElementById("mediaModal"), {
@@ -187,9 +236,8 @@ head %} {{ super() }}
     infoToast.addEventListener('hidden.bs.toast', () => {
       window.location.reload();
     })
-
-
-
   </script>
 </div>
+
+</nav>
 {% endblock %}

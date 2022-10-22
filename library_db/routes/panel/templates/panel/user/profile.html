@@ -1,0 +1,409 @@
+{% extends "base.html"%} {% block title %} User Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+      border-color: #373b3e;
+  }
+
+  .nav-item > .nav-link {
+    background-color:  transparent;
+    border-color: none;
+  }
+
+  .nav-item > .nav-link.active {
+      background-color:  #212529;
+      color: white;
+      border-color: #373b3e #373b3e #212529 #373b3e ;
+  }
+
+  .card {
+    background-color: #121212;
+  }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div
+    id="errorToast"
+    class="toast {% if darkmode %} bg-dark text-white {%endif%}"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
+      <svg
+        class="bd-placeholder-img rounded me-2"
+        width="20"
+        height="20"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <rect width="100%" height="100%" fill="#dc3545"></rect>
+      </svg>
+      <strong class="me-auto">Error</strong>
+      <button
+        type="button"
+        class="btn-close text-white"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="toast-body" id="errorToastBody"></div>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="">User</a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link {% if darkmode %} text-white {%endif%}"
+        href="{{url_for('panel_bluep.user_borrowings')}}"
+        >Borrowings</a
+      >
+    </li>
+  </ul>
+  <div
+    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
+    class="p-3 pt-5"
+  >
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4 shadow {%if darkmode%} text-white {%endif%}">
+          <div class="card-body text-center">
+            <i class="fa-solid fa-user" style="font-size: 83px"></i>
+            <h5 class="mt-3 mb-2">{{name}}</h5>
+            <p class="text-muted mb-1">{{surename}}</p>
+            <button
+              class="btn btn-danger mt-2"
+              onclick="toggleConfirm('confirmPwdForm')"
+            >
+              Delete Account
+            </button>
+            <div class="input-group mt-2 d-none" id="confirmPwdForm">
+              <input
+                type="password"
+                class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                placeholder="Confirm Password"
+                id="confirmPwdInput"
+              />
+
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                onclick="deleteAccount('confirmPwdInput')"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card mb-4 shadow {%if darkmode%}text-white {%endif%}">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Name</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{name}}</p>
+                <div class="input-group mb-1 d-none" id="nameForm">
+                  <input
+                    type="text"
+                    class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                    id="nameInput"
+                    value="{{name}}"
+                  />
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    onclick="sendForm('nameInput', 'name')"
+                  >
+                    <i class="fa-solid fa-check"></i></button
+                  ><button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="hideForm('nameForm')"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="d-grid d-grid col-sm-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="showForm('nameForm')"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Surename</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{surename}}</p>
+                <div class="input-group mb-1 d-none" id="sureNameForm">
+                  <input
+                    type="text"
+                    class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                    id="sureNameInput"
+                    value="{{surename}}"
+                  />
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    onclick="sendForm('sureNameInput', 'surename')"
+                  >
+                    <i class="fa-solid fa-check"></i></button
+                  ><button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="hideForm('sureNameForm')"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="d-grid col-sm-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="showForm('sureNameForm')"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{email}}</p>
+                <div class="input-group mb-1 d-none" id="emailForm">
+                  <input
+                    type="email"
+                    class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                    id="emailInput"
+                    value="{{email}}"
+                  />
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    onclick="sendForm('emailInput', 'email')"
+                  >
+                    <i class="fa-solid fa-check"></i></button
+                  ><button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="hideForm('emailForm')"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="d-grid col-sm-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="showForm('emailForm')"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Password</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">*******</p>
+                <div class="input-group mb-1 d-none" id="passwordForm">
+                  <input
+                    type="password"
+                    class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                    id="passwordInput"
+                  />
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    onclick="sendForm('passwordInput', 'password')"
+                  >
+                    <i class="fa-solid fa-check"></i></button
+                  ><button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="hideForm('passwordForm')"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="d-grid col-sm-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="showForm('passwordForm')"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Birthday</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{birthday}}</p>
+                <div class="input-group mb-1 d-none" id="birthDayForm">
+                  <input
+                    type="date"
+                    class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                    id="birthDayInput"
+                  />
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    onclick="sendForm('birthDayInput', 'birthday')"
+                  >
+                    <i class="fa-solid fa-check"></i></button
+                  ><button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="hideForm('birthDayForm')"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="d-grid col-sm-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="showForm('birthDayForm')"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+            </div>
+            <hr />
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">User Type</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{user_type}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showForm(el_id) {
+      var element = document.getElementById(el_id);
+      element.classList.remove("d-none");
+      element.previousElementSibling.classList.add("d-none");
+    }
+
+    function hideForm(el_id) {
+      var element = document.getElementById(el_id);
+      element.classList.add("d-none");
+      element.previousElementSibling.classList.remove("d-none");
+    }
+
+    function sendForm(input_id, update_field) {
+      var inputElement = document.getElementById(input_id);
+
+      fetch(`/api/user/update/${update_field}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ value: inputElement.value }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            const errorToast = new bootstrap.Toast(
+              document.querySelector("#errorToast"),
+              {}
+            );
+            const errorToastBody = document.querySelector("#errorToastBody");
+            errorToastBody.innerHTML = data.error;
+            errorToast.show();
+          } else {
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.log("error: " + error);
+        });
+    }
+
+    function toggleConfirm(confirm_form_id) {
+      var formElement = document.getElementById(confirm_form_id);
+      if (formElement.classList.contains("d-none")) {
+        formElement.classList.remove("d-none");
+      } else {
+        formElement.classList.add("d-none");
+      }
+    }
+
+    function deleteAccount(pwd_input_id) {
+      var inputElement = document.getElementById(pwd_input_id);
+      if (!inputElement.value) {
+        return false;
+      }
+
+      fetch("/api/user/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: inputElement.value }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            const errorToast = new bootstrap.Toast(
+              document.querySelector("#errorToast"),
+              {}
+            );
+            const errorToastBody = document.querySelector("#errorToastBody");
+            errorToastBody.innerHTML = data.error;
+            errorToast.show();
+            inputElement.value = "";
+          } else {
+            window.location.pathname = "/";
+          }
+        })
+        .catch((error) => {
+          console.log("error: " + error);
+        });
+    }
+  </script>
+</div>
+{%endblock%}

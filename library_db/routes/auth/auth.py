@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, request, redirect
 from hashlib import md5
 from datetime import datetime
+import re
 
 from library_db.database import get_db_connection
 from library_db.utils.utils import get_template_vars
@@ -22,6 +23,7 @@ def logout():
 @auth_bluep.route("/login", methods=["GET", "POST"])
 def login():
     template_vars = get_template_vars(session)
+    template_vars["next"] = request.args.get("next", "/")
 
     def ret_error(error: str):
         return render_template("auth/login.html", error=error, **template_vars)
@@ -45,7 +47,8 @@ def login():
 
     session["email"] = email
     session["pwdhash"] = pwdhash
-    return redirect("/")
+
+    return redirect(request.args.get("next", "/"))
 
 
 @auth_bluep.route("/signin", methods=["GET", "POST"])
@@ -78,7 +81,7 @@ def signin():
     if get_user_data(email):
         return ret_error("this email exsits already")
 
-    if not usertype in ["Default", "Teacher", "Student"]:
+    if not usertype in ["2", "1", "5"]:
         return ret_error("invalid usertype")
 
     pwdhash = md5(password.encode()).hexdigest()
