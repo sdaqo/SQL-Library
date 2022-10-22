@@ -1,4 +1,4 @@
-# A Library Website
+# 📚 A Library Website
 This is a Library Website made with [Python](https://github.com/python/cpython), SQL and [Flask](https://github.com/pallets/flask) for a School Project
 
 ## Setup
