@@ -19,12 +19,12 @@ Email: admin@admin.admin Password: admin1234
 
 ## Start
 
-Without Debuging:
+Without Debugging:
 ```
 python wsgi.py
 ```
 
-With Debuging:
+With Debugging:
 ```
 python -m library_db.app
 ```
