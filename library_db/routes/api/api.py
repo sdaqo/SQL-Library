@@ -164,12 +164,6 @@ def remove_user():
         return {"error": "Wrong Password"}, 401
 
     delete_user(user.get("id"))
-User attribute changing (done)
-Age Check (done)
-Delete User (done)
-Admin/Staff Panel
-Home Page
-DB Backup
 
     session.pop("email")
     session.pop("pwdhash")
