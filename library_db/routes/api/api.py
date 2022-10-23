@@ -73,7 +73,7 @@ def update_name():
 
 
 @api_bluep.route("/user/update/surename", methods=["POST"])
-def update_surename(media_id):
+def update_surename():
     if not is_loggedin(session):
         return {"error": "Not Logged in"}, 401
 
@@ -89,7 +89,7 @@ def update_surename(media_id):
 
 
 @api_bluep.route("/user/update/email", methods=["POST"])
-def update_email(media_id):
+def update_email():
     if not is_loggedin(session):
         return {"error": "Not Logged in"}, 401
 
@@ -111,7 +111,7 @@ def update_email(media_id):
 
 
 @api_bluep.route("/user/update/password", methods=["POST"])
-def update_password(media_id):
+def update_password():
     if not is_loggedin(session):
         return {"error": "Not Logged in"}, 401
 
@@ -129,7 +129,7 @@ def update_password(media_id):
 
 
 @api_bluep.route("/user/update/birthday", methods=["POST"])
-def update_birthday(media_id):
+def update_birthday():
     if not is_loggedin(session):
         return {"error": "Not Logged in"}, 401
 
@@ -137,7 +137,7 @@ def update_birthday(media_id):
         return {"error": "Unprocessable data"}, 400
 
     user_id = get_user_data(session.get("email")).get("id")
-    new_bd = request.get_json()
+    new_bd = request.get_json()["value"]
 
     try:
         datetime.strptime(new_bd, "%Y-%m-%d")
