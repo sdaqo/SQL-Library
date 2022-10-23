@@ -156,7 +156,7 @@ def get_media(media_id: int) -> MediaItem | None:
     return None
 
 
-def get_user_borrowings(email: str) -> [Borrowing]:
+def get_user_borrowings(user_id: int) -> [Borrowing]:
     statement = """
         SELECT borrowings.id, media_id, user_id, borrow_date, return_date
         FROM borrowings
@@ -214,7 +214,11 @@ def estimate_return_date(media_id: int) -> date | None:
     res = cur.execute(statement, (user_id,))
     res = res.fetchone()
 
-    days_until_deadline = res[0]
+    if res:
+        days_until_deadline = res[0]
+    else:
+        days_until_deadline = 14
+
     deadline = borrow_date + timedelta(days=days_until_deadline)
 
     return deadline.date()
@@ -262,6 +266,9 @@ def update_user(user_id: int, attribute: str, value: str):
 
 
 def delete_user(user_id: int):
+    for i in get_user_borrowings(user_id):
+        return_media(i.id, user_id)
+
     statement = """
         DELETE FROM users
         WHERE users.id = ?

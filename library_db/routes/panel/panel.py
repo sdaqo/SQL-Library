@@ -5,6 +5,7 @@ from library_db.utils.db_utils import (
     get_user_borrowings,
     get_media,
     estimate_return_date,
+    get_user_data
 )
 from library_db.utils.models import Borrowing
 
@@ -37,7 +38,7 @@ def user_borrowings():
     if not is_loggedin(session):
         return redirect(url_for("auth_bluep.login", next="/me/borrowings"))
 
-    borrowings = get_user_borrowings(session.get("email"))
+    borrowings = get_user_borrowings(get_user_date(session.get("email")).get("id"))
     table_data = [
         (i, get_media(i.media_id), estimate_return_date(i.media_id).__str__())
         for i in borrowings
