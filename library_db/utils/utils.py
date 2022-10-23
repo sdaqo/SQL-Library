@@ -18,31 +18,20 @@ def is_loggedin(session):
 
 
 def is_staff(session):
-    try:
-        email = session["email"]
-        pwdhash = session["pwdhash"]
-    except KeyError:
-        return False
-
     if not is_loggedin(session):
         return False
 
-    if not get_user_type(email) == "Staff":
+    if not get_user_type(session["email"]) == "Staff":
         return False
 
     return True
 
 
 def is_admin(session):
-    try:
-        email = session["email"]
-        pwdhash = session["pwdhash"]
-    except KeyError:
-        return False
-
     if not is_loggedin(session):
         return False
-    if not get_user_type(email) == "Admin":
+
+    if not get_user_type(session["email"]) == "Admin":
         return False
 
     return True
@@ -55,7 +44,7 @@ def get_template_vars(session) -> dict:
     template_vars["is_staff"] = is_staff(session)
     template_vars["darkmode"] = session.get("darkmode")
     template_vars["name"] = get_user_data(session.get("email")).get("name")
-    template_vars["media_types"] = [i[0] for i in get_media_types()]
+    template_vars["media_types"] = get_media_types()
     return template_vars
 
 

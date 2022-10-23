@@ -53,6 +53,8 @@ head %} {{ super() }}
           <dd class="col-sm-9" id="authorLabel"></dd>
           <dt class="col-sm-3">Age Limit:</dt>
           <dd class="col-sm-9" id="ageLimitLabel"></dd>
+          <dt class="col-sm-3">ISBN:</dt>
+          <dd class="col-sm-9" id="isbnLable"></dd>
           <div><hr class="px-5"></div>
           <dt class="col-sm-3">Status:</dt>
           <dd class="col-sm-9" id="statusLabel"></dd>
@@ -179,24 +181,26 @@ head %} {{ super() }}
           const titleLabel = document.querySelector('#titleLabel');
           const authorLabel = document.querySelector('#authorLabel');
           const ageLimitLabel = document.querySelector('#ageLimitLabel');
+          const isbnLable = document.querySelector('#isbnLable');
           const statusLabel = document.querySelector('#statusLabel');
           const etaLabelTitle = document.querySelector('#etaLabelTitle');
           const etaLabel = document.querySelector('#etaLabel');
           const borrowBtn = document.querySelector('#borrowBtn')
 
-          modalLabel.innerHTML = data.title;
-          titleLabel.innerHTML = data.title;
-          authorLabel.innerHTML = data.author;
-          ageLimitLabel.innerHTML = data.age_limit;
-          statusLabel.innerHTML = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
-          etaLabelTitle.innerHTML = "";
-          etaLabel.innerHTML = "";
+          modalLabel.textContent = data.title;
+          titleLabel.textContent = data.title;
+          authorLabel.textContent = data.author;
+          ageLimitLabel.textContent = data.age_limit;
+          isbnLable.textContent = ((data.isbn) ? data.isbn : '');
+          statusLabel.textContent = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
+          etaLabelTitle.textContent = "";
+          etaLabel.textContent = "";
 
           borrowBtn.disabled = false;
 
           if (data.is_borrowed) {
-            etaLabelTitle.innerHTML = "Estimated Return Date:";
-            etaLabel.innerHTML = data.estimated_return;
+            etaLabelTitle.textContent = "Estimated Return Date:";
+            etaLabel.textContent = data.estimated_return;
             borrowBtn.disabled = true;
           }
 

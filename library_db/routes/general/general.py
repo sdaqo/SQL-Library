@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session
-from library_db.utils.utils import get_template_vars, is_loggedin
+from library_db.utils.utils import get_template_vars
 
 general_bluep = Blueprint("genneral_bluep", __name__, template_folder="templates")
 

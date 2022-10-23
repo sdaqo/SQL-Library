@@ -1,7 +1,8 @@
 import re
 from hashlib import md5
-from flask import Blueprint, session, request
 from datetime import date, datetime
+from flask import Blueprint, session, request
+
 
 from library_db.utils.db_utils import (
     get_media,
@@ -9,10 +10,10 @@ from library_db.utils.db_utils import (
     estimate_return_date,
     get_user_data,
     borrow_book,
-    get_borrowing,
-    return_media,
     update_user,
     delete_user,
+    author_query_mini,
+    media_query_mini,
 )
 from library_db.utils.utils import is_loggedin
 
@@ -169,3 +170,25 @@ def remove_user():
     session.pop("pwdhash")
 
     return {"status": "success"}
+
+
+@api_bluep.route("/mini_search/author", methods=["POST"])
+def query_authors():
+    if not request.is_json and "query" in request.get_json():
+        return {"error": "Unprocessable data"}, 400
+
+    query = request.get_json()["query"]
+    query_res = author_query_mini(query)
+
+    return {"results": query_res}
+
+
+@api_bluep.route("/mini_search/media", methods=["POST"])
+def query_media():
+    if not request.is_json and "query" in request.get_json():
+        return {"error": "Unprocessable data"}, 400
+
+    query = request.get_json()["query"]
+    query_res = media_query_mini(query)
+
+    return {"results": query_res}

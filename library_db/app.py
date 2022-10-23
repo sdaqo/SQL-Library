@@ -12,7 +12,7 @@ from library_db.routes import (
 
 def create_app():
     app = Flask(__name__)
-    cors = CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config["CORS_HEADER"] = "Content-Type"
 
     app.secret_key = "c4c4f1e8c78c2a52ee46"

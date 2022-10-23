@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, session, request, redirect
+import re
 from hashlib import md5
 from datetime import datetime
-import re
+from flask import Blueprint, render_template, session, request, redirect
 
 from library_db.database import get_db_connection
 from library_db.utils.utils import get_template_vars
@@ -67,7 +67,7 @@ def signin():
         birthday = request.form["birthday"]
         password = request.form["password"]
         usertype = request.form["usertype"]
-    except:
+    except KeyError:
         return ret_error("invalid form data")
 
     try:
@@ -87,7 +87,8 @@ def signin():
     pwdhash = md5(password.encode()).hexdigest()
     cur = con.cursor()
     cur.execute(
-        """INSERT INTO users (email, name, surename, birthday, pwdhash, user_type) VALUES(?, ?, ?, ?, ?, ?)""",
+        """INSERT INTO users (email, name, surename, birthday, pwdhash, user_type)
+           VALUES(?, ?, ?, ?, ?, ?)""",
         (
             email,
             name,

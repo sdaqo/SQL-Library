@@ -1,17 +1,20 @@
 from dataclasses import dataclass
 from typing import Optional
 
+
 @dataclass
 class MediaItem:
-    id: int
+    id: Optional[int]
     title: str
     age_limit: int
-    media_type: str 
+    media_type: str
     author: str
+    isbn: Optional[int]
+
 
 @dataclass
 class User:
-    id: int
+    id: Optional[int]
     name: str
     surename: str
     email: str
@@ -19,10 +22,17 @@ class User:
     user_type: str
     birthday: str
 
+
 @dataclass
 class Borrowing:
-    id: int
+    id: Optional[int]
     media_id: int
     user_id: int
     borrow_date: Optional[str]
     return_date: Optional[str]
+
+
+@dataclass
+class Author:
+    id: Optional[int]
+    name: str

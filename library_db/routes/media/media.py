@@ -1,16 +1,16 @@
 import re
+from copy import deepcopy
+from math import ceil
 from flask import (
     Blueprint,
     session,
     redirect,
     render_template,
     request,
-    url_for,
     abort,
     Response,
 )
-from copy import deepcopy
-from math import ceil
+
 
 from library_db.utils.utils import get_template_vars, update_query_params, is_loggedin
 from library_db.database import get_db_connection
@@ -19,7 +19,6 @@ from library_db.utils.db_utils import (
     is_media_borrowed,
     get_media_query_count,
     get_user_data,
-    get_borrowing,
     return_media,
 )
 

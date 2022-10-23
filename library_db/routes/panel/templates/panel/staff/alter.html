@@ -1,0 +1,43 @@
+{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+        border-color: #373b3e;
+    }
+
+    .nav-item > .nav-link {
+      background-color:  transparent;
+      border-color: none;
+    }
+
+    .nav-item > .nav-link.active {
+        background-color:  #212529;
+        color: white;
+        border-color: #373b3e #373b3e #212529 #373b3e ;
+    }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
+        aria-current="page"
+        href="{{url_for('panel_bluep.staff_panel_addremove')}}"
+        >Add/Remove</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="">Alter</a>
+    </li>
+  </ul>
+</div>
+{%endblock%}

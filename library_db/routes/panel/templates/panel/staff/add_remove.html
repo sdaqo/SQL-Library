@@ -1,0 +1,257 @@
+{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+        border-color: #373b3e;
+    }
+
+    .nav-item > .nav-link {
+      background-color:  transparent;
+      border-color: none;
+    }
+
+    .nav-item > .nav-link.active {
+        background-color:  #212529;
+        color: white;
+        border-color: #373b3e #373b3e #212529 #373b3e ;
+    }
+    .card {
+        background-color: #121212;
+        color: white;
+      }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="">Add/Remove</a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
+        aria-current="page"
+        href="{{url_for('panel_bluep.staff_panel_alter')}}"
+        >Alter</a
+      >
+    </li>
+  </ul>
+  <div
+    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
+    class="p-3 pt-5"
+  >
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Media</h5>
+            <form
+              class="d-flex flex-column"
+              action="{{url_for('panel_bluep.add_media')}}"
+              method="post"
+            >
+              <label for="titleInput" class="form-label">Title</label>
+              <input
+                id="titleInput"
+                type="text"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                name="title"
+                placeholder="Harry Potter"
+                autocomplete="off"
+                required
+              />
+              <label for="mediaAuthorSearch" class="form-label">Author</label>
+              <input
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                type="search"
+                placeholder="Search Authors"
+                aria-label="Search"
+                id="mediaAuthorSearch"
+                autocomplete="off"
+                name="author"
+                required
+              />
+              <ul
+                class="list-group d-none"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="mediaAuthorResults"
+              ></ul>
+
+              <div class="d-flex flex">
+                <div class="d-flex flex-column flex-fill">
+                  <label for="ageLimitInput" class="form-label"
+                    >Age Limit</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                    id="ageLimitInput"
+                    name="age_limit"
+                    placeholder="0"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+                <div class="d-flex flex-column flex-fill ms-1">
+                  <label for="mediaSelection" class="form-label"
+                    >Media Type</label
+                  >
+                  <select
+                    class="form-select {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                    aria-label="Default select example"
+                    name="media_type"
+                    id="mediaSelection"
+                    autocomplete="off"
+                    required
+                  >
+                    {% for i in media_types %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <label for="isbnInput" class="form-label">ISBN</label>
+              <input
+                id="isbnInput"
+                type="text"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                name="isbn"
+                placeholder="Optional"
+                autocomplete="off"
+              />
+              {{media_error if media_error}}
+              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Author</h5>
+            <form
+              action="{{url_for('panel_bluep.add_author')}}"
+              method="post"
+              class="d-flex flex-column"
+            >
+              <label for="authorInput" class="form-label">Name</label>
+              <input
+                type="text"
+                autocomplete="off"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                id="authorInput"
+                placeholder="J. K Rowling"
+                name="author"
+                required
+              />
+              {{author_error if author_error}}
+              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Remove Media</h5>
+            <form
+              action="{{url_for('panel_bluep.remove_media')}}"
+              method="post"
+              class="d-flex flex-column"
+            >
+              <label for="mediaSearch" class="form-label">Media</label>
+              <input
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                type="search"
+                placeholder="Search Media"
+                aria-label="Search"
+                id="mediaRemoveSearch"
+                autocomplete="off"
+                name="media"
+                required
+              />
+              <ul
+                class="list-group d-none"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="mediaRemoveResults"
+              ></ul>
+              {{remove_media_error if remove_media_error}}
+              <button type="submit" class="btn btn-danger mt-3">Remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+
+
+  function removeResChildren(parent) {
+      while (parent.firstChild) {
+          parent.firstChild.remove();
+      }
+  }
+
+  function registerAjaxQuery(search_el, result_el, query_endpoint) {
+      search_el.addEventListener("input", (event) => {
+          if (search_el.value.length == 0) {
+              result_el.classList.add("d-none");
+              search_el.style.borderBottomRightRadius = "0.375rem";
+              search_el.style.borderBottomLeftRadius = "0.375rem";
+              return false;
+          }
+
+          fetch(query_endpoint, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                      query: search_el.value
+                  }),
+              })
+              .then((response) => response.json())
+              .then((data) => {
+                  search_el.style.borderBottomRightRadius = "0";
+                  search_el.style.borderBottomLeftRadius = "0";
+                  removeResChildren(result_el);
+                  data.results.map((result) => {
+                      const button = document.createElement("button");
+                      button.classList.add("list-group-item", "list-group-item-action");
+                      {% if darkmode %}
+                      button.style.backgroundColor = "#121212"
+                      button.style.color = "white"
+                      button.style.borderColor = "#212529"
+                      {% endif %};
+                      button.textContent = result;
+                      button.type = "button";
+                      button.addEventListener("click", (event) => {
+                          var btnText = event.target.textContent;
+                          search_el.value = btnText;
+                          result_el.classList.add("d-none");
+                          search_el.style.borderBottomRightRadius = "0.375rem";
+                          search_el.style.borderBottomLeftRadius = "0.375rem";
+                      });
+                      result_el.appendChild(button);
+                  });
+                  result_el.classList.remove("d-none");
+              }).catch((error) => console.log(error));
+      });
+  }
+
+  var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
+  var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
+  registerAjaxQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
+
+  var mediaRemoveSearchEl = document.getElementById("mediaRemoveSearch")
+  var mediaRemoveResultsEl = document.getElementById("mediaRemoveResults")
+  registerAjaxQuery(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media")
+</script>
+{%endblock%}

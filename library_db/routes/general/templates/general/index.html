@@ -1,14 +1,14 @@
-{% extends "base.html"%} 
-{% block title %} Library {% endblock %} 
-{% block head%} 
-{{ super() }} 
-{% if darkmode %}
+{% extends "base.html"%} {% block title %} Library {% endblock %} {% block
+head%} {{ super() }}
 <style>
   body {
-    background-color: #121212;
+    {% if darkmode %}
+    background: url("/static/images/wave-haikei-dark.svg"), #121212;
+    {% else %}
+    background: url("/static/images/wave-haikei-light.svg");
+    {% endif %}
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 </style>
-{% endif %}
-{% endblock %} 
-{% block content %} 
-{% endblock %}
+{% endblock %} {% block content %} {% endblock %}

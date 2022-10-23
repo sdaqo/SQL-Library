@@ -41,11 +41,11 @@ def get_user_data(email: str) -> dict[str, str | int]:
     return {}
 
 
-def get_media_types():
+def get_media_types() -> [str]:
     cur = con.cursor()
     res = cur.execute("SELECT title FROM media_types")
     res = res.fetchall()
-    return res
+    return [i[0] for i in res]
 
 
 def is_media_borrowed(media_id: int) -> bool:
@@ -108,11 +108,11 @@ def get_media_list(
     if sort_type != "DESC":
         sort_type = "ASC"
 
-    if sort not in sorts.keys():
+    if sort not in sorts:
         sort = "title"
 
     statement = f"""
-        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name
+        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn
         FROM media
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
@@ -141,7 +141,7 @@ def get_media_list(
 
 def get_media(media_id: int) -> MediaItem | None:
     statement = """
-        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name
+        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn
         FROM media
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
@@ -276,5 +276,102 @@ def delete_user(user_id: int):
 
     cur = con.cursor()
     cur.execute(statement, (user_id,))
+
+    con.commit()
+
+
+def author_query_mini(query: str) -> [str]:
+    statement = """
+        SELECT name
+        FROM authors
+        WHERE name LIKE ?
+        LIMIT 5
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, ("%" + query + "%",))
+    res = res.fetchall()
+
+    return [i[0] for i in res]
+
+
+def media_query_mini(query: str) -> [str]:
+    statement = """
+        SELECT title
+        FROM media
+        WHERE title LIKE ?
+        LIMIT 5
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, ("%" + query + "%",))
+    res = res.fetchall()
+
+    return [i[0] for i in res]
+
+
+def author_exsists(name: str) -> bool:
+    cur = con.cursor()
+    res = cur.execute("""SELECT id FROM authors WHERE name = ? """, (name,))
+    res = res.fetchone()
+    if res:
+        return True
+
+    return False
+
+
+def add_media_item(
+    title: str, author: int, age_limit: int, media_type: str, isbn: int = "NULL"
+):
+    statement = """
+        INSERT INTO media (
+            title, media_type_id,
+            isbn, age_limit,
+            author_id
+        )
+        VALUES (?, ?, ?, ?, ?)
+        """
+
+    cur = con.cursor()
+    cur.execute(statement, (title, media_type, isbn, age_limit, author))
+
+    con.commit()
+
+
+def get_media_type_id(media_type: str):
+    cur = con.cursor()
+    res = cur.execute("""SELECT id FROM media_types WHERE title = ?""", (media_type,))
+    res = res.fetchone()
+    if res:
+        return res[0]
+
+
+def get_author_id(name: str):
+    cur = con.cursor()
+    res = cur.execute("""SELECT id FROM authors WHERE name = ? """, (name,))
+    res = res.fetchone()
+
+    if res:
+        return res[0]
+
+
+def get_media_id(title: str):
+    cur = con.cursor()
+    res = cur.execute("""SELECT id FROM media WHERE title = ?""", (title,))
+    res = res.fetchone()
+    if res:
+        return res[0]
+
+
+def add_author_to_db(name: str):
+    cur = con.cursor()
+    cur.execute("""INSERT INTO authors (name) VALUES(?)""", (name,))
+
+    con.commit()
+
+
+def delete_media(media_id: int):
+    cur = con.cursor()
+    cur.execute("""DELETE FROM media WHERE media.id = ?""", (media_id,))
 
     con.commit()
