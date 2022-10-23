@@ -161,11 +161,11 @@ def get_user_borrowings(user_id: int) -> [Borrowing]:
         SELECT borrowings.id, media_id, user_id, borrow_date, return_date
         FROM borrowings
         JOIN users on borrowings.user_id = users.id
-        WHERE users.email = ? AND return_date IS NULL
+        WHERE users.id = ? AND return_date IS NULL
         """
 
     cur = con.cursor()
-    res = cur.execute(statement, (email,))
+    res = cur.execute(statement, (user_id,))
     res = res.fetchall()
 
     return [Borrowing(*item) for item in res]

@@ -46,8 +46,8 @@ def borrow(media_id):
     bd = user.get("birthday")
     bd = datetime.strptime(bd, "%Y-%m-%d")
     today = date.today()
-    age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-    age_limit = get_media(media_id)
+    age = today.year - bd.year - ((today.month, today.day) < (bd.month, bd.day))
+    age_limit = get_media(media_id).age_limit
 
     if age_limit > age:
         return ({"error": "User too Young"},)
