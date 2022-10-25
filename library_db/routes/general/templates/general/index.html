@@ -87,12 +87,20 @@ head%} {{ super() }}
           >
             Medialist
           </button>
-          <button
-            class="btn btn-primary mt-3"
-            onclick="window.location.pathname = '/login'"
-          >
-            Login
-          </button>
+          <div class="btn-group">
+            <button
+              class="btn btn-outline-primary mt-3"
+              onclick="window.location.pathname = '/login'"
+            >
+              Login
+            </button>
+            <button
+              class="btn btn-outline-primary mt-3"
+              onclick="window.location.pathname = '/signin'"
+            >
+              Signin
+            </button>
+          </div>
           <div class="negative-margin"></div>
         </div>
       </div>
@@ -100,7 +108,7 @@ head%} {{ super() }}
         <div>
           <img
             id="header-image"
-            class="rounded img-fluid"
+            class="rounded img-fluid shadow-lg"
             src="/static/images/library.png"
           />
         </div>

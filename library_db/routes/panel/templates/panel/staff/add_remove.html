@@ -226,10 +226,10 @@ head %} {{ super() }}
                       const button = document.createElement("button");
                       button.classList.add("list-group-item", "list-group-item-action");
                       {% if darkmode %}
-                      button.style.backgroundColor = "#121212"
-                      button.style.color = "white"
-                      button.style.borderColor = "#212529"
-                      {% endif %};
+                      button.style.backgroundColor = "#121212";
+                      button.style.color = "white";
+                      button.style.borderColor = "#212529";
+                      {% endif %}
                       button.textContent = result;
                       button.type = "button";
                       button.addEventListener("click", (event) => {
