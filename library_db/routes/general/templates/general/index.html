@@ -1,14 +1,122 @@
 {% extends "base.html"%} {% block title %} Library {% endblock %} {% block
 head%} {{ super() }}
+<link href="/static/fontawesome/css/brands.css" rel="stylesheet" />
 <style>
   body {
+    background-color: #121212;
+  }
+  .title-section {
+    padding-top: 5rem;
+  }
+
+  .sub-title {
+    padding-left: 5rem;
+  }
+
+  .dotted-link {
+    text-decoration-style: dotted;
+  }
+
+  .header-section {
     {% if darkmode %}
-    background: url("/static/images/wave-haikei-dark.svg"), #121212;
+    background-color: #212529;
+    color: white;
     {% else %}
-    background: url("/static/images/wave-haikei-light.svg");
-    {% endif %}
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #f8f9fa;
+    {%endif%}
+
+  }
+  .image-section {
+    top: 30%;
+  }
+
+  #header-image {
+    width: 34vw;
+  }
+
+  .negative-margin {
+    margin-bottom: -100px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #header-image {
+      width: 60vw;
+    }
+    .image-section {
+      top: 20%;
+    }
+    .negative-margin {
+      margin-bottom: -20px;
+    }
+    .header-section {
+      padding-top: 20px;
+    }
+  }
+
+  @media only screen and (max-width: 1200px) and (min-width: 769px) {
+    #header-image {
+      width: 50vw;
+    }
+    .negative-margin {
+      margin-bottom: -20px;
+    }
   }
 </style>
-{% endblock %} {% block content %} {% endblock %}
+{% endblock %} {% block content %}
+<div class="position-relative">
+  <section class="header-section d-flex justify-content-center pt-2">
+    <div>
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-column align-self-center">
+          <span class="display-4"
+            ><img src="/static/images/books.png" /> SQL Library</span
+          >
+          <span class="text-muted sub-title"
+            >Made with
+            <a href="https://github.com/pallets/flask" class="dotted-link"
+              >Flask</a
+            >,
+            <a href="https://github.com/python/cpython" class="dotted-link"
+              >Python</a
+            >
+            and SQL</span
+          >
+          <button
+            class="btn btn-primary mt-3"
+            onclick="window.location.pathname = '/medialist'"
+          >
+            Medialist
+          </button>
+          <button
+            class="btn btn-primary mt-3"
+            onclick="window.location.pathname = '/login'"
+          >
+            Login
+          </button>
+          <div class="negative-margin"></div>
+        </div>
+      </div>
+      <section class="position-relative image-section">
+        <div>
+          <img
+            id="header-image"
+            class="rounded img-fluid"
+            src="/static/images/library.png"
+          />
+        </div>
+      </section>
+    </div>
+  </section>
+</div>
+<footer
+  class="position-fixed bottom-0 w-100 d-flex justify-content-center text-white pb-2"
+>
+  <a class="dotted-link" href="https://github.com/sdaqo/library_website"
+    >SQL Library</a
+  >,&nbsp;made by&nbsp;<a class="dotted-link" href="https://github.com/sdaqo"
+    >sdaqo</a
+  >&nbsp;on GitHub&nbsp;<a href="https://github.com/"
+    ><i class="fa-brands fa-github"></i
+  ></a>
+</footer>
+{% endblock %}
