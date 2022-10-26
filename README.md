@@ -1,6 +1,14 @@
 # 📚 Library Website
 This is a Library Website made (in making) with [Python](https://github.com/python/cpython), SQL and [Flask](https://github.com/pallets/flask) for a School Project
 
+<details>
+  <summary>Screenshot</summary>
+  
+![Screenshot 2022-10-26 at 22-27-19 Library - SQL Library](https://user-images.githubusercontent.com/63876564/198130318-6b565702-9bb9-452d-86b2-4eddf861c358.png)
+
+</details>
+
+
 ## Setup
 
 #### Install requirements for the Project:
