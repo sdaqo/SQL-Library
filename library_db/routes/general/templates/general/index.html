@@ -17,6 +17,10 @@ head%} {{ super() }}
     text-decoration-style: dotted;
   }
 
+  footer {
+    color: white;
+  }
+
   .header-section {
     {% if darkmode %}
     background-color: #212529;
@@ -69,7 +73,8 @@ head%} {{ super() }}
       <div class="d-flex flex-column">
         <div class="d-flex flex-column align-self-center">
           <span class="display-4"
-            ><img src="/static/images/books.png" /> SQL Library</span
+            ><img src="/static/images/books.png" alt="books emoticon" /> SQL
+            Library</span
           >
           <span class="text-muted sub-title"
             >Made with
@@ -109,22 +114,12 @@ head%} {{ super() }}
           <img
             id="header-image"
             class="rounded img-fluid shadow-lg"
-            src="/static/images/library.png"
+            src="/static/images/library.webp"
+            alt="picture of library"
           />
         </div>
       </section>
     </div>
   </section>
 </div>
-<footer
-  class="position-fixed bottom-0 w-100 d-flex justify-content-center text-white pb-2"
->
-  <a class="dotted-link" href="https://github.com/sdaqo/library_website"
-    >SQL Library</a
-  >,&nbsp;made by&nbsp;<a class="dotted-link" href="https://github.com/sdaqo"
-    >sdaqo</a
-  >&nbsp;on GitHub&nbsp;<a href="https://github.com/"
-    ><i class="fa-brands fa-github"></i
-  ></a>
-</footer>
 {% endblock %}

@@ -13,7 +13,6 @@ from flask import (
 
 
 from library_db.utils.utils import get_template_vars, update_query_params, is_loggedin
-from library_db.database import get_db_connection
 from library_db.utils.db_utils import (
     get_media_list,
     is_media_borrowed,
@@ -23,7 +22,6 @@ from library_db.utils.db_utils import (
 )
 
 media_bluep = Blueprint("media_bluep", __name__, template_folder="templates")
-con = get_db_connection()
 
 PAGE_SIZE = 20
 AUTHOR_REGEX = r".*by\((.*)\).*"

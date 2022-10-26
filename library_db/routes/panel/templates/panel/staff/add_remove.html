@@ -199,7 +199,7 @@ head %} {{ super() }}
       }
   }
 
-  function registerAjaxQuery(search_el, result_el, query_endpoint) {
+  function registerAPIQuery(search_el, result_el, query_endpoint) {
       search_el.addEventListener("input", (event) => {
           if (search_el.value.length == 0) {
               result_el.classList.add("d-none");
@@ -248,10 +248,10 @@ head %} {{ super() }}
 
   var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
   var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
-  registerAjaxQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
+  registerAPIQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
 
   var mediaRemoveSearchEl = document.getElementById("mediaRemoveSearch")
   var mediaRemoveResultsEl = document.getElementById("mediaRemoveResults")
-  registerAjaxQuery(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media")
+  registerAPIQuery(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media")
 </script>
 {%endblock%}
