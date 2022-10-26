@@ -28,9 +28,9 @@ With Debugging:
 ```
 python -m library_db.app
 ```
-You can also specify a host in wsgi.py like so:
+You can also specify a host and port in wsgi.py like so:
 ```
 ...
 if __name__ == "__main__":
-    app.run(host='<The Host>')
+    app.run(host='<The Host>', port=<The Port>)
 ```
