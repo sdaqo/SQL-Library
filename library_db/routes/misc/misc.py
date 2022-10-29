@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, request
+from flask import Blueprint, session, redirect, request, send_from_directory
 
 misc_bluep = Blueprint("misc_bluep", __name__, template_folder="templates")
 
@@ -9,3 +9,8 @@ def toggle_darkmode():
     session["darkmode"] = not darkmode
 
     return redirect(request.args.get("next", "/"))
+
+
+@misc_bluep.route("/favicon.ico", methods=["GET"])
+def get_favicon():
+    return send_from_directory("static", "images/favicon.ico")
