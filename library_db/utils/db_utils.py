@@ -414,5 +414,5 @@ def get_author_by_id(author_id: int):
     res = res.fetchone()
     if res:
         return res[0]
-    
+
     return None
