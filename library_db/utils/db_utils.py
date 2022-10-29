@@ -321,7 +321,7 @@ def author_exsists(name: str) -> bool:
 
 
 def add_media_item(
-    title: str, author: int, age_limit: int, media_type: str, isbn: int = "NULL"
+    title: str, author_id: int, age_limit: int, media_type_id: int, isbn: int = None
 ):
     statement = """
         INSERT INTO media (
@@ -333,12 +333,12 @@ def add_media_item(
         """
 
     cur = con.cursor()
-    cur.execute(statement, (title, media_type, isbn, age_limit, author))
+    cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id))
 
     con.commit()
 
 
-def get_media_type_id(media_type: str):
+def get_media_type_id(media_type: str) -> int | None:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM media_types WHERE title = ?""", (media_type,))
     res = res.fetchone()
@@ -346,7 +346,7 @@ def get_media_type_id(media_type: str):
         return res[0]
 
 
-def get_author_id(name: str):
+def get_author_id(name: str) -> int | None:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM authors WHERE name = ? """, (name,))
     res = res.fetchone()
@@ -355,7 +355,7 @@ def get_author_id(name: str):
         return res[0]
 
 
-def get_media_id(title: str):
+def get_media_id(title: str) -> int | None:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM media WHERE title = ?""", (title,))
     res = res.fetchone()
@@ -375,3 +375,44 @@ def delete_media(media_id: int):
     cur.execute("""DELETE FROM media WHERE media.id = ?""", (media_id,))
 
     con.commit()
+
+
+def update_media(
+    id: int,
+    title: str,
+    author_id: int,
+    age_limit: int,
+    media_type_id: int,
+    isbn: int = None,
+):
+    statement = """
+        UPDATE media
+        SET title = ?,
+            media_type_id = ?,
+            isbn = ?,
+            age_limit = ?,
+            author_id = ?
+        WHERE id = ?
+        """
+
+    cur = con.cursor()
+    cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id, id))
+
+    con.commit()
+
+
+def update_author(id: int, name: str):
+    cur = con.cursor()
+    cur.execute("""UPDATE authors SET name = ? WHERE id = ?""", (name, id))
+
+    con.commit()
+
+
+def get_author_by_id(author_id: int):
+    cur = con.cursor()
+    res = cur.execute("""SELECT name FROM authors WHERE id = ?""", (author_id,))
+    res = res.fetchone()
+    if res:
+        return res[0]
+    
+    return None

@@ -31,7 +31,7 @@ head %} {{ super() }}
       <a
         class="nav-link text-black {% if darkmode %} text-white {%endif%}"
         aria-current="page"
-        href="{{url_for('panel_bluep.user_profile')}}"
+        href="{{url_for('panel_bluep.user_bluep.user_profile')}}"
         >User</a
       >
     </li>
@@ -63,7 +63,7 @@ head %} {{ super() }}
           <td>{{eta}}</td>
           <td class="d-grid">
             <form
-              action="{{url_for('media_bluep.return_borrowed_media', next=url_for('panel_bluep.user_borrowings'))}}"
+              action="{{url_for('media_bluep.return_borrowed_media', next=url_for('panel_bluep.user_bluep.user_borrowings'))}}"
               method="post"
             >
               <button

@@ -56,8 +56,8 @@
                 class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}"
               >
                 {% if logged_in %}
-                <li><a class="dropdown-item" href="/me">User Panel</a></li>
-                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                <li><a class="dropdown-item" href="{{url_for('panel_bluep.user_bluep.redirect_profile')}}">User Panel</a></li>
+                <li><a class="dropdown-item" href="{{url_for('auth_bluep.logout')}}">Logout</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
                   <span class="dropdown-item" disabled>Hello, {{ name }}</span>
@@ -65,16 +65,16 @@
                 {% if is_admin %}
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="/admin">Admin Panel</a>
+                  <a class="dropdown-item" href="{{url_for('panel_bluep.admin_bluep.admin_panel')}}">Admin Panel</a>
                 </li>
                 {% endif %} {% if is_staff %}
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="/staff">Staff Panel</a>
+                  <a class="dropdown-item" href="{{url_for('panel_bluep.staff_bluep.redirect_staff')}}">Staff Panel</a>
                 </li>
                 {% endif %} {% else %}
-                <li><a class="dropdown-item" href="/login">Login</a></li>
-                <li><a class="dropdown-item" href="/signin">Signin</a></li>
+                <li><a class="dropdown-item" href="{{url_for('auth_bluep.login')}}">Login</a></li>
+                <li><a class="dropdown-item" href="{{url_for('auth_bluep.signin')}}">Signin</a></li>
 
                 {% endif %}
               </ul>
@@ -94,11 +94,7 @@
               type="checkbox"
               role="switch"
               id="darkmode-switch"
-              {%if
-              darkmode
-              %}
-              checked
-              {%endif%}
+              {%if darkmode %} checked {%endif%}
             />
 
           </div>
@@ -136,10 +132,10 @@
       document
         .getElementById("darkmode-switch")
         .addEventListener("input", function (event) {
-          var newURL = new URL(window.location);
-          newURL.pathname = "/darkmode";
-          newURL.search = `?next=${window.location.pathname}`;
-          window.location = newURL.toString();
+          var darkmodeToggleURL = new URL(window.location);
+          darkmodeToggleURL.search = `?next=${window.location.pathname}`;
+          darkmodeToggleURL.pathname = "{{url_for('misc_bluep.toggle_darkmode')}}"
+          window.location = darkmodeToggleURL.toString();
         });
 
       document
@@ -148,15 +144,15 @@
           event.preventDefault();
           var media_type = event.target[0].value;
           var query = event.target[1].value;
-          var newURL = new URL(window.location);
-          newURL.searchParams.set("query", query);
+          var mediaListURL = new URL(window.location);
+          mediaListURL.searchParams.set("query", query);
           if (media_type != "All") {
-            newURL.searchParams.set("media_type", media_type);
+            mediaListURL.searchParams.set("media_type", media_type);
           } else {
-            newURL.searchParams.delete("media_type");
+            mediaListURL.searchParams.delete("media_type");
           }
-          newURL.pathname = "/medialist";
-          window.location = newURL.toString();
+          mediaListURL.pathname = "{{url_for('media_bluep.show_medialist')}}";
+          window.location = mediaListURL.toString();
         });
     </script>
     {% block content %}{% endblock %}

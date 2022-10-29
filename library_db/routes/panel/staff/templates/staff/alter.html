@@ -22,41 +22,118 @@ head %} {{ super() }}
         border-color: #373b3e #373b3e #212529 #373b3e ;
     }
     .card {
-        background-color: #121212;
-        color: white;
-      }
+      background-color: #121212;
+      color: white;
+    }
   {% endif %}
 </style>
 {% endblock %} {% block content %}
 
+{% if media_error or author_error %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
+      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="100%" height="100%" fill="#dc3545"></rect>
+      </svg>
+      <strong class="me-auto">Error</strong>
+      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="errorToastBody">{{author_error if author_error else media_error}}</div>
+  </div>
+</div>
+
+<script defer> 
+  const errorToast = new bootstrap.Toast(document.querySelector('#errorToast'), {});
+  const errorToastBody = document.querySelector('#errorToastBody');
+  errorToast.show()
+</script>
+{% endif %}
 <div class="container mt-3">
   <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="">Add/Remove</a>
-    </li>
     <li class="nav-item">
       <a
         class="nav-link text-black {% if darkmode %} text-white {%endif%}"
         aria-current="page"
-        href="{{url_for('panel_bluep.staff_panel_alter')}}"
-        >Alter</a
+        href="{{url_for('panel_bluep.staff_bluep.staff_panel_addremove')}}"
+        >Add/Remove</a
       >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="">Alter</a>
     </li>
   </ul>
   <div
     style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
-    class="p-3 pt-5"
+    class="p-3 pt-4"
   >
     <div class="row row-cols-1 row-cols-md-2 g-4">
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add Media</h5>
+            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
+              Alter a Media
+            </h5>
+            <form class="d-flex flex-column">
+              <div class="input-group">
+                <input
+                  type="search"
+                  id="mediaSearch"
+                  placeholder="Search for Media"
+                  name="media"
+                  class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                />
+              </div>
+              <ul
+                class="list-group d-none"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="mediaResults"
+              ></ul>
+              {%if media_not_found %} Media not Found {%endif%}
+              <button class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
+              Alter a Author
+            </h5>
+            <form class="d-flex flex-column">
+              <div class="input-group">
+                <input
+                  type="search"
+                  id="authorSearch"
+                  placeholder="Search for Authors"
+                  name="author"
+                  class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                />
+              </div>
+              <ul
+                class="list-group"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="authorResults"
+              ></ul>
+              {%if author_not_found %} Author not Found {%endif%}
+              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% if media_item or author%}
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            {%if media_item%}
+            <h5 class="underlined {%if darkmode %} text-white {%endif%}">
+              Altering Media: {{media_item.title}}
+            </h5>
             <form
               class="d-flex flex-column"
-              action="{{url_for('panel_bluep.add_media')}}"
+              action="{{url_for('panel_bluep.staff_bluep.alter_media')}}"
               method="post"
             >
+              <input type="hidden" name="id" value="{{media_item.id}}" />
               <label for="titleInput" class="form-label">Title</label>
               <input
                 id="titleInput"
@@ -65,7 +142,7 @@ head %} {{ super() }}
                 name="title"
                 placeholder="Harry Potter"
                 autocomplete="off"
-                required
+                value="{{media_item.title}}"
               />
               <label for="mediaAuthorSearch" class="form-label">Author</label>
               <input
@@ -76,7 +153,7 @@ head %} {{ super() }}
                 id="mediaAuthorSearch"
                 autocomplete="off"
                 name="author"
-                required
+                value="{{media_item.author if media_item.author}}"
               />
               <ul
                 class="list-group d-none"
@@ -96,7 +173,7 @@ head %} {{ super() }}
                     name="age_limit"
                     placeholder="0"
                     autocomplete="off"
-                    required
+                    value="{{media_item.age_limit if media_item.age_limit}}"
                   />
                 </div>
                 <div class="d-flex flex-column flex-fill ms-1">
@@ -109,10 +186,9 @@ head %} {{ super() }}
                     name="media_type"
                     id="mediaSelection"
                     autocomplete="off"
-                    required
                   >
                     {% for i in media_types %}
-                    <option value="{{i}}">{{i}}</option>
+                    <option value="{{i}}" {% if media_item.media_type == i %} selected {%endif%} >{{i}}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -125,74 +201,41 @@ head %} {{ super() }}
                 name="isbn"
                 placeholder="Optional"
                 autocomplete="off"
+                value="{{media_item.isbn if media_item.isbn}}"
               />
-              {{media_error if media_error}}
-              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+              <button type="submit" class="btn btn-warning mt-3">Alter</button>
             </form>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Add Author</h5>
-            <form
-              action="{{url_for('panel_bluep.add_author')}}"
-              method="post"
+            {%elif author%}
+            <h5 class="{%if darkmode %} text-white {%endif%}">
+              Altering Author: {{author[0]}}
+            </h5>
+            <form 
               class="d-flex flex-column"
+              action="{{url_for('panel_bluep.staff_bluep.alter_author')}}"
+              method="post"
             >
-              <label for="authorInput" class="form-label">Name</label>
+              <input type="hidden" name="id" value="{{author[1]}}" />
+              <label for="authorName">Name</label>
               <input
+                id="authorName"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
                 type="text"
+                name="name"
                 autocomplete="off"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                id="authorInput"
-                placeholder="J. K Rowling"
-                name="author"
-                required
+                value="{{author[0]}}"
               />
-              {{author_error if author_error}}
-              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+              <button type="submit" class="btn btn-warning mt-3">Alter</button>
             </form>
-          </div>
+            {%else%}
+            {%endif%}
         </div>
-        <div class="card mt-3">
-          <div class="card-body">
-            <h5 class="card-title">Remove Media</h5>
-            <form
-              action="{{url_for('panel_bluep.remove_media')}}"
-              method="post"
-              class="d-flex flex-column"
-            >
-              <label for="mediaSearch" class="form-label">Media</label>
-              <input
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                type="search"
-                placeholder="Search Media"
-                aria-label="Search"
-                id="mediaRemoveSearch"
-                autocomplete="off"
-                name="media"
-                required
-              />
-              <ul
-                class="list-group d-none"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="mediaRemoveResults"
-              ></ul>
-              {{remove_media_error if remove_media_error}}
-              <button type="submit" class="btn btn-danger mt-3">Remove</button>
-            </form>
-          </div>
-        </div>
+        {%endif%}
       </div>
     </div>
   </div>
 </div>
+</div>
 <script>
-
-
-
   function removeResChildren(parent) {
       while (parent.firstChild) {
           parent.firstChild.remove();
@@ -246,12 +289,17 @@ head %} {{ super() }}
       });
   }
 
+  var mediaSearchEl = document.getElementById("mediaSearch");
+  var mediaResultsEl = document.getElementById("mediaResults");
+  registerAPIQuery(mediaSearchEl, mediaResultsEl, "/api/mini_search/media");
+
+  var authorSearchEl = document.getElementById("authorSearch")
+  var authorResultsEl = document.getElementById("authorResults")
+  registerAPIQuery(authorSearchEl, authorResultsEl, "/api/mini_search/author")
+
+
   var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
   var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
   registerAPIQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
-
-  var mediaRemoveSearchEl = document.getElementById("mediaRemoveSearch")
-  var mediaRemoveResultsEl = document.getElementById("mediaRemoveResults")
-  registerAPIQuery(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media")
 </script>
 {%endblock%}
