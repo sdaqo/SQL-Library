@@ -47,19 +47,21 @@ head %} {{ super() }}
       </div>
       <div class="modal-body">
         <dl class="row">
-          <dt class="col-sm-3">Title:</dt>
-          <dd class="col-sm-9" id="titleLabel"></dd>
-          <dt class="col-sm-3">Author:</dt>
-          <dd class="col-sm-9" id="authorLabel"></dd>
-          <dt class="col-sm-3">Age Limit:</dt>
-          <dd class="col-sm-9" id="ageLimitLabel"></dd>
-          <dt class="col-sm-3">ISBN:</dt>
-          <dd class="col-sm-9" id="isbnLable"></dd>
+          <dt class="col-sm-7">Title:</dt>
+          <dd class="col-sm-5" id="titleLabel"></dd>
+          <dt class="col-sm-7">Author:</dt>
+          <dd class="col-sm-5" id="authorLabel"></dd>
+          <dt class="col-sm-7">Age Limit:</dt>
+          <dd class="col-sm-5" id="ageLimitLabel"></dd>
+          <dt class="col-sm-7">ISBN:</dt>
+          <dd class="col-sm-5" id="isbnLable"></dd>
           <div><hr class="px-5"></div>
-          <dt class="col-sm-3">Status:</dt>
-          <dd class="col-sm-9" id="statusLabel"></dd>
-          <dt class="col-sm-3" id="etaLabelTitle"></dt>
-          <dd class="col-sm-9" id="etaLabel"></dd>
+          <dt class="col-sm-7">Status:</dt>
+          <dd class="col-sm-5" id="statusLabel"></dd>
+          <dt class="col-sm-7" id="etaLabelTitle"></dt>
+          <dd class="col-sm-5" id="etaLabel"></dd>
+          <dt class="col-sm-7" id="borrowerLabelTitle"></dt>
+          <dd class="col-sm-5" id="borrowerLabel"></dd>
         </dl>
         <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
       </div>
@@ -132,7 +134,14 @@ head %} {{ super() }}
             <i class="fa-solid fa-sort"></i> {%endif%}</a
           >
         </th>
-        <th scope="col">Status</th>
+        <th scope="col">
+          <a
+            href="{{update_query_params(url, status='availabel' if borrow_status_filter == 'all' else ('all' if borrow_status_filter == 'borrowed' else 'borrowed'))}}" 
+            class="text-decoration-none text-reset">Status&nbsp;<i
+            class="fa-solid fa-repeat" {%if borrow_status_filter != 'all' %} style="color: {{'red' if borrow_status_filter == 'borrowed' else 'green'}}" {%endif%}
+            ></i>
+          </a>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -143,7 +152,7 @@ head %} {{ super() }}
         <td>{{ i.author }}</td>
 
         <td>{{ i.age_limit }}</td>
-        <td>{% if is_media_borrowed(i.id) %} Borrowed {% else %} Avalible {% endif %}</td>
+        <td>{% if is_media_borrowed(i.id) %} Borrowed {% else %} Availabel {% endif %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -185,6 +194,8 @@ head %} {{ super() }}
           const statusLabel = document.querySelector('#statusLabel');
           const etaLabelTitle = document.querySelector('#etaLabelTitle');
           const etaLabel = document.querySelector('#etaLabel');
+          const borrowerLabelTitle = document.querySelector('#borrowerLabelTitle');
+          const borrowerLabel = document.querySelector('#borrowerLabel');
           const borrowBtn = document.querySelector('#borrowBtn')
 
           modalLabel.textContent = data.title;
@@ -195,12 +206,16 @@ head %} {{ super() }}
           statusLabel.textContent = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
           etaLabelTitle.textContent = "";
           etaLabel.textContent = "";
+          borrowerLabelTitle.textContent = "";
+          borrowerLabel.textContent = "";
 
           borrowBtn.disabled = false;
 
           if (data.is_borrowed) {
             etaLabelTitle.textContent = "Estimated Return Date:";
             etaLabel.textContent = data.estimated_return;
+            borrowerLabelTitle.textContent = "Borrower:";
+            borrowerLabel.textContent = data.borrower;
             borrowBtn.disabled = true;
           }
 

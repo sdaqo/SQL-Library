@@ -1,0 +1,212 @@
+{% extends "base.html"%} {% block title %} User Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+        border-color: #373b3e;
+    }
+
+    .nav-item > .nav-link {
+      background-color:  transparent;
+      border-color: none;
+    }
+
+    .nav-item > .nav-link.active {
+        background-color:  #212529;
+        color: white;
+        border-color: #373b3e #373b3e #212529 #373b3e ;
+    }
+    .card {
+        background-color: #121212;
+        color: white;
+      }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="">User Managment</a>
+      <!--User Roles, User Deletes etc. -->
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link {% if darkmode %} text-white {%endif%}"
+        href="{{url_for('panel_bluep.admin_bluep.server_dashboard')}}"
+        >Server Dashboard</a
+      >
+      <!--LOGS, Server Shutdown etc. -->
+    </li>
+  </ul>
+  <div
+    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
+    class="p-3 pt-5"
+  >
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
+              Change Password of User
+            </h5>
+            <form
+              class="d-flex flex-column"
+              action="{{url_for('panel_bluep.admin_bluep.change_user_pw')}}"
+              method="post"
+            >
+              <label class="form-label">User Email</label>
+              <input
+                type="search"
+                id="userSearchPw"
+                placeholder="Search Emails"
+                name="user"
+                autocomplete="off"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                required
+              />
+
+              <ul
+                class="list-group d-none"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="userSearchPwResults"
+              ></ul>
+              <label class="form-label">New Password</label>
+              <input
+                type="text"
+                id="userSearch"
+                placeholder="New Password"
+                name="password"
+                autocomplete="off"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                required
+              />
+              {{pw_user_error if pw_user_error}}
+              <button class="btn btn-primary mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
+              Delete User
+            </h5>
+            <form
+              class="d-flex flex-column"
+              action="{{url_for('panel_bluep.admin_bluep.del_user')}}"
+              method="post"
+            >
+              <label class="form-label">User Email</label>
+              <input
+                type="search"
+                id="userSearchDel"
+                placeholder="Search Emails"
+                name="user"
+                autocomplete="off"
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
+                required
+              />
+
+              <ul
+                class="list-group d-none"
+                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                id="userSearchDelResults"
+              ></ul>
+              {{del_user_error if del_user_error}}
+              <button class="btn btn-danger mt-3">Delete</button>
+            </form>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5
+                for="mediaSearch"
+                class="{%if darkmode %} text-white {%endif%}"
+              >
+                Create new Admin/Staff Account
+              </h5>
+              <a href="{{url_for('auth_bluep.signin')}}">
+                <div class="d-flex flex-column">
+                  <button class="btn btn-primary">Create</button>
+                </div></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function removeResChildren(parent) {
+      while (parent.firstChild) {
+          parent.firstChild.remove();
+      }
+  }
+
+  function registerAPIQuery(search_el, result_el, query_endpoint) {
+      search_el.addEventListener("input", (event) => {
+          if (search_el.value.length == 0) {
+              result_el.classList.add("d-none");
+              search_el.style.borderBottomRightRadius = "0.375rem";
+              search_el.style.borderBottomLeftRadius = "0.375rem";
+              return false;
+          }
+
+          fetch(query_endpoint, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                      query: search_el.value
+                  }),
+              })
+              .then((response) => response.json())
+              .then((data) => {
+                  search_el.style.borderBottomRightRadius = "0";
+                  search_el.style.borderBottomLeftRadius = "0";
+                  removeResChildren(result_el);
+                  data.results.map((result) => {
+                      const button = document.createElement("button");
+                      button.classList.add("list-group-item", "list-group-item-action");
+                      {% if darkmode %}
+                      button.style.backgroundColor = "#121212";
+                      button.style.color = "white";
+                      button.style.borderColor = "#212529";
+                      {% endif %}
+                      button.textContent = result;
+                      button.type = "button";
+                      button.addEventListener("click", (event) => {
+                          var btnText = event.target.textContent;
+                          search_el.value = btnText;
+                          result_el.classList.add("d-none");
+                          search_el.style.borderBottomRightRadius = "0.375rem";
+                          search_el.style.borderBottomLeftRadius = "0.375rem";
+                      });
+                      result_el.appendChild(button);
+                  });
+                  result_el.classList.remove("d-none");
+              }).catch((error) => console.log(error));
+      });
+  }
+
+  const userSearchPwEl = document.getElementById("userSearchPw")
+  const userSearchPwResultsEl = document.getElementById("userSearchPwResults")
+
+  registerAPIQuery(userSearchPwEl, userSearchPwResultsEl, "/api/admin/mini_search/users")
+
+  const userSearchDelEl = document.getElementById("userSearchDel")
+  const userSearchDelResultsEl = document.getElementById("userSearchDelResults")
+
+  registerAPIQuery(userSearchDelEl, userSearchDelResultsEl, "/api/admin/mini_search/users")
+</script>
+{%endblock%}

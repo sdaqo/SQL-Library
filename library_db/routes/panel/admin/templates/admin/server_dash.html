@@ -1,0 +1,85 @@
+{% extends "base.html"%}{% block title %} User Panel {% endblock %} {% block
+head %} {{ super() }}
+
+<style>
+  {% if darkmode %}
+    body {
+      background-color: #121212;
+    }
+
+    .nav-tabs {
+        border-color: #373b3e;
+    }
+
+    .nav-item > .nav-link {
+      background-color:  transparent;
+      border-color: none;
+    }
+
+    .nav-item > .nav-link.active {
+        background-color:  #212529;
+        color: white;
+        border-color: #373b3e #373b3e #212529 #373b3e ;
+    }
+    .card {
+      background-color: #121212;
+      color: white;
+    }
+  {% endif %}
+</style>
+{% endblock %} {% block content %}
+
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link {% if darkmode %} text-white {%endif%}"
+        href="{{url_for('panel_bluep.admin_bluep.user_managment')}}"
+        >User Managment</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="">Server Dashboard</a>
+      <!-- LOGS -->
+    </li>
+  </ul>
+  <div
+    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
+    class="p-3 pt-5"
+  >
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="card shadow {%if darkmode%}text-white {%endif%}">
+          <div class="card-body">
+            <div class="col-sm-3">
+              <p class="mb-0">Server Status</p>
+            </div>
+            <div class="col-sm-7">
+              <p class="text-muted mb-0">Running</p>
+            </div>
+            <hr />
+            <div class="col-sm-3">
+              <p class="mb-0">Server IP</p>
+            </div>
+            <div class="col-sm-7">
+              <p class="text-muted mb-0">{{hostname}}</p>
+            </div>
+            <hr />
+            <div class="col-sm-3">
+              <p class="mb-0">Server Port</p>
+            </div>
+            <div class="col-sm-7">
+              <p class="text-muted mb-0">{{port}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow {%if darkmode%}text-white {%endif%}">
+          <div class="card-body">Here comes the Server Logs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

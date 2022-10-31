@@ -36,7 +36,7 @@ def page_count(query_count):
 
 @media_bluep.route("/medialist", methods=["GET"])
 def show_medialist():
-    allowed_query_params = ["sort", "query", "media_type", "sort_type"]
+    allowed_query_params = ["sort", "query", "media_type", "sort_type", "status"]
 
     page = request.args.get("page", 0, type=int)
     query_params = {}
@@ -45,6 +45,10 @@ def show_medialist():
             query_params.update({name: value})
 
     table_data_prams = deepcopy(query_params)
+    try:
+        table_data_prams.pop("status")
+    except KeyError:
+        pass
 
     author_query_match = re.match(AUTHOR_REGEX, query_params.get("query", ""))
     if author_query_match:
@@ -58,20 +62,29 @@ def show_medialist():
         table_data_prams.get("media_type", ""),
     )
 
-    table_data = get_media_list(PAGE_SIZE, PAGE_SIZE * page, **table_data_prams)
+    table_data, sort_field, sort_dir = get_media_list(
+        PAGE_SIZE, PAGE_SIZE * page, **table_data_prams
+    )
+
+    borrow_status_filter = query_params.get("status", "all")
+    if borrow_status_filter == "availabel":
+        table_data = [i for i in table_data if not is_media_borrowed(i.id)]
+    elif borrow_status_filter == "borrowed":
+        table_data = [i for i in table_data if is_media_borrowed(i.id)]
 
     template_vars = get_template_vars(session)
-    template_vars["table_data"] = table_data[0]
+    template_vars["table_data"] = table_data
     template_vars["query"] = query_params.get("query", None)
     template_vars["media_type_selection"] = query_params.get("media_type", None)
-    template_vars["sort_field"] = table_data[1]
-    template_vars["sort_dir"] = table_data[2]
+    template_vars["sort_field"] = sort_field
+    template_vars["sort_dir"] = sort_dir
     template_vars["is_media_borrowed"] = is_media_borrowed
     template_vars["page"] = page
     template_vars["page_count"] = page_count(query_count)
     template_vars["page_size"] = PAGE_SIZE
     template_vars["url"] = request.url
     template_vars["update_query_params"] = update_query_params
+    template_vars["borrow_status_filter"] = borrow_status_filter
     return render_template("media/medialist.html", **template_vars)
 
 

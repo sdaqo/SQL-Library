@@ -110,6 +110,30 @@
         />
         <span>Student</span>
       </div>
+      {% if is_admin %}
+      <div>
+        <input
+          class="form-check-input"
+          type="radio"
+          id="student"
+          name="usertype"
+          value="3"
+          required
+        />
+        <span>Staff</span>
+      </div>
+      <div>
+        <input
+          class="form-check-input"
+          type="radio"
+          id="student"
+          name="usertype"
+          value="4"
+          required
+        />
+        <span>Admin</span>
+      </div>
+      {% endif %}
     </div>
     <label for="password">Password</label>
     <input

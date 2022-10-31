@@ -1,0 +1,382 @@
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+ * Detected change in '/home/paul/Dev/Python/library_db/library_db/app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [31/Oct/2022 01:28:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:28:39] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+Home Page
+127.0.0.1 - - [31/Oct/2022 01:29:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:13] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+Home Page
+127.0.0.1 - - [31/Oct/2022 01:29:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:29:55] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+ * Detected change in '/home/paul/Dev/Python/library_db/library_db/app.py', reloading
+ * Restarting with stat
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+Home Page
+127.0.0.1 - - [31/Oct/2022 01:30:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:30:23] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+ * Detected change in '/home/paul/Dev/Python/library_db/library_db/app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+Home Page
+127.0.0.1 - - [31/Oct/2022 01:31:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:31:05] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[32mGET /admin/ HTTP/1.1[0m" 302 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:23] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:32:24] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:29] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:31] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:38] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:39] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:33:48] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 103-630-690
+127.0.0.1 - - [31/Oct/2022 01:34:01] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:34:01] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:01] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:01] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:01] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:01] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:16] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:28] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:38] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:34:43] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:23] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:36] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:37] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:35:39] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:41] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:43] "[31m[1mGET /admin/users HTTP/1.1[0m" 403 -
+127.0.0.1 - - [31/Oct/2022 01:35:43] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:35:43] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:45] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:47] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:49] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:51] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:53] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:55] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:57] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:35:59] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:01] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:03] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:05] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:07] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:09] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:11] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:13] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:15] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:17] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:19] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:21] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:23] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:26] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:28] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:30] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:32] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:34] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:36] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:38] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:39] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:40] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:36:40] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:41] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:45] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:46] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:47] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:36:48] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:17] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:18] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:37:20] "[36mGET /static/fontawesome/webfonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:30] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:37:45] "[33mGET /static/css/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:02] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[32mGET /darkmode?next=/admin/server HTTP/1.1[0m" 302 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:16] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[32mGET /darkmode?next=/admin/server HTTP/1.1[0m" 302 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "GET /admin/server HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:20] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "GET /admin/users HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:21] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "GET /medialist HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:22] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:23] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "GET /medialist HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:25] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "GET /medialist?status=availabel HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:26] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "GET /medialist?status=borrowed HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:27] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "GET /medialist?status=all HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:28] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "GET /medialist?status=availabel HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:41] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "GET /medialist?status=borrowed HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:42] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "GET /medialist?status=all HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "GET /medialist?status=availabel HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:44] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "GET /medialist?status=borrowed HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:45] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "GET /medialist?status=all HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:46] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[32mGET /darkmode?next=/medialist HTTP/1.1[0m" 302 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "GET /medialist HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:48] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[32mGET /darkmode?next=/medialist HTTP/1.1[0m" 302 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "GET /medialist HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:49] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/fontawesome/css/fontawesome.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/fontawesome/css/brands.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/fontawesome/css/solid.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/images/books.png HTTP/1.1[0m" 304 -
+127.0.0.1 - - [31/Oct/2022 01:38:50] "[36mGET /static/images/library.webp HTTP/1.1[0m" 304 -

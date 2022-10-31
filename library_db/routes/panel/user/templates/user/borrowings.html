@@ -29,7 +29,7 @@ head %} {{ super() }}
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a
-        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
+        class="nav-link {% if darkmode %} text-white {%endif%}"
         aria-current="page"
         href="{{url_for('panel_bluep.user_bluep.user_profile')}}"
         >User</a

@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, session, request, redirect
 
 from library_db.database import get_db_connection
-from library_db.utils.utils import get_template_vars
+from library_db.utils.utils import get_template_vars, is_admin
 from library_db.utils.db_utils import get_user_data
 
 auth_bluep = Blueprint("auth_bluep", __name__, template_folder="templates")
@@ -82,7 +82,8 @@ def signin():
         return ret_error("this email exsits already")
 
     if not usertype in ["2", "1", "5"]:
-        return ret_error("invalid usertype")
+        if not (is_admin(session) and usertype in ["3", "4"]):
+            return ret_error("invalid usertype")
 
     pwdhash = md5(password.encode()).hexdigest()
     cur = con.cursor()

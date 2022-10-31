@@ -63,6 +63,21 @@ def is_media_borrowed(media_id: int) -> bool:
     return False
 
 
+def get_borrower(media_id: int) -> str:
+    statement = """
+        SELECT name, surename
+        FROM borrowings
+        JOIN users on borrowings.user_id = users.id
+        WHERE borrowings.media_id = ? AND return_date IS NULL
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, (media_id,))
+    res = res.fetchone()
+    if res:
+        return res
+
+
 def get_media_query_count(
     query: str = "", author_query: str = "", media_type: str = None
 ) -> int:
@@ -117,7 +132,7 @@ def get_media_list(
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
         WHERE media.title LIKE ? AND authors.name LIKE ? 
-            {"AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+            {" AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
         ORDER BY {sorts[sort]} {sort_type}
         LIMIT ?
         OFFSET ?
@@ -300,6 +315,21 @@ def media_query_mini(query: str) -> [str]:
         SELECT title
         FROM media
         WHERE title LIKE ?
+        LIMIT 5
+        """
+
+    cur = con.cursor()
+    res = cur.execute(statement, ("%" + query + "%",))
+    res = res.fetchall()
+
+    return [i[0] for i in res]
+
+
+def user_query_mini(query: str) -> [str]:
+    statement = """
+        SELECT email
+        FROM users
+        WHERE email LIKE ?
         LIMIT 5
         """
 

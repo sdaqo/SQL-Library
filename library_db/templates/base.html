@@ -10,16 +10,22 @@
     <script src="/static/js/bootstrap.bundle.min.js"></script>
     <link href="/static/fontawesome/css/fontawesome.css" rel="stylesheet" />
     <link href="/static/fontawesome/css/solid.css" rel="stylesheet" />
+    <link href="/static/fontawesome/css/brands.css" rel="stylesheet" />
     <title>{% block title %}{% endblock %} - SQL Library</title>
     <link rel="shortcut icon" href="/static/images/favicon.ico">
     <style>  
     .dotted-link {
       text-decoration-style: dotted;
     }
+    .content-container {
+      height: calc(100vh - 30px);
+      overflow-y: auto;
+    }
   </style>
     {% endblock %}
   </head>
   <body class="h-100">
+    <div class="content-container">
     <nav
       class="sticky-top navbar navbar-expand-lg bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
     >
@@ -67,8 +73,8 @@
                 <li>
                   <a class="dropdown-item" href="{{url_for('panel_bluep.admin_bluep.admin_panel')}}">Admin Panel</a>
                 </li>
-                {% endif %} {% if is_staff %}
-                <li><hr class="dropdown-divider" /></li>
+                {% endif %} {% if is_staff or is_admin %}
+                {%if is_staff%}<li><hr class="dropdown-divider" /></li>{% endif %}
                 <li>
                   <a class="dropdown-item" href="{{url_for('panel_bluep.staff_bluep.redirect_staff')}}">Staff Panel</a>
                 </li>
@@ -156,8 +162,10 @@
         });
     </script>
     {% block content %}{% endblock %}
+
+    </div>
     <footer
-    class="position-fixed bottom-0 w-100 d-flex justify-content-center pb-2 {%if darkmode %} text-white {%endif%}"
+    class="d-flex justify-content-center pb-2 m-0 {%if darkmode %} text-white {%endif%}"
   >
     <a class="dotted-link" href="https://github.com/sdaqo/library_website"
       >SQL Library</a

@@ -69,7 +69,7 @@ head %} {{ super() }}
   >
     <div class="row row-cols-1 row-cols-md-2 g-4">
       <div class="col">
-        <div class="card">
+        <div class="card shadow">
           <div class="card-body">
             <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
               Alter a Media
@@ -94,7 +94,7 @@ head %} {{ super() }}
             </form>
           </div>
         </div>
-        <div class="card mt-3">
+        <div class="card mt-3 shadow">
           <div class="card-body">
             <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
               Alter a Author
@@ -122,7 +122,7 @@ head %} {{ super() }}
       </div>
       {% if media_item or author%}
       <div class="col">
-        <div class="card">
+        <div class="card shadow">
           <div class="card-body">
             {%if media_item%}
             <h5 class="underlined {%if darkmode %} text-white {%endif%}">

@@ -1,10 +1,14 @@
 User attribute changing (done)
 Age Check (done)
 Delete User (done)
-Admin/Staff Panel - Staff: Media adding (done), removing (done), altering (done)
+Admin/Staff Panel (done, almost)
 Home Page (done)
-DB Backup
-Split API Routes
+Filter by status (done)
+Improve footer positioning on mobile (done)
+Split API Routes (done)
 Split db utils file
+DB Backup
+LoggingSplit API Routes (done)
+Split db utils file
+DB Backup
 Logging
-Filter by status
