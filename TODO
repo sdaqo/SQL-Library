@@ -1,11 +1,10 @@
 User attribute changing (done)
 Age Check (done)
 Delete User (done)
-Admin/Staff Panel (done, almost)
+Admin/Staff Panel (done)
 Home Page (done)
 Filter by status (done)
 Improve footer positioning on mobile (done)
 Split API Routes (done)
-Split db utils file
-DB Backup
 Logging
+DB Backup

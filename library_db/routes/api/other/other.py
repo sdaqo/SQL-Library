@@ -1,5 +1,5 @@
 from flask import Blueprint, session, request
-
+from file_read_backwards import FileReadBackwards
 
 from library_db.utils.db_utils import (
     get_media,
@@ -11,6 +11,10 @@ from library_db.utils.db_utils import (
     get_borrower,
 )
 from library_db.utils.utils import is_admin
+from library_db.logger import (
+    get_info_logfile,
+    get_error_logfile,
+)
 
 other_bluep = Blueprint("other_bluep", __name__)
 
@@ -64,3 +68,35 @@ def query_users():
     query_res = user_query_mini(query)
 
     return {"results": query_res}
+
+
+@other_bluep.route("/admin/log", methods=["POST"])
+def get_log():
+    if not is_admin(session):
+        return {"error": "Insufficent Permissions"}, 403
+
+    level = request.get_json().get("level", "info")
+
+    offset = request.get_json().get("offset", None)
+
+    if level == "info":
+        log_file = get_info_logfile()
+    else:
+        log_file = get_error_logfile()
+
+    with open(log_file, "r") as f:
+        line_count = sum(1 for _ in f)
+
+    response = {"line_count": line_count, "level": level}
+
+    if offset and offset < line_count:
+        backwards_lines = line_count - offset
+        lines = []
+        with FileReadBackwards(log_file, encoding="utf-8") as frb:
+            for _ in range(backwards_lines):
+                lines.append(frb.readline())
+
+        lines.reverse()
+        response.update({"log_lines": lines})
+
+    return response

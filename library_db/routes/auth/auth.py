@@ -1,7 +1,7 @@
 import re
 from hashlib import md5
 from datetime import datetime
-from flask import Blueprint, render_template, session, request, redirect
+from flask import Blueprint, render_template, session, request, redirect, current_app
 
 from library_db.database import get_db_connection
 from library_db.utils.utils import get_template_vars, is_admin
@@ -43,10 +43,12 @@ def login():
         return ret_error("email not found")
 
     if pwdhash != md5(password.encode()).hexdigest():
+        current_app.logger.info(f'User with email "{email}" failed to login')
         return ret_error("wrong password")
 
     session["email"] = email
     session["pwdhash"] = pwdhash
+    current_app.logger.info(f'User with email "{email}" logged in')
 
     return redirect(request.args.get("next", "/"))
 
@@ -101,5 +103,9 @@ def signin():
     )
 
     con.commit()
+
+    current_app.logger.info(
+        f'New user "{name} {surename}" with email "{email}" created'
+    )
 
     return redirect("/")

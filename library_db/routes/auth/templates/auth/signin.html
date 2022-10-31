@@ -14,15 +14,20 @@
     font-size: 25px;
   }
 
-
-  label {
-    font-size: 18px;
-    margin-top: 3px;
+  .sign-in-container {
+    width: 500px;
+  }
+  @media only screen and (max-width: 500px) {
+    .sign-in-container {
+      width: 330px;
+    }
   }
 </style>
 {% endblock %} {% block content %}
 
-<div class="position-absolute top-50 start-50 translate-middle">
+<div
+  class="position-absolute top-50 start-50 translate-middle sign-in-container"
+>
   <form
     action="/signin"
     method="post"
@@ -31,7 +36,7 @@
   >
     <p class="box-title text-center my-0">Sign in</p>
     <hr class="border border-secondary border-1 opacity-50 mt-1" />
-    <label for="email">Email</label>
+    <label for="email" class="form-label">Email</label>
     <input
       class="form-control"
       type="email"
@@ -45,7 +50,7 @@
     ></div>
     <div style="display: flex; flex-direction: row">
       <div style="display: flex; flex-direction: column; margin-right: 2px">
-        <label for="name">Name</label>
+        <label for="name" class="form-label">Name</label>
         <input
           class="form-control"
           type="text"
@@ -56,7 +61,7 @@
         />
       </div>
       <div style="display: flex; flex-direction: column">
-        <label for="surename">Surename</label>
+        <label for="surename" class="form-label">Surename</label>
         <input
           class="form-control"
           type="text"
@@ -67,7 +72,7 @@
         />
       </div>
     </div>
-    <label for="birthday">Birthday</label>
+    <label for="birthday" class="form-label">Birthday</label>
     <input
       class="form-control"
       type="date"
@@ -75,7 +80,7 @@
       name="birthday"
       required
     />
-    <label>User Type</label>
+    <label class="form-label">User Type</label>
     <div class="form-check">
       <div>
         <input
@@ -135,7 +140,7 @@
       </div>
       {% endif %}
     </div>
-    <label for="password">Password</label>
+    <label for="password" class="form-label">Password</label>
     <input
       class="form-control"
       required

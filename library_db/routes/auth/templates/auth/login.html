@@ -13,9 +13,20 @@
     font-weight: 300;
     font-size: 25px;
   }
+
+  .log-in-container {
+    width: 300px;
+  }
+  @media only screen and (max-width: 500px) {
+    .log-in-container {
+      width: 250px;
+    }
+  }
 </style>
 {% endblock %} {% block content %}
-<div class="position-absolute top-50 start-50 translate-middle">
+<div
+  class="position-absolute top-50 start-50 translate-middle log-in-container"
+>
   <form
     action="/login?next={{next}}"
     method="post"

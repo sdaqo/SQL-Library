@@ -1,31 +1,63 @@
-{% extends "base.html"%}{% block title %} User Panel {% endblock %} {% block
-head %} {{ super() }}
+{% extends "base.html"%}{% block title %} Server Dashboard {% endblock %} {%
+block head %} {{ super() }}
 
 <style>
-  {% if darkmode %}
-    body {
-      background-color: #121212;
-    }
+    {% if darkmode %}
+      body {
+        background-color: #121212;
+      }
 
-    .nav-tabs {
-        border-color: #373b3e;
-    }
+      .nav-tabs {
+          border-color: #373b3e;
+      }
 
-    .nav-item > .nav-link {
-      background-color:  transparent;
-      border-color: none;
-    }
+      .nav-item > .nav-link {
+        background-color:  transparent;
+        border-color: none;
+      }
 
-    .nav-item > .nav-link.active {
-        background-color:  #212529;
+      .nav-item > .nav-link.active {
+          background-color:  #212529;
+          color: white;
+          border-color: #373b3e #373b3e #212529 #373b3e ;
+      }
+      .card {
+        background-color: #121212;
         color: white;
-        border-color: #373b3e #373b3e #212529 #373b3e ;
-    }
-    .card {
-      background-color: #121212;
-      color: white;
-    }
-  {% endif %}
+      }
+
+    {% endif %}
+  .log-window {
+      position: relative;
+      height: 300px;
+      overflow-x: auto;
+      overflow-y: auto;
+  }
+  pre {
+      position: absolute;
+      top: 0;
+  }
+  .fullscreen-toggle {
+      position: sticky;
+      z-index: 999999;
+      width: 40px;
+      left: calc(100% - 44px);
+      top: 4px;
+  }
+
+
+  .caret {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .nested {
+    display: none;
+  }
+
+  .active {
+    display: block;
+  }
 </style>
 {% endblock %} {% block content %}
 
@@ -47,39 +79,246 @@ head %} {{ super() }}
     style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
     class="p-3 pt-5"
   >
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="row row-cols-1 row-cols-md-1 g-4">
       <div class="col">
-        <div class="card shadow {%if darkmode%}text-white {%endif%}">
-          <div class="card-body">
-            <div class="col-sm-3">
-              <p class="mb-0">Server Status</p>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <div class="col">
+            <div class="card shadow {%if darkmode%}text-white {%endif%}">
+              <div class="card-body">
+                <h5>Server Info</h5>
+                <div class="col-sm-3">
+                  <p class="mb-0">Server Status</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">Running</p>
+                </div>
+                <hr />
+                <div class="col-sm-3">
+                  <p class="mb-0">Server IP</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{hostname}}</p>
+                </div>
+                <hr />
+                <div class="col-sm-3">
+                  <p class="mb-0">Server Port</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{port}}</p>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-7">
-              <p class="text-muted mb-0">Running</p>
-            </div>
-            <hr />
-            <div class="col-sm-3">
-              <p class="mb-0">Server IP</p>
-            </div>
-            <div class="col-sm-7">
-              <p class="text-muted mb-0">{{hostname}}</p>
-            </div>
-            <hr />
-            <div class="col-sm-3">
-              <p class="mb-0">Server Port</p>
-            </div>
-            <div class="col-sm-7">
-              <p class="text-muted mb-0">{{port}}</p>
+          </div>
+
+          <div class="col">
+            <div class="card shadow {%if darkmode%}text-white {%endif%}">
+              <div class="card-body">
+                <h5>Server Logs</h5>
+                <ul class="list-group bg-dark ps-0 pt-0">
+                  <li
+                    class="list-group-item text-white border-0 ps-0 pt-0"
+                    {%if
+                    darkmode
+                    %}style="background-color: #121212"
+                    {%endif%}
+                  >
+                    <ul class="list-group mt-2">
+                      <li class="list-group-item list-group-item-info border-0">
+                        <span class="caret">
+                          <i class="fa-solid fa-chevron-right"></i>&nbsp;Info
+                          Log Files
+                        </span>
+                        <ul class="nested list-group">
+                          {% for log in info_logs %}
+                          <li class="list-group-item">
+                            <a
+                              href="{{url_for('panel_bluep.admin_bluep.get_info_log', log=log)}}"
+                              >{{log}}</a
+                            >
+                          </li>
+                          {%endfor%}
+                        </ul>
+                      </li>
+                      <li class="list-group-item list-group-item-danger">
+                        <span class="caret"
+                          ><i class="fa-solid fa-chevron-right"></i>&nbsp;Error
+                          Log Files
+                        </span>
+                        <ul class="nested list-group">
+                          {% for log in error_logs %}
+                          <li class="list-group-item">
+                            <a
+                              href="{{url_for('panel_bluep.admin_bluep.get_error_log', log=log)}}"
+                              >{{log}}</a
+                            >
+                          </li>
+                          {%endfor%}
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <hr />
+                <form
+                  action="{{url_for('panel_bluep.admin_bluep.toggel_request_filter')}}"
+                  method="post"
+                  class="mt-2"
+                >
+                  <button type="submit" class="btn btn-primary">
+                    {% if has_filter %} Deactivate {%else %} Activate {%endif%}
+                    Debug Log Request Filter
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="card shadow {%if darkmode%}text-white {%endif%}">
-          <div class="card-body">Here comes the Server Logs</div>
+          <div class="card-body">
+            <h5>Live Log</h5>
+            <div class="d-flex flex-row">
+              <div class="d-flex flex-column me-2">
+                <button class="btn btn-danger" onclick="clearLog()">
+                  Clear Log
+                </button>
+                <label for="levelSelector" class="form-label mt-1"
+                  >Select Log Level</label
+                >
+                <select
+                  class="form-select {%if darkmode%} bg-dark text-white border-0 {%endif%}"
+                  id="levelSelector"
+                >
+                  <option selected>ERROR</option>
+                  <option>INFO</option>
+                </select>
+
+                <div class="form-check mt-2">
+                  <input
+                    class="form-check-input"
+                    id="autoScrollToggel"
+                    type="checkbox"
+                    checked
+                  />
+                  <label for="autoScrollToggel" class="form-check-label"
+                    >Auto Scroll</label
+                  >
+                </div>
+              </div>
+              <div class="log-window border p-1 flex-fill" id="logWindow">
+                <button
+                  class="btn btn-primary fullscreen-toggle"
+                  id="fullScreenToggel"
+                  onclick="toggleFullScreenLog()"
+                >
+                  <i class="fa-solid fa-expand"></i>
+                </button>
+                <pre id="serverLog" class="m-0"></pre>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  const serverLogEl = document.getElementById("serverLog");
+  const levelEl = document.getElementById("levelSelector");
+  const logWin = document.getElementById("logWindow");
+  const autoScrollCheck = document.getElementById("autoScrollToggel");
+  const logLevelSelector = document.getElementById("levelSelector");
+
+  function getLogLevel() {
+    var index = logLevelSelector.selectedIndex;
+    if (index == 1) {
+      return "info";
+    } else {
+      return "error";
+    }
+  }
+
+  var logLevel = getLogLevel();
+  var autoScroll = autoScrollCheck.checked;
+
+  autoScrollCheck.addEventListener("change", () => {
+    autoScroll = autoScrollCheck.checked;
+  });
+  levelEl.addEventListener("change", (event) => {
+    clearLog();
+    logLevel = getLogLevel();
+  });
+
+  var error_log_offset = null;
+  var info_log_offset = null;
+
+  var updateLogInterval = setInterval(function () {
+    fetch("/api/admin/log", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        offset: logLevel == "info" ? info_log_offset : error_log_offset,
+        level: logLevel,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.level == "info") {
+          info_log_offset = data.line_count;
+        } else if (data.level == "error") {
+          error_log_offset = data.line_count;
+        }
+
+        if (data.log_lines) {
+          serverLogEl.innerText =
+            serverLogEl.innerText + data.log_lines.join("");
+
+          if (autoScroll) {
+            logWin.scrollTop = logWin.scrollHeight - logWin.clientHeight;
+            serverLogEl.scrollTop =
+              serverLogEl.scrollHeight - serverLogEl.clientHeight;
+          }
+        }
+      });
+  }, 1000);
+  function clearLog() {
+    serverLogEl.innerText = "";
+  }
+
+  function toggleFullScreenLog() {
+    const fullScreenToggelEl = document.getElementById("fullScreenToggel");
+    if (!document.fullscreenElement) {
+      fullScreenToggelEl.innerHTML = `<i class="fa-solid fa-compress"></i>`;
+      logWin.requestFullscreen().then(() => {
+        logWin.style.color = "white"
+      }).catch((err) => {
+        console.log("Failed enabling fullscreen");
+      });
+    } else {
+      fullScreenToggelEl.innerHTML = `<i class="fa-solid fa-expand"></i>`;
+      {% if not darkmode%}
+      logWin.style.color = "black"
+      {%endif%}
+      document.exitFullscreen();
+    }
+  }
+
+  var toggler = document.getElementsByClassName("caret");
+
+  for (var i = 0; i < toggler.length; i++) {
+    toggler[i].addEventListener("click", function() {
+      this.parentElement.querySelector(".nested").classList.toggle("active");
+      if (this.firstElementChild.classList.contains("fa-chevron-right")) {
+        this.firstElementChild.classList.remove("fa-chevron-right")
+        this.firstElementChild.classList.add("fa-chevron-down")
+      } else {
+        this.firstElementChild.classList.remove("fa-chevron-down")
+        this.firstElementChild.classList.add("fa-chevron-right")
+      }
+    });
+  }
+</script>
 {%endblock%}

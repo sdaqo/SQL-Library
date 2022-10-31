@@ -21,13 +21,16 @@
       height: calc(100vh - 30px);
       overflow-y: auto;
     }
+    footer {
+      height: 30px;
+    }
   </style>
     {% endblock %}
   </head>
   <body class="h-100">
     <div class="content-container">
     <nav
-      class="sticky-top navbar navbar-expand-lg bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
+      class=" sticky-top navbar navbar-expand-xl bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
     >
       <div class="container-fluid">
         <a class="navbar-brand" href="/">SQL Library</a>

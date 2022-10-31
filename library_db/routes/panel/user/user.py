@@ -77,3 +77,5 @@ def delete_user():
 
     if pwdhash != md5(password.encode()).hexdigest():
         return abort(Response("Wrong Password", 401))
+
+    return redirect(url_for("auth_bluep.login", next="/me/profile"))

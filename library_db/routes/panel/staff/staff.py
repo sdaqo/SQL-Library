@@ -10,7 +10,6 @@ from flask import (
 
 
 from library_db.utils.utils import (
-    is_loggedin,
     get_template_vars,
     is_admin,
     is_staff,
@@ -40,9 +39,6 @@ def redirect_staff():
 
 @staff_bluep.route("/addremove", methods=["GET"])
 def staff_panel_addremove():
-    if not is_loggedin(session):
-        return abort(403)
-
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
 
@@ -55,9 +51,6 @@ def staff_panel_addremove():
 
 @staff_bluep.route("/alter", methods=["GET"])
 def staff_panel_alter():
-    if not is_loggedin(session):
-        return abort(403)
-
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
 
@@ -90,9 +83,6 @@ def alter_media():
         return redirect(
             url_for("panel_bluep.staff_bluep.staff_panel_alter", media_error=error)
         )
-
-    if not is_loggedin(session):
-        return abort(403)
 
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
@@ -151,9 +141,6 @@ def alter_media():
 
 @staff_bluep.route("/alter/author", methods=["POST"])
 def alter_author():
-    if not is_loggedin(session):
-        return abort(403)
-
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
 
@@ -199,9 +186,6 @@ def add_media():
         return redirect(
             url_for("panel_bluep.staff_bluep.staff_panel_addremove", media_error=error)
         )
-
-    if not is_loggedin(session):
-        return abort(403)
 
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
@@ -250,9 +234,6 @@ def add_media():
 
 @staff_bluep.route("/addremove/add/author", methods=["POST"])
 def add_author():
-    if not is_loggedin(session):
-        return abort(403)
-
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
 
@@ -281,9 +262,6 @@ def add_author():
 
 @staff_bluep.route("/addremove/remove/media", methods=["POST"])
 def remove_media():
-    if not is_loggedin(session):
-        return abort(403)
-
     if not (is_staff(session) or is_admin(session)):
         return abort(403)
 
