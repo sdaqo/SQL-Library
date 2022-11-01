@@ -1,5 +1,7 @@
+import shutil
 from hashlib import md5
 from pathlib import Path
+from datetime import datetime
 from flask import (
     Blueprint,
     abort,
@@ -13,6 +15,7 @@ from flask import (
 )
 
 
+from library_db.database import get_db_path
 from library_db.utils.utils import is_admin, get_template_vars
 from library_db.utils.db_utils import delete_user, get_user_data, update_user
 from library_db.logger import (
@@ -146,5 +149,25 @@ def toggel_request_filter():
         time_file_handler.filters.pop(1)
     else:
         time_file_handler.addFilter(RequestFilter())
+
+    return redirect(url_for("panel_bluep.admin_bluep.server_dashboard"))
+
+
+@admin_bluep.route("/server/backupdb", methods=["POST"])
+def backup_db():
+    if not is_admin(session):
+        return abort(403)
+
+    current_db = get_db_path()
+    backup_path = current_db.parent / "backup"
+    backup_file = backup_path / (
+        "library_db_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".db"
+    )
+
+    try:
+        backup_path.mkdir(parents=True, exist_ok=True)
+        shutil.copy(str(current_db), str(backup_file))
+    except shutil.Error:
+        return abort(500, "Failed Copying to Backup Folder")
 
     return redirect(url_for("panel_bluep.admin_bluep.server_dashboard"))

@@ -159,16 +159,29 @@ block head %} {{ super() }}
                   </li>
                 </ul>
                 <hr />
-                <form
-                  action="{{url_for('panel_bluep.admin_bluep.toggel_request_filter')}}"
-                  method="post"
-                  class="mt-2"
-                >
-                  <button type="submit" class="btn btn-primary">
-                    {% if has_filter %} Deactivate {%else %} Activate {%endif%}
-                    Debug Log Request Filter
-                  </button>
-                </form>
+                <h5>Server Actions</h5>
+                <div class="d-flex gap-2">
+                  <form
+                    action="{{url_for('panel_bluep.admin_bluep.toggel_request_filter')}}"
+                    method="post"
+                    class="mt-2"
+                  >
+                    <button type="submit" class="btn btn-primary">
+                      {% if has_filter %} Deactivate {%else %} Activate
+                      {%endif%} Debug Log Request Filter
+                    </button>
+                  </form>
+
+                  <form
+                    action="{{url_for('panel_bluep.admin_bluep.backup_db')}}"
+                    method="post"
+                    class="mt-2"
+                  >
+                    <button type="submit" class="btn btn-primary btn-success">
+                      Backup Database
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

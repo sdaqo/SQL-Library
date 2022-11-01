@@ -157,7 +157,9 @@ def remove_user():
 
     delete_user(user.get("id"))
 
-    current_app.logger.info(f"{session['email']} Deleted user with email {session['email']}")
+    current_app.logger.info(
+        f"{session['email']} Deleted user with email {session['email']}"
+    )
 
     session.pop("email")
     session.pop("pwdhash")

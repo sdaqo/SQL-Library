@@ -351,7 +351,11 @@ def author_exsists(name: str) -> bool:
 
 
 def add_media_item(
-    title: str, author_id: int, age_limit: int, media_type_id: int, isbn: int | None = None
+    title: str,
+    author_id: int,
+    age_limit: int,
+    media_type_id: int,
+    isbn: int | None = None,
 ) -> int | None:
     statement = """
         INSERT INTO media (
