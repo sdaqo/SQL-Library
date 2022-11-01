@@ -8,6 +8,7 @@ from flask import (
     request,
     abort,
     Response,
+    current_app,
 )
 
 
@@ -78,4 +79,5 @@ def delete_user():
     if pwdhash != md5(password.encode()).hexdigest():
         return abort(Response("Wrong Password", 401))
 
+    current_app.logger(f"{session['email']} Deleted user with email {session['email']}")
     return redirect(url_for("auth_bluep.login", next="/me/profile"))

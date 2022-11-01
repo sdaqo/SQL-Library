@@ -6,6 +6,7 @@ from flask import (
     render_template,
     request,
     abort,
+    current_app,
 )
 
 
@@ -136,6 +137,9 @@ def alter_media():
         isbn=isbn,
     )
 
+    current_app.logger.info(
+        f"{session['email']} Updated media {media.title} with id {id}"
+    )
     return redirect(url_for("panel_bluep.staff_bluep.staff_panel_alter"))
 
 
@@ -177,6 +181,7 @@ def alter_author():
 
     update_author(id, author_name)
 
+    current_app.logger.info(f"{session['email']} Updated author {author} with id {id}")
     return redirect(url_for("panel_bluep.staff_bluep.staff_panel_alter"))
 
 
@@ -203,7 +208,7 @@ def add_media():
         try:
             isbn = int(isbn)
         except ValueError:
-            return ret_error("ISBN has to be Number")
+            return ret_error("ISBN has to be a Number")
 
     if get_media_id(title):
         return ret_error("Media with this Title already exsists")
@@ -221,7 +226,7 @@ def add_media():
 
     author = get_author_id(author)
 
-    add_media_item(
+    new_id = add_media_item(
         title=title,
         author_id=author,
         age_limit=age_limit,
@@ -229,6 +234,7 @@ def add_media():
         isbn=isbn,
     )
 
+    current_app.logger.info(f"{session['email']} Added media {title} with id {new_id}")
     return redirect(url_for("panel_bluep.staff_bluep.staff_panel_addremove"))
 
 
@@ -255,8 +261,9 @@ def add_author():
             )
         )
 
-    add_author_to_db(author)
+    new_id = add_author_to_db(author)
 
+    current_app.logger.info(f"{session['email']} Added author with id {new_id}")
     return redirect(url_for("panel_bluep.staff_bluep.staff_panel_addremove"))
 
 
@@ -284,4 +291,7 @@ def remove_media():
         )
 
     delete_media(media_id)
+    current_app.logger.info(
+        f"{session['email']} Removed media {media} with id {media_id}"
+    )
     return redirect(url_for("panel_bluep.staff_bluep.staff_panel_addremove"))

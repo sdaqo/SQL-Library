@@ -10,7 +10,7 @@ visit_counter = 0
 def home():
     global visit_counter
 
-    current_app.logger.info(f"Home Page visited {visit_counter} times.")
     visit_counter += 1
+    current_app.logger.info(f"Home Page visited {visit_counter} times.")
     template_vars = get_template_vars(session)
     return render_template("general/index.html", **template_vars)

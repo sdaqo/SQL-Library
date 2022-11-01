@@ -239,7 +239,7 @@ def estimate_return_date(media_id: int) -> date | None:
     return deadline.date()
 
 
-def borrow_book(media_id: int, user_id: int):
+def borrow_media(media_id: int, user_id: int):
     statement = """
         INSERT INTO borrowings (media_id, user_id, borrow_date)
         VALUES (?, ?, ?)
@@ -351,8 +351,8 @@ def author_exsists(name: str) -> bool:
 
 
 def add_media_item(
-    title: str, author_id: int, age_limit: int, media_type_id: int, isbn: int = None
-):
+    title: str, author_id: int, age_limit: int, media_type_id: int, isbn: int | None = None
+) -> int | None:
     statement = """
         INSERT INTO media (
             title, media_type_id,
@@ -366,6 +366,8 @@ def add_media_item(
     cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id))
 
     con.commit()
+
+    return cur.lastrowid
 
 
 def get_media_type_id(media_type: str) -> int | None:
@@ -393,11 +395,13 @@ def get_media_id(title: str) -> int | None:
         return res[0]
 
 
-def add_author_to_db(name: str):
+def add_author_to_db(name: str) -> int | None:
     cur = con.cursor()
     cur.execute("""INSERT INTO authors (name) VALUES(?)""", (name,))
 
     con.commit()
+
+    return cur.lastrowid
 
 
 def delete_media(media_id: int):

@@ -1,14 +1,14 @@
 import re
 from hashlib import md5
 from datetime import date, datetime
-from flask import Blueprint, session, request
+from flask import Blueprint, session, request, current_app
 
 
 from library_db.utils.db_utils import (
     get_media,
     is_media_borrowed,
     get_user_data,
-    borrow_book,
+    borrow_media,
     update_user,
     delete_user,
 )
@@ -42,8 +42,9 @@ def borrow(media_id):
     if age_limit > age:
         return {"error": "User too Young"}
 
-    borrow_book(media_id, user.get("id"))
+    borrow_media(media_id, user.get("id"))
 
+    current_app.logger.info(f"{session['email']} Borrowed media with id {media_id}")
     return {"status": "success"}
 
 
@@ -159,4 +160,5 @@ def remove_user():
     session.pop("email")
     session.pop("pwdhash")
 
+    current_app.logger(f"{session['email']} Deleted user with email {session['email']}")
     return {"status": "success"}
