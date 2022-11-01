@@ -1,5 +1,5 @@
 # 📚 Library Website
-This is a Library Website made (in making) with [Python](https://github.com/python/cpython), SQL and [Flask](https://github.com/pallets/flask) for a School Project
+This is a Library Website made with [Python](https://github.com/python/cpython), SQL and [Flask](https://github.com/pallets/flask) for a School Project
 
 <details>
   <summary>Screenshot</summary>
