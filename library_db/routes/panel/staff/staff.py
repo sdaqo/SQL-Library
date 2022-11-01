@@ -174,7 +174,7 @@ def alter_author():
         if author_id:
             return redirect(
                 url_for(
-                    "staff_bluep.staff_panel_alter",
+                    "panel_bluep.staff_bluep.staff_panel_alter",
                     author_error="Author with this Name already exsists",
                 )
             )
@@ -256,7 +256,7 @@ def add_author():
     if author_exsists(author):
         return redirect(
             url_for(
-                "staff_bluep.staff_panel_addremove",
+                "panel_bluep.staff_bluep.staff_panel_addremove",
                 author_error="Author Already exsists",
             )
         )
@@ -277,7 +277,8 @@ def remove_media():
     if not media:
         return redirect(
             url_for(
-                "staff_bluep.staff_panel_addremove", remove_media_error="Bad Form Data"
+                "panel_bluep.staff_bluep.staff_panel_addremove",
+                remove_media_error="Bad Form Data",
             )
         )
 
@@ -285,7 +286,7 @@ def remove_media():
     if not media_id:
         return redirect(
             url_for(
-                "staff_bluep.staff_panel_addremove",
+                "panel_bluep.staff_bluep.staff_panel_addremove",
                 remove_media_error="Media Not Found",
             )
         )
