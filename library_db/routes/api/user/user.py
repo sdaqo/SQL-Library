@@ -23,7 +23,7 @@ validate_json = lambda req: req.is_json and "value" in req.get_json()
 @user_bluep.route("/user/borrow/<int:media_id>", methods=["POST"])
 def borrow(media_id):
     if not is_loggedin(session):
-        return {"error": "Not Logged in"}, 403
+        return {"error": "Not Logged in"}, 401
 
     user = get_user_data(session.get("email"))
 
@@ -157,8 +157,9 @@ def remove_user():
 
     delete_user(user.get("id"))
 
+    current_app.logger.info(f"{session['email']} Deleted user with email {session['email']}")
+
     session.pop("email")
     session.pop("pwdhash")
 
-    current_app.logger(f"{session['email']} Deleted user with email {session['email']}")
     return {"status": "success"}

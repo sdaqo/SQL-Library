@@ -5,17 +5,10 @@ from flask import (
     redirect,
     url_for,
     render_template,
-    request,
-    abort,
-    Response,
-    current_app,
 )
 
 
-from library_db.utils.utils import (
-    is_loggedin,
-    get_template_vars,
-)
+from library_db.utils.utils import is_loggedin, get_template_vars
 from library_db.utils.db_utils import (
     get_user_data,
     get_user_borrowings,
@@ -63,21 +56,3 @@ def user_borrowings():
     template_vars["table_data"] = table_data
 
     return render_template("user/borrowings.html", **template_vars)
-
-
-@user_bluep.route("/delete", methods=["POST"])
-def delete_user():
-    if not is_loggedin(session):
-        return redirect(url_for("auth_bluep.login", next="/me/profile"))
-
-    if not request.form.get("password"):
-        return abort(Response("Bad Form Data", 400))
-
-    password = request.form["password"]
-    pwdhash = get_user_data(session["email"]).get("pwdhash")
-
-    if pwdhash != md5(password.encode()).hexdigest():
-        return abort(Response("Wrong Password", 401))
-
-    current_app.logger(f"{session['email']} Deleted user with email {session['email']}")
-    return redirect(url_for("auth_bluep.login", next="/me/profile"))

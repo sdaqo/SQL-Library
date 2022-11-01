@@ -76,7 +76,6 @@ def get_log():
         return {"error": "Insufficent Permissions"}, 403
 
     level = request.get_json().get("level", "info")
-
     offset = request.get_json().get("offset", None)
 
     if level == "info":
