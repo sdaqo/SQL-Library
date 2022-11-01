@@ -73,8 +73,8 @@ def get_handlers():
     log_error_path = log_path / "error" / "flask_log"
 
     log_path.parent.mkdir(exist_ok=True)
-    log_debug_path.parent.mkdir(exist_ok=True)
-    log_error_path.parent.mkdir(exist_ok=True)
+    log_debug_path.parent.mkdir(exist_ok=True, parents=True)
+    log_error_path.parent.mkdir(exist_ok=True, parents=True)
 
     timed_file_handler = TimedRotatingFileHandler(
         str(log_debug_path), when="h", backupCount=7
