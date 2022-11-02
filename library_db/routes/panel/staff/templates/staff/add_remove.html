@@ -55,6 +55,7 @@ head %} {{ super() }}
             <form
               action="{{url_for('panel_bluep.staff_bluep.add_media')}}"
               method="post"
+              class="d-flex flex-column"
             >
               <label for="titleInput" class="form-label">Title</label>
               <input

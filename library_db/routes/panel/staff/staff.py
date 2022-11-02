@@ -213,7 +213,7 @@ def add_media():
     if get_media_id(title):
         return ret_error("Media with this Title already exsists")
 
-    if not age_limit:
+    if age_limit is None:
         return ret_error("Bad Form Data")
 
     if not media_type in get_media_types():
