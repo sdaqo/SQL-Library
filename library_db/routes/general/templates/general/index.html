@@ -93,18 +93,42 @@ head%} {{ super() }}
             Medialist
           </button>
           <div class="btn-group">
-            <button
-              class="btn btn-outline-primary mt-3"
-              onclick="window.location.pathname = '/login'"
-            >
-              Login
-            </button>
-            <button
-              class="btn btn-outline-primary mt-3"
-              onclick="window.location.pathname = '/signin'"
-            >
-              Signin
-            </button>
+            {%if  logged_in%}
+              <button
+                class="btn btn-outline-primary mt-3"
+                onclick="window.location.pathname = '/me'"
+              >
+                User Panel
+              </button>
+              {%if is_staff%}
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  onclick="window.location.pathname = '/staff'"
+                >
+                  Staff Panel
+                </button>
+              {%elif is_admin%}
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  onclick="window.location.pathname = '/admin'"
+                >
+                  Admin Panel
+                </button>
+              {%endif%}
+            {%else%}
+              <button
+                class="btn btn-outline-primary mt-3"
+                onclick="window.location.pathname = '/login'"
+              >
+                Login
+              </button>
+              <button
+                class="btn btn-outline-primary mt-3"
+                onclick="window.location.pathname = '/signin'"
+              >
+                Signin
+              </button>
+            {%endif%}
           </div>
           <div class="negative-margin"></div>
         </div>
