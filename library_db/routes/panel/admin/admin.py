@@ -82,7 +82,7 @@ def del_user():
         )
 
     delete_user(user.get("id"))
-    current_app.logger(f"{session['email']} Deleted user with email {user['email']}")
+    current_app.logger.info(f"{session['email']} Deleted user with email {user['email']}")
     return redirect(url_for("panel_bluep.admin_bluep.user_managment"))
 
 
