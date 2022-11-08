@@ -1,3 +1,4 @@
+from typing import Union
 from datetime import datetime, date, timedelta
 
 from library_db.database import get_db_connection
@@ -7,7 +8,7 @@ from library_db.utils.models import MediaItem, User, Borrowing
 con = get_db_connection()
 
 
-def get_user_type(email: str) -> str:
+def get_user_type(email: str) -> Union[str, None]:
     statement = """
 	  SELECT user_types.title
 	  FROM users 
@@ -22,7 +23,7 @@ def get_user_type(email: str) -> str:
         return res[0]
 
 
-def get_user_data(email: str) -> dict[str, str | int]:
+def get_user_data(email: str) -> dict[str, Union[str, int]]:
     cur = con.cursor()
     res = cur.execute(
         """
@@ -41,7 +42,7 @@ def get_user_data(email: str) -> dict[str, str | int]:
     return {}
 
 
-def get_media_types() -> [str]:
+def get_media_types() -> list[str]:
     cur = con.cursor()
     res = cur.execute("SELECT title FROM media_types")
     res = res.fetchall()
@@ -63,7 +64,7 @@ def is_media_borrowed(media_id: int) -> bool:
     return False
 
 
-def get_borrower(media_id: int) -> str:
+def get_borrower(media_id: int) -> Union[str, None]:
     statement = """
         SELECT name, surename
         FROM borrowings
@@ -79,7 +80,7 @@ def get_borrower(media_id: int) -> str:
 
 
 def get_media_query_count(
-    query: str = "", author_query: str = "", media_type: str = None
+    query: str = "", author_query: str = "", media_type: Union[str, None] = None
 ) -> int:
     media_types = ["Book", "DVD", "CD", "Blu-Ray"]
 
@@ -105,12 +106,12 @@ def get_media_query_count(
 def get_media_list(
     limit: int,
     offset: int,
-    media_type: str = None,
+    media_type: Union[str, None] = None,
     author_query: str = "",
     query: str = "",
     sort: str = "title",
     sort_type: str = "ASC",
-) -> ([MediaItem], str, str):
+) -> tuple[list[MediaItem], str, str]:
 
     media_types = ["Book", "DVD", "CD", "Blu-Ray"]
     sorts = {
@@ -154,7 +155,7 @@ def get_media_list(
     return [], sort, sort_type
 
 
-def get_media(media_id: int) -> MediaItem | None:
+def get_media(media_id: int) -> Union[MediaItem, None]:
     statement = """
         SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn
         FROM media
@@ -171,7 +172,7 @@ def get_media(media_id: int) -> MediaItem | None:
     return None
 
 
-def get_user_borrowings(user_id: int) -> [Borrowing]:
+def get_user_borrowings(user_id: int) -> list[Borrowing]:
     statement = """
         SELECT borrowings.id, media_id, user_id, borrow_date, return_date
         FROM borrowings
@@ -186,7 +187,7 @@ def get_user_borrowings(user_id: int) -> [Borrowing]:
     return [Borrowing(*item) for item in res]
 
 
-def get_borrowing(media_id: int, user_id: int) -> Borrowing:
+def get_borrowing(media_id: int, user_id: int) -> Union[Borrowing, None]:
     statement = """
         SELECT * 
         FROM borrowings
@@ -202,7 +203,7 @@ def get_borrowing(media_id: int, user_id: int) -> Borrowing:
     return None
 
 
-def estimate_return_date(media_id: int) -> date | None:
+def estimate_return_date(media_id: int) -> Union[date, None]:
     statement = """
         SELECT borrow_date, user_id
         FROM borrowings 
@@ -295,7 +296,7 @@ def delete_user(user_id: int):
     con.commit()
 
 
-def author_query_mini(query: str) -> [str]:
+def author_query_mini(query: str) -> list[str]:
     statement = """
         SELECT name
         FROM authors
@@ -310,7 +311,7 @@ def author_query_mini(query: str) -> [str]:
     return [i[0] for i in res]
 
 
-def media_query_mini(query: str) -> [str]:
+def media_query_mini(query: str) -> list[str]:
     statement = """
         SELECT title
         FROM media
@@ -325,7 +326,7 @@ def media_query_mini(query: str) -> [str]:
     return [i[0] for i in res]
 
 
-def user_query_mini(query: str) -> [str]:
+def user_query_mini(query: str) -> list[str]:
     statement = """
         SELECT email
         FROM users
@@ -355,8 +356,8 @@ def add_media_item(
     author_id: int,
     age_limit: int,
     media_type_id: int,
-    isbn: int | None = None,
-) -> int | None:
+    isbn: Union[int, None] = None,
+) -> Union[int, None]:
     statement = """
         INSERT INTO media (
             title, media_type_id,
@@ -374,7 +375,7 @@ def add_media_item(
     return cur.lastrowid
 
 
-def get_media_type_id(media_type: str) -> int | None:
+def get_media_type_id(media_type: str) -> Union[int, None]:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM media_types WHERE title = ?""", (media_type,))
     res = res.fetchone()
@@ -382,7 +383,7 @@ def get_media_type_id(media_type: str) -> int | None:
         return res[0]
 
 
-def get_author_id(name: str) -> int | None:
+def get_author_id(name: str) -> Union[int, None]:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM authors WHERE name = ? """, (name,))
     res = res.fetchone()
@@ -391,7 +392,7 @@ def get_author_id(name: str) -> int | None:
         return res[0]
 
 
-def get_media_id(title: str) -> int | None:
+def get_media_id(title: str) -> Union[int, None]:
     cur = con.cursor()
     res = cur.execute("""SELECT id FROM media WHERE title = ?""", (title,))
     res = res.fetchone()
@@ -399,7 +400,7 @@ def get_media_id(title: str) -> int | None:
         return res[0]
 
 
-def add_author_to_db(name: str) -> int | None:
+def add_author_to_db(name: str) -> Union[int, None]:
     cur = con.cursor()
     cur.execute("""INSERT INTO authors (name) VALUES(?)""", (name,))
 
@@ -421,7 +422,7 @@ def update_media(
     author_id: int,
     age_limit: int,
     media_type_id: int,
-    isbn: int = None,
+    isbn: Union[int, None] = None,
 ):
     statement = """
         UPDATE media
