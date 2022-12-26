@@ -1,4 +1,4 @@
-{% extends "base.html"%} {% block title %} Signin {% endblock %} {% block head
+{% extends "base.html"%} {% block title %} SignUp {% endblock %} {% block head
 %} {{ super() }}
 <style>
   {% if darkmode %}
@@ -29,7 +29,7 @@
   class="position-absolute top-50 start-50 translate-middle sign-in-container"
 >
   <form
-    action="/signin"
+    action="{{url_for('auth_bluep.signup')}}"
     method="post"
     id="form"
     class="rounded bg-light p-3 d-flex flex-column {%if darkmode%} bg-dark text-white {% else %} shadow-lg border {% endif%}"

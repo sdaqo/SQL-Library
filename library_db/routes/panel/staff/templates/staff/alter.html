@@ -155,7 +155,7 @@ head %} {{ super() }}
                 id="mediaAuthorSearch"
                 autocomplete="off"
                 name="author"
-                value="{{media_item.author if media_item.author}}"
+                value="{{media_item.author}}"
               />
               <ul
                 class="list-group d-none"
@@ -176,7 +176,7 @@ head %} {{ super() }}
                     name="age_limit"
                     placeholder="0"
                     autocomplete="off"
-                    value="{{media_item.age_limit if media_item.age_limit}}"
+                    value="{{media_item.age_limit}}"
                   />
                 </div>
                 <div class="d-flex flex-column flex-fill ms-1">
@@ -204,7 +204,7 @@ head %} {{ super() }}
                 name="isbn"
                 placeholder="Optional"
                 autocomplete="off"
-                value="{{media_item.isbn if media_item.isbn}}"
+                value="{{media_item.isbn}}"
               />
               <div class="d-flex flex-fill">
                 <div>

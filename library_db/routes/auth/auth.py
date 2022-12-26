@@ -53,14 +53,14 @@ def login():
     return redirect(request.args.get("next", "/"))
 
 
-@auth_bluep.route("/signin", methods=["GET", "POST"])
-def signin():
+@auth_bluep.route("/signup", methods=["GET", "POST"])
+def signup():
     template_vars = get_template_vars(session)
     if request.method == "GET":
-        return render_template("auth/signin.html", **template_vars)
+        return render_template("auth/signup.html", **template_vars)
 
     def ret_error(error: str):
-        return render_template("auth/signin.html", error=error, **template_vars)
+        return render_template("auth/signup.html", error=error, **template_vars)
 
     try:
         email = request.form["email"]

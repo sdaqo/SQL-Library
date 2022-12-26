@@ -438,7 +438,6 @@ def update_media(
     image: str,
     isbn: Union[int, None] = None,
 ):
-    print(image)
     statement = """
         UPDATE media
         SET title = ?,

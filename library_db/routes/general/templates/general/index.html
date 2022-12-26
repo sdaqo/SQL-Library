@@ -73,7 +73,7 @@ head%} {{ super() }}
       <div class="d-flex flex-column">
         <div class="d-flex flex-column align-self-center">
           <span class="display-4"
-            ><img src="/static/images/books.png" alt="books emoticon" /> SQL
+            ><img src="{{url_for('static', filename='images/books.png')}}" alt="books emoticon" /> SQL
             Library</span
           >
           <span class="text-muted sub-title"
@@ -88,7 +88,7 @@ head%} {{ super() }}
           >
           <button
             class="btn btn-primary mt-3"
-            onclick="window.location.pathname = '/medialist'"
+            onclick="window.location.pathname = '{{url_for('media_bluep.show_medialist')}}'"
           >
             Medialist
           </button>
@@ -118,15 +118,15 @@ head%} {{ super() }}
             {%else%}
               <button
                 class="btn btn-outline-primary mt-3"
-                onclick="window.location.pathname = '/login'"
+                onclick="window.location.pathname = '{{url_for('auth_bluep.login')}}'"
               >
                 Login
               </button>
               <button
                 class="btn btn-outline-primary mt-3"
-                onclick="window.location.pathname = '/signin'"
+                onclick="window.location.pathname = '{{url_for('auth_bluep.signup')}}'"
               >
-                Signin
+                SignUp
               </button>
             {%endif%}
           </div>
@@ -138,7 +138,7 @@ head%} {{ super() }}
           <img
             id="header-image"
             class="rounded img-fluid shadow-lg"
-            src="/static/images/library.webp"
+            src="{{url_for('static', filename='images/library.webp')}}"
             alt="picture of library"
           />
         </div>

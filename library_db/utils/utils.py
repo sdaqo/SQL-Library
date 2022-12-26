@@ -1,6 +1,6 @@
 import re
 import requests
-from PIL import Image
+from PIL import Image, ImageFilter
 from lxml import html 
 from urllib.parse import urlparse, parse_qs, urlunparse, urlencode
 from library_db.utils.db_utils import get_user_data, get_user_type, get_media_types
@@ -68,27 +68,47 @@ def update_query_params(url: str, **params):
     )
 
 
+def crop_image(img: Image.Image, w: int, h: int) -> Image.Image:
+    crop_w = w
+    crop_h = h
+
+    new_w = int(crop_h * (img.width / img.height))
+    img_resized = img.resize((new_w, crop_h))
+    img_resized = img_resized.convert('RGB')
+
+    if img_resized.width >= crop_w:
+        (left, upper) = (int(img_resized.width / 2 - crop_w / 2), 0)
+        (right, lower) = (
+            int(img_resized.width / 2 + crop_w / 2),
+            img_resized.height,
+        )
+
+        img_cropped = img_resized.crop((left, upper, right, lower))
+        return img_cropped
+    else:
+        img_resized = img_resized.resize((crop_w, img_resized.height))
+        return img_resized
+
+
 def process_cover_image(path: str):
-    with Image.open(path) as img:
-        new_h = 400
-        new_w = int(new_h * (img.width / img.height))
-        img_resized = img.resize((new_w, new_h))
-        img_resized = img_resized.convert('RGB')
+    image = Image.open(path)
+    image = crop_image(image, 270, 400)
+    image.save(path, "JPEG")
 
-        crop_w = 270
-        if img_resized.width >= crop_w:
-            (left, upper) = (int(img_resized.width / 2 - crop_w / 2), 0)
-            (right, lower) = (
-                int(img_resized.width / 2 + crop_w / 2),
-                img_resized.height,
-            )
+def process_cd_cover(path: str):
+    cover = Image.open(path)
+    cover = crop_image(cover, 270, 270)
 
-            img_cropped = img_resized.crop((left, upper, right, lower))
-            img_cropped.save(path, "JPEG")
-        else:
-            img_resized = img_resized.resize((crop_w, img_resized.height))
-            img_resized.save(path, "JPEG")
+    background = Image.open(path)
+    background = crop_image(background, 270, 400)
+    background = background.filter(ImageFilter.GaussianBlur(8))
 
+    background.paste(
+        cover, (0, int((background.height - cover.height) / 2))
+    )
+    background.save(path, "JPEG")
+
+    
 def goodreads_search(query: str):
     res = requests.get(
         "https://www.goodreads.com/book/auto_complete", params={'format': 'json', 'q': query}

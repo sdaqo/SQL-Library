@@ -17,6 +17,7 @@ from library_db.utils.utils import (
     is_admin,
     is_staff,
     process_cover_image,
+    process_cd_cover,
     download_image
 )
 from library_db.utils.db_utils import (
@@ -38,7 +39,7 @@ staff_bluep = Blueprint("staff_bluep", __name__, template_folder="templates")
 
 
 
-ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg'}
+ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.webp'}
 
 def allowed_file(filename):
     return Path(filename).suffix in ALLOWED_EXTENSIONS
@@ -115,17 +116,17 @@ def alter_media():
         return ret_error("Bad Form Data")
 
     media = get_media(id)
-
+    
     if not media:
         return ret_error("Bad Form Data")
-
+    
     if not media.title == title:
         media_title_id = get_media_id(title)
         if media_title_id:
             return ret_error("Media With this Title already exsists")
-
-    if not age_limit:
-        return ret_error("Bad Form Data")
+    
+    if age_limit is None:
+        age_limit = 0
 
     if not media_type in get_media_types():
         return ret_error("Media Type doesnt exsist")
@@ -226,26 +227,6 @@ def add_media():
     except KeyError:
         return ret_error("Bad Form Data")
     
-    filename = None
-    if "image" in request.files or "url" in request.form:
-        file = request.files["image"]
-        url = request.form["url"]
-        filename = uuid.uuid1().hex + ".jpg"
-        save_path = Path(current_app.config['UPLOAD_FOLDER']).joinpath(filename).__str__()
-
-        if file.filename != '' and url != '':
-            return ret_error("Can't upload Image and use Scraper Image")
-        elif not file.filename == '' and allowed_file(file.filename):
-            file.save(save_path)
-            process_cover_image(save_path)
-        elif not url == '':
-            if download_image(url, save_path) != 1:
-                filename = None
-            else:
-                process_cover_image(save_path)
-        else:
-            filename = None
-
     if isbn:
         try:
             isbn = int(isbn)
@@ -261,18 +242,44 @@ def add_media():
     if not media_type in get_media_types():
         return ret_error("Media Type doesnt exsist")
 
-    media_type = get_media_type_id(media_type)
+    media_type_id = get_media_type_id(media_type)
 
     if not author_exsists(author):
         return ret_error("Author does not exsist")
 
-    author = get_author_id(author)
+    author_id = get_author_id(author)
+
+    filename = None
+    if "image" in request.files or "url" in request.form:
+        file = request.files["image"]
+        url = request.form["url"]
+        filename = uuid.uuid1().hex + ".jpg"
+        save_path = Path(current_app.config['UPLOAD_FOLDER']).joinpath(filename).__str__()
+
+        if file.filename != '' and url != '':
+            return ret_error("Can't upload Image and use Scraper Image")
+        elif not file.filename == '' and allowed_file(file.filename):
+            file.save(save_path)
+            if media_type == "CD":
+                process_cd_cover(save_path)
+            else:
+                process_cover_image(save_path)
+        elif not url == '':
+            if download_image(url, save_path) != 1:
+                filename = None
+            else:
+                if media_type == "CD":
+                    process_cd_cover(save_path)
+                else:
+                    process_cover_image(save_path)
+        else:
+            filename = None
 
     new_id = add_media_item(
         title=title,
-        author_id=author,
+        author_id=author_id,
         age_limit=age_limit,
-        media_type_id=media_type,
+        media_type_id=media_type_id,
         isbn=isbn,
         image=filename
     )
