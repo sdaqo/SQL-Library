@@ -1,0 +1,387 @@
+{% extends "base.html"%} {% block title %} Medialist {% endblock %} {% block
+head %} {{ super() }}
+<style>
+  {%if darkmode%}
+  body {
+    background-color: #121212;
+  }
+
+  .pagination > .page-item > .page-link
+  {
+    background-color: #212529;
+    color: white;
+    border-color: #373b3e;
+  }
+
+
+  .pagination > .page-item > .page-link:focus,
+  .pagination > .page-item  > .page-link:hover
+  {
+      color: white;
+      background-color: #2c3034;
+      border-color: #373b3e;
+  }
+  {%endif%}
+
+  .pagination > .active > .page-link
+  {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  .title_text {
+    cursor: pointer;
+  }
+
+  .media-item > span {
+    cursor: pointer;
+  }
+
+  .img-hover {
+    width: 180px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .img-hover:hover  {
+    transform: scale(102.5%);
+    filter: brightness(125%);
+  }
+
+  #media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-gap: 1rem;
+  }
+
+ 
+
+
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="modal fade " id="mediaModal" tabindex="-1" aria-labelledby="exampleModalLabel" >
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content {% if darkmode %} bg-dark text-white {% endif %}">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalLabel"></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row">
+          <dt class="col-sm-7">Title:</dt>
+          <dd class="col-sm-5" id="titleLabel"></dd>
+          <dt class="col-sm-7">Author:</dt>
+          <dd class="col-sm-5" id="authorLabel"></dd>
+          <dt class="col-sm-7">Age Limit:</dt>
+          <dd class="col-sm-5" id="ageLimitLabel"></dd>
+          <dt class="col-sm-7">Media Type:</dt>
+          <dd class="col-sm-5" id="mediaTypeLabel"></dd>
+          <dt class="col-sm-7">ISBN:</dt>
+          <dd class="col-sm-5" id="isbnLable"></dd>
+          <div><hr class="px-5"></div>
+          <dt class="col-sm-7">Status:</dt>
+          <dd class="col-sm-5" id="statusLabel"></dd>
+          <dt class="col-sm-7" id="etaLabelTitle"></dt>
+          <dd class="col-sm-5" id="etaLabel"></dd>
+          <dt class="col-sm-7" id="borrowerLabelTitle"></dt>
+          <dd class="col-sm-5" id="borrowerLabel"></dd>
+        </dl>
+        <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
+      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="100%" height="100%" fill="#dc3545"></rect>
+      </svg>
+      <strong class="me-auto">Error</strong>
+      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="errorToastBody"></div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="infoToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="700">
+    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
+      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <rect width="100%" height="100%" fill="#007aff"></rect>
+      </svg>
+      <strong class="me-auto">Info</strong>
+      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="infoToastBody"></div>
+  </div>
+</div>
+
+<div class="container mt-3 mb-2">
+  <div class="d-flex flex-wrap">
+    <div class="d-flex flex-column me-4">
+      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Layout</span>
+      <div class="btn-group mb-3">
+        <button
+        id="grid-btn"
+        {% if not grid %}
+        class="btn {% if darkmode %} text-white {% endif %}"
+        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
+        {% else %} 
+        class="btn btn-primary"
+        {% endif %}>
+            <i class="fa-solid fa-grip"></i>
+        </button>
+        <button 
+        id="table-btn"
+        {% if grid %}
+        class="btn {% if darkmode %} text-white {% endif %}"
+        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
+        {% else %} 
+        class="btn btn-primary" 
+        {% endif %}>
+          <i class="fa-solid fa-table-list"></i>
+      </button>
+      </div>
+    </div>
+    <div class="d-flex flex-column me-4">
+      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Sort Field</span>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          {{"Age Limit" if sort_field == "age_limit" else sort_field.capitalize()}}
+        </button>
+        <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}">
+          {% for i in ["title", "author", "age_limit"] %}
+          <li>
+            <a 
+              class="dropdown-item {% if sort_field == i %} active {% endif %}" 
+              href="{{update_query_params(url, sort=i)}}"
+            >
+              {{"Age Limit" if i == "age_limit" else i.capitalize()}}
+            </a>
+          </li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex flex-column me-4">
+      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Status</span>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          {{borrow_status_filter.capitalize()}}
+        </button>
+        <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}">
+          {% for i in ["all", "borrowed", "available"]%}
+          <li><a 
+                class="dropdown-item {% if borrow_status_filter == i %} active {% endif %}"
+                href="{{update_query_params(url, status=i)}}" >{{i.capitalize()}}</a></li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Sort Order</span>
+      <div class="btn-group mb-3">
+        <button
+          {% if sort_dir == "ASC" %}
+          class="btn btn-primary"
+          {% else %}
+          onclick="window.location='{{update_query_params(url, sort_type='ASC')}}'"
+          class="btn {% if darkmode %} text-white {% endif %}"
+          style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"
+          {% endif %}
+        >
+          <i class="fa-solid fa-arrow-up-wide-short"></i>
+        </button>
+        <button 
+          {% if sort_dir == "DESC" %}
+          class="btn btn-primary" 
+          {% else %}
+          onclick="window.location='{{update_query_params(url, sort_type='DESC')}}'" 
+          class="btn {% if darkmode %} text-white {% endif %}"
+          style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
+          {% endif %}
+        >
+          <i class="fa-solid fa-arrow-down-wide-short"></i>
+      </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="media-grid">
+    {% for i in table_data %}
+    <div class="media-item position-relative">
+      <div class="position-relative">
+        <img 
+          onclick="show_modal({{i.id}})" 
+          src="{% if i.image %} {{url_for('static', filename='images/media/' + i.image)}} {% else %}  {{url_for('static', filename='images/noimg_light.png' if darkmode else 'images/noimg_dark.png')}} {% endif %}" 
+          class="rounded shadow img-hover {% if darkmode %} bg-dark {% endif%}"
+          onmouseover='{% if not i.image and not darkmode %}this.style.filter="drop-shadow(10px 0 0.28rem grey)"; {% endif %} this.nextElementSibling.style.display = "block"' 
+          onmouseout='{% if not i.image and not darkmode %}this.style.filter="none"; {% endif %} this.nextElementSibling.style.display = "none"'
+        />
+        <span 
+          class="position-absolute p-2 badge {%if darkmode %} text-light bg-dark {% else %} text-dark bg-light {% endif%}"
+          style="bottom: 1%; right: 2%; display: none"
+        >
+          {{i.media_type}}
+        </span>
+    </div>
+      <span class="position-absolute top-0 start-100 translate-middle p-2 rounded-circle bg-success {% if is_media_borrowed(i.id) %} bg-danger {% endif %}"></span>
+      
+      <span onclick="show_modal({{i.id}})" class="{% if darkmode %} text-white {% endif %}">{{i.title}}</span>
+    </div>
+    {% endfor %}
+  </div>
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if page + 1 == 1 %} disabled {% endif %}">
+        <a class="page-link" href="{{update_query_params(url, page=page - 1)}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% for i in range(page_count) %}
+      <li class="page-item {% if i == page %} active disabled {%endif%}">
+        <a class="page-link" href="{{update_query_params(url, page=i)}}">{{i + 1}}</a>
+      </li>
+      {% endfor %}
+      <li class="page-item {% if page + 1 == page_count %} disabled {% endif %}">
+        <a class="page-link" href="{{update_query_params(url, page=page + 1)}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+
+</div>
+
+
+<script defer>
+  document
+    .getElementById({% if not grid %} "grid-btn" {% else %} "table-btn" {%endif%})
+    .addEventListener("click", function (event) {
+      var gridToggleURL = new URL(window.location);
+      gridToggleURL.search = `?next=${window.location.pathname}`;
+      gridToggleURL.pathname = "{{url_for('misc_bluep.toggle_grid')}}"
+      window.location = gridToggleURL.toString();
+    });
+  
+
+  
+  function applyNewGridSize(size, items) {
+    let gridContainer = document.getElementById("media-grid");
+    gridContainer.style.gridTemplateColumns = `repeat(auto-fill, ${size}px)`;
+    Array.from(items).forEach((item) => {item.style.width = `${size}px`});
+  }
+
+  function adjustGridToScreen() {
+    let gridContainer = document.getElementById("media-grid");
+    let mediaItems = document.getElementsByClassName("img-hover");
+    let defaultWidth = 180;
+    let containerWidth = parseInt(gridContainer.offsetWidth);
+
+    if (containerWidth % (defaultWidth + 16) > 10) {
+      if (containerWidth / (defaultWidth + 16) > 6) {
+        // Avoid Reload if right size is already set
+        if (gridContainer.style.gridTemplateColumns == "repeat(auto-fill, 180px)")
+          return;
+
+        applyNewGridSize(180, mediaItems);
+        return;
+      }
+      let newWidth = defaultWidth;
+      while (parseInt(containerWidth % (newWidth + 16)) > 10 && (containerWidth / (defaultWidth + 16)) <= 6) { newWidth--; }
+
+      applyNewGridSize(newWidth, mediaItems);
+    }
+  }
+
+  adjustGridToScreen();
+  window.onresize = adjustGridToScreen;
+
+  function show_modal(media_id) {
+    const mediaModal = new bootstrap.Modal(document.getElementById("mediaModal"), {
+      keyboard: false
+    });
+    
+    fetch(`/api/media/${media_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const modalLabel = document.querySelector('#modalLabel');
+        const titleLabel = document.querySelector('#titleLabel');
+        const authorLabel = document.querySelector('#authorLabel');
+        const ageLimitLabel = document.querySelector('#ageLimitLabel');
+        const mediaTypeLabel = document.querySelector('#mediaTypeLabel');
+        const isbnLable = document.querySelector('#isbnLable');
+        const statusLabel = document.querySelector('#statusLabel');
+        const etaLabelTitle = document.querySelector('#etaLabelTitle');
+        const etaLabel = document.querySelector('#etaLabel');
+        const borrowerLabelTitle = document.querySelector('#borrowerLabelTitle');
+        const borrowerLabel = document.querySelector('#borrowerLabel');
+        const borrowBtn = document.querySelector('#borrowBtn')
+
+        modalLabel.textContent = data.title;
+        titleLabel.textContent = data.title;
+        authorLabel.textContent = data.author;
+        ageLimitLabel.textContent = data.age_limit;
+        mediaTypeLabel.textContent = data.media_type;
+        isbnLable.textContent = ((data.isbn) ? data.isbn : '');
+        statusLabel.textContent = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
+        etaLabelTitle.textContent = "";
+        etaLabel.textContent = "";
+        borrowerLabelTitle.textContent = "";
+        borrowerLabel.textContent = "";
+
+        borrowBtn.disabled = false;
+
+        if (data.is_borrowed) {
+          etaLabelTitle.textContent = "Estimated Return Date:";
+          etaLabel.textContent = data.estimated_return;
+          borrowerLabelTitle.textContent = "Borrower:";
+          borrowerLabel.textContent = data.borrower;
+          borrowBtn.disabled = true;
+        }
+
+        borrowBtn.onclick = () => {
+          fetch(`/api/user/borrow/${media_id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {                  
+
+              if (data.error) {
+                const errorToast = new bootstrap.Toast(document.querySelector('#errorToast'), {});
+                const errorToastBody = document.querySelector('#errorToastBody');
+                errorToastBody.innerHTML = data.error;
+                errorToast.show();
+              } else if (data.status) {
+                const infoToast = new bootstrap.Toast(document.querySelector('#infoToast'), {});
+                const infoToastBody = document.querySelector('#infoToastBody');
+                infoToastBody.innerHTML = "Borrowed Book";
+                infoToast.show()
+              }
+              mediaModal.hide()
+            })
+            .catch((error) => {
+              console.log('error: ' + error);
+            });
+        }
+
+        mediaModal.show();
+      })
+  }
+
+  const infoToast = document.querySelector('#infoToast')
+  infoToast.addEventListener('hidden.bs.toast', () => {
+    window.location.reload();
+  })
+
+  window.onresize
+</script>
+{% endblock %}

@@ -10,6 +10,7 @@ class MediaItem:
     media_type: str
     author: str
     isbn: Optional[int]
+    image: Optional[str]
 
 
 @dataclass

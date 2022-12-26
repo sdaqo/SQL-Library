@@ -53,6 +53,8 @@ head %} {{ super() }}
           <dd class="col-sm-5" id="authorLabel"></dd>
           <dt class="col-sm-7">Age Limit:</dt>
           <dd class="col-sm-5" id="ageLimitLabel"></dd>
+          <dt class="col-sm-7">Media Type:</dt>
+          <dd class="col-sm-5" id="mediaTypeLabel"></dd>
           <dt class="col-sm-7">ISBN:</dt>
           <dd class="col-sm-5" id="isbnLable"></dd>
           <div><hr class="px-5"></div>
@@ -96,6 +98,33 @@ head %} {{ super() }}
 </div>
 
 <div class="container mt-3">
+  <div class="d-flex">
+    <div class="d-flex flex-column">
+      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Layout</span>
+      <div class="btn-group mb-3">
+        <button
+        id="grid-btn"
+        {% if not grid %}
+        class="btn {% if darkmode %} text-white {% endif %}"
+        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
+        {% else %} 
+        class="btn btn-primary"
+        {% endif %}>
+            <i class="fa-solid fa-grip"></i>
+        </button>
+        <button 
+        id="table-btn"
+        {% if grid %}
+        class="btn {% if darkmode %} text-white {% endif %}"
+        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
+        {% else %} 
+        class="btn btn-primary" 
+        {% endif %}>
+          <i class="fa-solid fa-table-list"></i>
+      </button>
+      </div>
+    </div>
+  </div>
   <table
     class="table table-striped table-bordered rounded table-hover {% if darkmode %} table-dark {%endif%}"
   >
@@ -136,7 +165,7 @@ head %} {{ super() }}
         </th>
         <th scope="col">
           <a
-            href="{{update_query_params(url, status='availabel' if borrow_status_filter == 'all' else ('all' if borrow_status_filter == 'borrowed' else 'borrowed'))}}" 
+            href="{{update_query_params(url, status='available' if borrow_status_filter == 'all' else ('all' if borrow_status_filter == 'borrowed' else 'borrowed'))}}" 
             class="text-decoration-none text-reset">Status&nbsp;<i
             class="fa-solid fa-repeat" {%if borrow_status_filter != 'all' %} style="color: {{'red' if borrow_status_filter == 'borrowed' else 'green'}}" {%endif%}
             ></i>
@@ -152,7 +181,7 @@ head %} {{ super() }}
         <td>{{ i.author }}</td>
 
         <td>{{ i.age_limit }}</td>
-        <td>{% if is_media_borrowed(i.id) %} Borrowed {% else %} Availabel {% endif %}</td>
+        <td>{% if is_media_borrowed(i.id) %} Borrowed {% else %} Available {% endif %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -174,89 +203,99 @@ head %} {{ super() }}
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
-  
     </ul>
-
-  <script>
-    function show_modal(media_id) {
-      const mediaModal = new bootstrap.Modal(document.getElementById("mediaModal"), {
-        keyboard: false
-      });
-      
-      fetch(`/api/media/${media_id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const modalLabel = document.querySelector('#modalLabel');
-          const titleLabel = document.querySelector('#titleLabel');
-          const authorLabel = document.querySelector('#authorLabel');
-          const ageLimitLabel = document.querySelector('#ageLimitLabel');
-          const isbnLable = document.querySelector('#isbnLable');
-          const statusLabel = document.querySelector('#statusLabel');
-          const etaLabelTitle = document.querySelector('#etaLabelTitle');
-          const etaLabel = document.querySelector('#etaLabel');
-          const borrowerLabelTitle = document.querySelector('#borrowerLabelTitle');
-          const borrowerLabel = document.querySelector('#borrowerLabel');
-          const borrowBtn = document.querySelector('#borrowBtn')
-
-          modalLabel.textContent = data.title;
-          titleLabel.textContent = data.title;
-          authorLabel.textContent = data.author;
-          ageLimitLabel.textContent = data.age_limit;
-          isbnLable.textContent = ((data.isbn) ? data.isbn : '');
-          statusLabel.textContent = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
-          etaLabelTitle.textContent = "";
-          etaLabel.textContent = "";
-          borrowerLabelTitle.textContent = "";
-          borrowerLabel.textContent = "";
-
-          borrowBtn.disabled = false;
-
-          if (data.is_borrowed) {
-            etaLabelTitle.textContent = "Estimated Return Date:";
-            etaLabel.textContent = data.estimated_return;
-            borrowerLabelTitle.textContent = "Borrower:";
-            borrowerLabel.textContent = data.borrower;
-            borrowBtn.disabled = true;
-          }
-
-          borrowBtn.onclick = () => {
-            fetch(`/api/user/borrow/${media_id}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {                  
-
-                if (data.error) {
-                  const errorToast = new bootstrap.Toast(document.querySelector('#errorToast'), {});
-                  const errorToastBody = document.querySelector('#errorToastBody');
-                  errorToastBody.innerHTML = data.error;
-                  errorToast.show();
-                } else if (data.status) {
-                  const infoToast = new bootstrap.Toast(document.querySelector('#infoToast'), {});
-                  const infoToastBody = document.querySelector('#infoToastBody');
-                  infoToastBody.innerHTML = "Borrowed Book";
-                  infoToast.show()
-                }
-                mediaModal.hide()
-              })
-              .catch((error) => {
-                console.log('error: ' + error);
-              });
-          }
-
-          mediaModal.show();
-        })
-    }
-
-    const infoToast = document.querySelector('#infoToast')
-    infoToast.addEventListener('hidden.bs.toast', () => {
-      window.location.reload();
-    })
-  </script>
+  </nav>
 </div>
 
-</nav>
+
+<script>
+  document
+    .getElementById({% if not grid %} "grid-btn" {% else %} "table-btn" {%endif%})
+    .addEventListener("click", function (event) {
+      var gridToggleURL = new URL(window.location);
+      gridToggleURL.search = `?next=${window.location.pathname}`;
+      gridToggleURL.pathname = "{{url_for('misc_bluep.toggle_grid')}}"
+      window.location = gridToggleURL.toString();
+    });
+
+  function show_modal(media_id) {
+    const mediaModal = new bootstrap.Modal(document.getElementById("mediaModal"), {
+      keyboard: false
+    });
+    
+    fetch(`/api/media/${media_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const modalLabel = document.querySelector('#modalLabel');
+        const titleLabel = document.querySelector('#titleLabel');
+        const authorLabel = document.querySelector('#authorLabel');
+        const ageLimitLabel = document.querySelector('#ageLimitLabel');
+        const mediaTypeLabel = document.querySelector('#mediaTypeLabel');
+        const isbnLable = document.querySelector('#isbnLable');
+        const statusLabel = document.querySelector('#statusLabel');
+        const etaLabelTitle = document.querySelector('#etaLabelTitle');
+        const etaLabel = document.querySelector('#etaLabel');
+        const borrowerLabelTitle = document.querySelector('#borrowerLabelTitle');
+        const borrowerLabel = document.querySelector('#borrowerLabel');
+        const borrowBtn = document.querySelector('#borrowBtn')
+
+        modalLabel.textContent = data.title;
+        titleLabel.textContent = data.title;
+        authorLabel.textContent = data.author;
+        ageLimitLabel.textContent = data.age_limit;
+        mediaTypeLabel.textContent = data.media_type;
+        isbnLable.textContent = ((data.isbn) ? data.isbn : '');
+        statusLabel.textContent = ((data.is_borrowed) ? 'Borrowed' : 'Avalible');
+        etaLabelTitle.textContent = "";
+        etaLabel.textContent = "";
+        borrowerLabelTitle.textContent = "";
+        borrowerLabel.textContent = "";
+
+        borrowBtn.disabled = false;
+
+        if (data.is_borrowed) {
+          etaLabelTitle.textContent = "Estimated Return Date:";
+          etaLabel.textContent = data.estimated_return;
+          borrowerLabelTitle.textContent = "Borrower:";
+          borrowerLabel.textContent = data.borrower;
+          borrowBtn.disabled = true;
+        }
+
+        borrowBtn.onclick = () => {
+          fetch(`/api/user/borrow/${media_id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {                  
+
+              if (data.error) {
+                const errorToast = new bootstrap.Toast(document.querySelector('#errorToast'), {});
+                const errorToastBody = document.querySelector('#errorToastBody');
+                errorToastBody.innerHTML = data.error;
+                errorToast.show();
+              } else if (data.status) {
+                const infoToast = new bootstrap.Toast(document.querySelector('#infoToast'), {});
+                const infoToastBody = document.querySelector('#infoToastBody');
+                infoToastBody.innerHTML = "Borrowed Book";
+                infoToast.show()
+              }
+              mediaModal.hide()
+            })
+            .catch((error) => {
+              console.log('error: ' + error);
+            });
+        }
+
+        mediaModal.show();
+      })
+  }
+
+  const infoToast = document.querySelector('#infoToast')
+  infoToast.addEventListener('hidden.bs.toast', () => {
+    window.location.reload();
+  })
+</script>
 {% endblock %}

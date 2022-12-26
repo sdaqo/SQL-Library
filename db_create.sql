@@ -34,8 +34,9 @@ CREATE TABLE "media" (
         "title" TEXT,
         "media_type_id" INTEGER,
         "isbn"  INTEGER,
-        "age_limit"     INTEGER,
+        "age_limit" INTEGER,
         "author_id" INTEGER,
+        "image" TEXT,
         FOREIGN KEY("media_type_id") REFERENCES "media_types"("id"),
         FOREIGN KEY("author_id") REFERENCES "authors"("id"),
         PRIMARY KEY("id" AUTOINCREMENT)

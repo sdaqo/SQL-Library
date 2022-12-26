@@ -1,5 +1,6 @@
-from flask import Blueprint, session, request
+from pathlib import Path
 from file_read_backwards import FileReadBackwards
+from flask import Blueprint, session, request, current_app, send_file
 
 from library_db.utils.db_utils import (
     get_media,
@@ -10,7 +11,7 @@ from library_db.utils.db_utils import (
     user_query_mini,
     get_borrower,
 )
-from library_db.utils.utils import is_admin
+from library_db.utils.utils import is_admin, goodreads_search, scrape_goodreads_cover, imdb_search
 from library_db.logger import (
     get_info_logfile,
     get_error_logfile,
@@ -21,7 +22,11 @@ other_bluep = Blueprint("other_bluep", __name__)
 
 @other_bluep.route("/media/<int:media_id>", methods=["GET"])
 def media(media_id):
-    media_info = get_media(media_id).__dict__
+    media_info = get_media(media_id)
+    if not media_info:
+        return {"error": "No media with this ID found"}
+
+    media_info = media_info.__dict__
     if is_media_borrowed(media_id):
         media_info.update({"is_borrowed": True})
         media_info.update(
@@ -33,10 +38,22 @@ def media(media_id):
 
     return media_info
 
+@other_bluep.route("/media/image/<int:media_id>", methods=["GET"])
+def media_image(media_id):
+    media_info = get_media(media_id)
+    if not media_info:
+        return {"error": "No media with this ID found"}
+
+    if media_info.image:
+        path = Path(current_app.config["UPLOAD_FOLDER"]).joinpath(media_info.image)
+        if path.exists():
+            return send_file(path, mimetype="image/jpeg")
+
+    return {"error": "Image does not exsist for this media."}
 
 @other_bluep.route("/mini_search/author", methods=["POST"])
 def query_authors():
-    if not request.is_json and "query" in request.get_json():
+    if not (request.is_json and "query" in request.get_json()):
         return {"error": "Unprocessable data"}, 400
 
     query = request.get_json()["query"]
@@ -47,7 +64,7 @@ def query_authors():
 
 @other_bluep.route("/mini_search/media", methods=["POST"])
 def query_media():
-    if not request.is_json and "query" in request.get_json():
+    if not (request.is_json and "query" in request.get_json()):
         return {"error": "Unprocessable data"}, 400
 
     query = request.get_json()["query"]
@@ -99,3 +116,37 @@ def get_log():
         response.update({"log_lines": lines})
 
     return response
+
+
+@other_bluep.route("/scraper/search_covers", methods=["POST"])
+def search_covers():
+    if not (request.is_json and "query" in request.get_json() and "media_type" in request.get_json()):
+        return {"error": "Unprocessable data"}, 400
+    
+    if request.get_json().get("media_type") == "Book":
+        try:
+            urls = goodreads_search(request.get_json().get("query"))
+        except:
+            return {"error": "Search failed"}
+
+        with_images = False
+    elif request.get_json().get("media_type") == "Blu-Ray" or request.get_json().get("media_type") == "DVD":
+        urls = imdb_search(request.get_json().get("query"))
+        with_images = True
+    elif request.get_json().get("media_type") == "CD":
+        return {"error": "CD-Cover Scraper not Implementet"}
+    else:
+        return {"error": "Invalid media type"}
+
+    return {"with_images": with_images, "urls": urls} 
+    
+@other_bluep.route("/scraper/book/scrape_cover", methods=["POST"])
+def scrape_coverurl():
+    if not (request.is_json and "url" in request.get_json()):
+        return {"error": "Unprocessable data"}, 400
+    
+    url = scrape_goodreads_cover(request.get_json().get("url"))
+    if not url:
+        return {"error": "Could not scrape image url"}
+
+    return {"image_url": url}

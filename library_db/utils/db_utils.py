@@ -1,4 +1,5 @@
 from typing import Union
+from pathlib import Path
 from datetime import datetime, date, timedelta
 
 from library_db.database import get_db_connection
@@ -80,7 +81,7 @@ def get_borrower(media_id: int) -> Union[str, None]:
 
 
 def get_media_query_count(
-    query: str = "", author_query: str = "", media_type: Union[str, None] = None
+    query: str = "", author_query: str = "", status: str = "all", media_type: Union[str, None] = None
 ) -> int:
     media_types = ["Book", "DVD", "CD", "Blu-Ray"]
 
@@ -90,7 +91,8 @@ def get_media_query_count(
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
         WHERE media.title LIKE ? AND authors.name LIKE ? 
-            {"AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+            {" AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+            {("AND media.id %s in (SELECT media_id FROM borrowings WHERE return_date IS NULL)" % ("NOT" if status == "available" else "")) if status != "all" else ""}
         """
 
     cur = con.cursor()
@@ -110,6 +112,7 @@ def get_media_list(
     author_query: str = "",
     query: str = "",
     sort: str = "title",
+    status: str = "all",
     sort_type: str = "ASC",
 ) -> tuple[list[MediaItem], str, str]:
 
@@ -128,17 +131,17 @@ def get_media_list(
         sort = "title"
 
     statement = f"""
-        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn
+        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn, image
         FROM media
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
         WHERE media.title LIKE ? AND authors.name LIKE ? 
-            {" AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+            {"AND media_types.title = '%s'" % media_type if media_type in media_types else ""}
+            {("AND media.id %s in (SELECT media_id FROM borrowings WHERE return_date IS NULL)" % ("NOT" if status == "available" else "")) if status != "all" else ""}
         ORDER BY {sorts[sort]} {sort_type}
         LIMIT ?
         OFFSET ?
         """
-
     cur = con.cursor()
     res = cur.execute(
         statement, ("%" + query + "%", "%" + author_query + "%", limit, offset)
@@ -157,7 +160,7 @@ def get_media_list(
 
 def get_media(media_id: int) -> Union[MediaItem, None]:
     statement = """
-        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn
+        SELECT media.id, media.title, media.age_limit, media_types.title, authors.name, isbn, image
         FROM media
         JOIN media_types ON media.media_type_id  = media_types.id
         JOIN authors ON media.author_id = authors.id
@@ -357,18 +360,21 @@ def add_media_item(
     age_limit: int,
     media_type_id: int,
     isbn: Union[int, None] = None,
+    image: Union[str, None] = None,
 ) -> Union[int, None]:
     statement = """
         INSERT INTO media (
             title, media_type_id,
             isbn, age_limit,
-            author_id
+            author_id, image
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
         """
 
     cur = con.cursor()
-    cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id))
+    cur.execute(statement, 
+        (title, media_type_id, isbn, age_limit, author_id, image)
+    )
 
     con.commit()
 
@@ -409,9 +415,16 @@ def add_author_to_db(name: str) -> Union[int, None]:
     return cur.lastrowid
 
 
-def delete_media(media_id: int):
+def delete_media(media_id: int, img_basepath: str):
     cur = con.cursor()
-    cur.execute("""DELETE FROM media WHERE media.id = ?""", (media_id,))
+    res = cur.execute("""DELETE FROM media WHERE media.id = ? RETURNING image""", (media_id,))
+    res = res.fetchone() 
+    
+    # Delete cover image if present
+    if res[0]:
+        path = Path(img_basepath).joinpath(res[0])
+        if path.exists():
+            path.unlink()
 
     con.commit()
 
@@ -422,20 +435,23 @@ def update_media(
     author_id: int,
     age_limit: int,
     media_type_id: int,
+    image: str,
     isbn: Union[int, None] = None,
 ):
+    print(image)
     statement = """
         UPDATE media
         SET title = ?,
             media_type_id = ?,
             isbn = ?,
             age_limit = ?,
-            author_id = ?
+            author_id = ?,
+            image = ?
         WHERE id = ?
         """
 
     cur = con.cursor()
-    cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id, id))
+    cur.execute(statement, (title, media_type_id, isbn, age_limit, author_id, image, id))
 
     con.commit()
 

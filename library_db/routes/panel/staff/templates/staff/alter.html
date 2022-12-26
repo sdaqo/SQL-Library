@@ -1,6 +1,7 @@
 {% extends "base.html"%} {% block title %} Staff Panel {% endblock %} {% block
 head %} {{ super() }}
 
+<script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
 <style>
   {% if darkmode %}
     body {
@@ -120,7 +121,7 @@ head %} {{ super() }}
           </div>
         </div>
       </div>
-      {% if media_item or author%}
+      {% if media_item or author %}
       <div class="col">
         <div class="card shadow">
           <div class="card-body">
@@ -132,6 +133,7 @@ head %} {{ super() }}
               class="d-flex flex-column"
               action="{{url_for('panel_bluep.staff_bluep.alter_media')}}"
               method="post"
+              enctype="multipart/form-data"
             >
               <input type="hidden" name="id" value="{{media_item.id}}" />
               <label for="titleInput" class="form-label">Title</label>
@@ -204,6 +206,32 @@ head %} {{ super() }}
                 autocomplete="off"
                 value="{{media_item.isbn if media_item.isbn}}"
               />
+              <div class="d-flex flex-fill">
+                <div>
+                  <label for="imageUpload" class="form-label">Image</label>
+                  <input 
+                    id="imageUpload" 
+                    class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}" 
+                    type="file" 
+                    accept="image/*" 
+                    name="image"
+                  />
+                </div>
+
+                <div class="d-flex flex-column-reverse ms-1">
+                  {% if media_item.image %}
+                  <button 
+                    class="btn btn-primary" 
+                    type="button" 
+                    onclick="window.open('{{ url_for('static', filename='images/media/' + media_item.image)}}', '_blank');"
+                  >
+                    View Current Image
+                  </button>
+                  {% else %}
+                  <button class="btn btn-danger" type="button" disabled>No Image Yet</button>
+                  {% endif %}
+                </div>
+              </div>
               <button type="submit" class="btn btn-warning mt-3">Alter</button>
             </form>
             {%elif author%}
@@ -237,70 +265,33 @@ head %} {{ super() }}
 </div>
 </div>
 <script>
-  function removeResChildren(parent) {
-      while (parent.firstChild) {
-          parent.firstChild.remove();
-      }
+  {% if darkmode %}
+  let colors = {
+    text_color: "white",
+    bg_color: "#121212",
+    border_color: "#212529",
+    hover_color: "rgba(255, 255, 255, 0.15)",
+  };
+  {% else %}
+  let colors =  {
+    text_color: "black",
+    bg_color: "white",
+    border_color: "rgba(0, 0, 0, 0.125)",
+    hover_color: "rgb(233, 236, 239)"
   }
-
-  function registerAPIQuery(search_el, result_el, query_endpoint) {
-      search_el.addEventListener("input", (event) => {
-          if (search_el.value.length == 0) {
-              result_el.classList.add("d-none");
-              search_el.style.borderBottomRightRadius = "0.375rem";
-              search_el.style.borderBottomLeftRadius = "0.375rem";
-              return false;
-          }
-
-          fetch(query_endpoint, {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                      query: search_el.value
-                  }),
-              })
-              .then((response) => response.json())
-              .then((data) => {
-                  search_el.style.borderBottomRightRadius = "0";
-                  search_el.style.borderBottomLeftRadius = "0";
-                  removeResChildren(result_el);
-                  data.results.map((result) => {
-                      const button = document.createElement("button");
-                      button.classList.add("list-group-item", "list-group-item-action");
-                      {% if darkmode %}
-                      button.style.backgroundColor = "#121212";
-                      button.style.color = "white";
-                      button.style.borderColor = "#212529";
-                      {% endif %}
-                      button.textContent = result;
-                      button.type = "button";
-                      button.addEventListener("click", (event) => {
-                          var btnText = event.target.textContent;
-                          search_el.value = btnText;
-                          result_el.classList.add("d-none");
-                          search_el.style.borderBottomRightRadius = "0.375rem";
-                          search_el.style.borderBottomLeftRadius = "0.375rem";
-                      });
-                      result_el.appendChild(button);
-                  });
-                  result_el.classList.remove("d-none");
-              }).catch((error) => console.log(error));
-      });
-  }
+  {% endif %}
 
   var mediaSearchEl = document.getElementById("mediaSearch");
   var mediaResultsEl = document.getElementById("mediaResults");
-  registerAPIQuery(mediaSearchEl, mediaResultsEl, "/api/mini_search/media");
+  registerMiniSearch(mediaSearchEl, mediaResultsEl, "/api/mini_search/media", colors);
 
   var authorSearchEl = document.getElementById("authorSearch")
   var authorResultsEl = document.getElementById("authorResults")
-  registerAPIQuery(authorSearchEl, authorResultsEl, "/api/mini_search/author")
+  registerMiniSearch(authorSearchEl, authorResultsEl, "/api/mini_search/author", colors)
 
 
   var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
   var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
-  registerAPIQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
+  registerMiniSearch(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author", colors);
 </script>
 {%endblock%}

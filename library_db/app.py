@@ -1,3 +1,4 @@
+import os
 import logging
 from flask import Flask
 from flask_cors import CORS
@@ -17,6 +18,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config["CORS_HEADER"] = "Content-Type"
+    app.config["UPLOAD_FOLDER"] = os.path.join(app.static_folder, "images/media/")
 
     app.secret_key = "c4c4f1e8c78c2a52ee46"
 

@@ -30,7 +30,7 @@
   <body class="h-100">
     <div class="content-container">
     <nav
-      class=" sticky-top navbar navbar-expand-xl bg-light {% if darkmode %} navbar-dark bg-dark {% endif %}"
+      class=" sticky-top navbar navbar-expand-xl bg-light {% if not darkmode %} shadow {% endif %} {% if darkmode %} navbar-dark bg-dark {% endif %}"
     >
       <div class="container-fluid">
         <a class="navbar-brand" href="/">SQL Library</a>
@@ -168,8 +168,8 @@
 
     </div>
     <footer
-    class="d-flex justify-content-center pb-2 m-0 {%if darkmode %} text-white {%endif%}"
-  >
+      class="d-flex justify-content-center pb-2 m-0 {%if darkmode %} text-white {%endif%}"
+    >
     <a class="dotted-link" href="https://github.com/sdaqo/library_website"
       >SQL Library</a
     >,&nbsp;made by&nbsp;<a class="dotted-link" href="https://github.com/sdaqo"

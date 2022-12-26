@@ -1,6 +1,6 @@
 {% extends "base.html"%} {% block title %} User Managment {% endblock %} {%
 block head %} {{ super() }}
-
+<script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
 <style>
   {% if darkmode %}
     body {
@@ -33,7 +33,6 @@ block head %} {{ super() }}
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" href="">User Managment</a>
-      <!--User Roles, User Deletes etc. -->
     </li>
     <li class="nav-item">
       <a
@@ -41,7 +40,6 @@ block head %} {{ super() }}
         href="{{url_for('panel_bluep.admin_bluep.server_dashboard')}}"
         >Server Dashboard</a
       >
-      <!--LOGS, Server Shutdown etc. -->
     </li>
   </ul>
   <div
@@ -146,67 +144,30 @@ block head %} {{ super() }}
   </div>
 </div>
 <script>
-  function removeResChildren(parent) {
-      while (parent.firstChild) {
-          parent.firstChild.remove();
-      }
+  {% if darkmode %}
+  let colors = {
+    text_color: "white",
+    bg_color: "#121212",
+    border_color: "#212529",
+    hover_color: "rgba(255, 255, 255, 0.15)",
+  };
+  {% else %}
+  let colors =  {
+    text_color: "black",
+    bg_color: "white",
+    border_color: "rgba(0, 0, 0, 0.125)",
+    hover_color: "rgb(233, 236, 239)"
   }
+  {% endif %}
 
-  function registerAPIQuery(search_el, result_el, query_endpoint) {
-      search_el.addEventListener("input", (event) => {
-          if (search_el.value.length == 0) {
-              result_el.classList.add("d-none");
-              search_el.style.borderBottomRightRadius = "0.375rem";
-              search_el.style.borderBottomLeftRadius = "0.375rem";
-              return false;
-          }
+  const userSearchPwEl = document.getElementById("userSearchPw");
+  const userSearchPwResultsEl = document.getElementById("userSearchPwResults");
 
-          fetch(query_endpoint, {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                      query: search_el.value
-                  }),
-              })
-              .then((response) => response.json())
-              .then((data) => {
-                  search_el.style.borderBottomRightRadius = "0";
-                  search_el.style.borderBottomLeftRadius = "0";
-                  removeResChildren(result_el);
-                  data.results.map((result) => {
-                      const button = document.createElement("button");
-                      button.classList.add("list-group-item", "list-group-item-action");
-                      {% if darkmode %}
-                      button.style.backgroundColor = "#121212";
-                      button.style.color = "white";
-                      button.style.borderColor = "#212529";
-                      {% endif %}
-                      button.textContent = result;
-                      button.type = "button";
-                      button.addEventListener("click", (event) => {
-                          var btnText = event.target.textContent;
-                          search_el.value = btnText;
-                          result_el.classList.add("d-none");
-                          search_el.style.borderBottomRightRadius = "0.375rem";
-                          search_el.style.borderBottomLeftRadius = "0.375rem";
-                      });
-                      result_el.appendChild(button);
-                  });
-                  result_el.classList.remove("d-none");
-              }).catch((error) => console.log(error));
-      });
-  }
+  registerMiniSearch(userSearchPwEl, userSearchPwResultsEl, "/api/admin/mini_search/users", colors);
 
-  const userSearchPwEl = document.getElementById("userSearchPw")
-  const userSearchPwResultsEl = document.getElementById("userSearchPwResults")
+  const userSearchDelEl = document.getElementById("userSearchDel");
+  const userSearchDelResultsEl = document.getElementById("userSearchDelResults");
 
-  registerAPIQuery(userSearchPwEl, userSearchPwResultsEl, "/api/admin/mini_search/users")
-
-  const userSearchDelEl = document.getElementById("userSearchDel")
-  const userSearchDelResultsEl = document.getElementById("userSearchDelResults")
-
-  registerAPIQuery(userSearchDelEl, userSearchDelResultsEl, "/api/admin/mini_search/users")
+  registerMiniSearch(userSearchDelEl, userSearchDelResultsEl, "/api/admin/mini_search/users", colors);
 </script>
 {%endblock%}

@@ -45,10 +45,6 @@ def show_medialist():
             query_params.update({name: value})
 
     table_data_prams = deepcopy(query_params)
-    try:
-        table_data_prams.pop("status")
-    except KeyError:
-        pass
 
     author_query_match = re.match(AUTHOR_REGEX, query_params.get("query", ""))
     if author_query_match:
@@ -56,21 +52,18 @@ def show_medialist():
         table_data_prams["query"] = re.sub(AUTHOR_REGEX, "", table_data_prams["query"])
         table_data_prams["query"] = table_data_prams["query"].strip()
 
-    query_count = get_media_query_count(
-        table_data_prams.get("query", ""),
-        table_data_prams.get("author_query", ""),
-        table_data_prams.get("media_type", ""),
-    )
 
     table_data, sort_field, sort_dir = get_media_list(
         PAGE_SIZE, PAGE_SIZE * page, **table_data_prams
     )
-
-    borrow_status_filter = query_params.get("status", "all")
-    if borrow_status_filter == "availabel":
-        table_data = [i for i in table_data if not is_media_borrowed(i.id)]
-    elif borrow_status_filter == "borrowed":
-        table_data = [i for i in table_data if is_media_borrowed(i.id)]
+    
+    
+    query_count = get_media_query_count(
+        table_data_prams.get("query", ""),
+        table_data_prams.get("author_query", ""),
+        table_data_prams.get("status", "all"),
+        table_data_prams.get("media_type", None)
+    )
 
     template_vars = get_template_vars(session)
     template_vars["table_data"] = table_data
@@ -84,8 +77,11 @@ def show_medialist():
     template_vars["page_size"] = PAGE_SIZE
     template_vars["url"] = request.url
     template_vars["update_query_params"] = update_query_params
-    template_vars["borrow_status_filter"] = borrow_status_filter
-    return render_template("media/medialist.html", **template_vars)
+    template_vars["borrow_status_filter"] = query_params.get("status", "all")
+    if session.get("grid", True):
+        return render_template("media/medialist_grid.html", **template_vars)
+    else:
+        return render_template("media/medialist_table.html", **template_vars)
 
 
 @media_bluep.route("/media/return", methods=["POST"])

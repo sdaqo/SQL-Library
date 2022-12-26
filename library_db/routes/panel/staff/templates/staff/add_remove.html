@@ -1,6 +1,7 @@
-{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} {% block
-head %} {{ super() }}
-
+{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} 
+{% block head %} 
+{{ super() }}
+<script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
 <style>
   {% if darkmode %}
     body {
@@ -26,8 +27,45 @@ head %} {{ super() }}
         color: white;
       }
   {% endif %}
+
+  .scraper-image {
+    height: 180px;
+    width: 125px;
+    animation: loading 1s linear infinite alternate;
+  }
+
+  @keyframes loading {
+    0% {
+      background-color: hsl(204, 4%, 45%);
+    }
+    
+    100% {
+      background-color: hsl(200, 20%, 95%);
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    #scraper {
+      flex-direction: column;
+    }
+
+    #scraper-results {
+      margin-top: .75rem;
+      align-self: center;
+    }
+
+    #scraper-controls {
+      margin-right: 0rem !important;
+    }
+
+    #scraper-controls > code {
+      display: none;
+    }
+
+  }
 </style>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 
 <div class="container mt-3">
   <ul class="nav nav-tabs">
@@ -56,6 +94,7 @@ head %} {{ super() }}
               action="{{url_for('panel_bluep.staff_bluep.add_media')}}"
               method="post"
               class="d-flex flex-column"
+              enctype="multipart/form-data"
             >
               <label for="titleInput" class="form-label">Title</label>
               <input
@@ -127,9 +166,49 @@ head %} {{ super() }}
                 placeholder="Optional"
                 autocomplete="off"
               />
+              <label for="imageUpload" class="form-label">Image</label>
+              <input 
+                id="imageUpload" 
+                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}" 
+                type="file" 
+                accept="image/*" 
+                name="image"
+                autocomplete="off"
+              />
+
+              <input type="hidden" name="url" id="urlInput" autocomplete="off"/>
+
+              <div id="scraper" class="d-flex mt-2 p-2 rounded {% if darkmode %} bg-dark {% endif %}" {% if not darkmode%} style="background-color: #eee" {% endif %}>
+                <div id="scraper-controls" class="d-flex flex-column me-4 flex-fill">
+                  <h5 class="ms-1" id="scraper-header">Bookcover Scraper</h2>
+                  <button class="btn btn-primary" type="button" id="scraper-start">Start Scraper</button>
+                  <button class="btn btn-success mt-2" type="button" id="scraper-pick">Use current Image</button>
+                  <code class="mt-2" style="font-size: .8rem;">Status: <span class="text-muted" id="scraper-status">Idle</span></code>
+                </div>
+                <div class="flex-fill d-flex flex-fill" id="scraper-results">
+                  <span class="fs-3 align-self-center me-1" id="left-carousel-control" style="cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></span>
+                  <div id="scraper-img-container">
+                    <div class="position-relative">
+                      <img 
+                        class="rounded bg-danger"
+                        id="scraper-img"
+                        height="180px"
+                        src="{{url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}"
+                      />
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="display: none;">
+                        <i class="fa-solid fa-check"></i>
+                        <span class="visually-hidden">unread messages</span>
+                      </span>  
+                    </div>       
+                  </div>
+                  <span class="fs-3 align-self-center ms-1" id="right-carousel-control" style="cursor: pointer;"><i class="fa-solid fa-chevron-right"></i></span>
+                </div>
+              </div>
+              
               {{media_error if media_error}}
               <button type="submit" class="btn btn-primary mt-3">Submit</button>
             </form>
+
           </div>
         </div>
       </div>
@@ -191,65 +270,312 @@ head %} {{ super() }}
   </div>
 </div>
 <script>
-  function removeResChildren(parent) {
-      while (parent.firstChild) {
-          parent.firstChild.remove();
-      }
+  {% if darkmode %}
+  let colors = {
+    text_color: "white",
+    bg_color: "#121212",
+    border_color: "#212529",
+    hover_color: "rgba(255, 255, 255, 0.15)",
+  };
+  {% else %}
+  let colors =  {
+    text_color: "black",
+    bg_color: "white",
+    border_color: "rgba(0, 0, 0, 0.125)",
+    hover_color: "rgb(233, 236, 239)"
   }
+  {% endif %}
 
-  function registerAPIQuery(search_el, result_el, query_endpoint) {
-      search_el.addEventListener("input", (event) => {
-          if (search_el.value.length == 0) {
-              result_el.classList.add("d-none");
-              search_el.style.borderBottomRightRadius = "0.375rem";
-              search_el.style.borderBottomLeftRadius = "0.375rem";
-              return false;
-          }
-
-          fetch(query_endpoint, {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                      query: search_el.value
-                  }),
-              })
-              .then((response) => response.json())
-              .then((data) => {
-                  search_el.style.borderBottomRightRadius = "0";
-                  search_el.style.borderBottomLeftRadius = "0";
-                  removeResChildren(result_el);
-                  data.results.map((result) => {
-                      const button = document.createElement("button");
-                      button.classList.add("list-group-item", "list-group-item-action");
-                      {% if darkmode %}
-                      button.style.backgroundColor = "#121212";
-                      button.style.color = "white";
-                      button.style.borderColor = "#212529";
-                      {% endif %}
-                      button.textContent = result;
-                      button.type = "button";
-                      button.addEventListener("click", (event) => {
-                          var btnText = event.target.textContent;
-                          search_el.value = btnText;
-                          result_el.classList.add("d-none");
-                          search_el.style.borderBottomRightRadius = "0.375rem";
-                          search_el.style.borderBottomLeftRadius = "0.375rem";
-                      });
-                      result_el.appendChild(button);
-                  });
-                  result_el.classList.remove("d-none");
-              }).catch((error) => console.log(error));
-      });
-  }
 
   var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
   var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
-  registerAPIQuery(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author");
+  registerMiniSearch(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author", colors);
 
   var mediaRemoveSearchEl = document.getElementById("mediaRemoveSearch")
   var mediaRemoveResultsEl = document.getElementById("mediaRemoveResults")
-  registerAPIQuery(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media")
+  registerMiniSearch(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media", colors);
+</script>
+<script>
+  var scraperStartBtn = document.getElementById("scraper-start");
+  var scraperPickBtn = document.getElementById("scraper-pick");
+  var scraperStatusText = document.getElementById("scraper-status");
+  var leftCarouselControl = document.getElementById("left-carousel-control");
+  var rightCarouselControl = document.getElementById("right-carousel-control");
+  var imgContainer = document.getElementById("scraper-img-container");
+  var titleInput = document.getElementById("titleInput");
+  var urlInput = document.getElementById("urlInput");
+  var mediaTypeInput = document.getElementById("mediaSelection"); 
+  var scraperHeader = document.getElementById("scraper-header");
+
+  mediaTypeInput.onchange = () => {
+    if (mediaTypeInput.value == "Blu-Ray" || mediaTypeInput.value == "DVD") {
+      scraperHeader.innerHTML = "Blu-Ray/DVD Cover Scraper";
+      scraperStartBtn.disabled = false;
+    } else if (mediaTypeInput.value == "Book") {
+      scraperHeader.innerHTML = "Bookcover Scraper";
+      scraperStartBtn.disabled = false;
+    } else {
+      scraperHeader.innerHTML = `No Scraper for ${mediaTypeInput.value} Covers`;
+      scraperStartBtn.disabled = true;
+    }
+  }
+
+  scraperStartBtn.onclick = async() => { await intiateScraper() }
+  scraperPickBtn.disabled = true;
+
+  var carouselIndex = 0;
+  var pickIndex;
+
+  function selectImage() {
+    if (isNoImg(carouselIndex)) {
+      return;
+    }
+
+    if (pickIndex == carouselIndex && scraperPickBtn.classList.contains("btn-danger")) {
+      toggleCheck(pickIndex);
+      togglePickerButton();
+      urlInput.value = "";
+      pickIndex = undefined;
+      return;
+    }
+
+    if (pickIndex != undefined) {
+      toggleCheck(pickIndex);
+    }
+
+    pickIndex = carouselIndex;
+    toggleCheck(pickIndex);
+    togglePickerButton();
+    urlInput.value = imgContainer
+                        .children
+                        .item(pickIndex)
+                        .firstChild.src;
+  }
+
+  scraperPickBtn.onclick = selectImage;
+  rightCarouselControl.onclick = () => {
+    if(imgContainer.children.length <= carouselIndex + 1) {
+      return;
+    }
+
+    let lastIndex = carouselIndex;
+    carouselIndex += 1;
+    adjustCarousel(lastIndex);
+  }
+
+  leftCarouselControl.onclick = () => {
+    if(carouselIndex == 0) {
+      return;
+    }
+
+    let lastIndex = carouselIndex;
+    carouselIndex -= 1;
+    adjustCarousel(lastIndex);
+  }
+
+  function toggleCheck(index) {
+    let elem = imgContainer.children.item(index);
+    let badge = elem.children.item(1);
+
+    if (badge.style.display == "none") {
+      badge.style.display = "block";
+    } else {
+      badge.style.display = "none";
+    }
+  }
+
+  function adjustCarousel(last_index) {
+    imgContainer.children.item(last_index).style.display = "none";
+    imgContainer.children.item(carouselIndex).style.display = "block";
+    if (isNoImg(carouselIndex)) {
+      scraperPickBtn.disabled = true;
+    } else {
+      scraperPickBtn.disabled = false;
+    }
+    if (pickIndex == carouselIndex) {
+      scraperPickBtn.classList.remove("btn-success")
+      scraperPickBtn.classList.add("btn-danger")
+      scraperPickBtn.innerHTML = "Deselect Image";
+    } else {
+      scraperPickBtn.classList.remove("btn-danger")
+      scraperPickBtn.classList.add("btn-success")
+      scraperPickBtn.innerHTML = "Use current Image";
+    }
+  }
+
+  function togglePickerButton() {
+    if (scraperPickBtn.classList.contains("btn-success")) {
+      scraperPickBtn.classList.remove("btn-success")
+      scraperPickBtn.classList.add("btn-danger")
+      scraperPickBtn.innerHTML = "Deselect Image";
+    } else {
+      scraperPickBtn.classList.remove("btn-danger")
+      scraperPickBtn.classList.add("btn-success")
+      scraperPickBtn.innerHTML = "Use current Image";
+    }              
+  }
+    
+  
+  function removeImgTags(parent) {
+    while (parent.firstChild) {
+        parent.firstChild.remove();
+    }
+  }
+
+  function isNoImg(index) {
+    let src_path = new URL(imgContainer.children.item(index).firstChild.src).pathname;
+    return ((src_path == "/static/images/noimg_light.png" ||
+             src_path == "/static/images/noimg_dark.png")) 
+  }
+
+  function createBaseCarouselElement() {
+    let container = document.createElement('div');
+    container.classList.add("position-relative")
+    container.style.display = "none";
+    container.style.cursor = "pointer";
+    container.onclick = selectImage;
+
+    let img = document.createElement('img');
+    img.onload = function() { 
+      img.style.height = "180px";
+      adjustCarousel(carouselIndex);
+    }
+    img.classList.add("rounded", "bg-danger");
+    img.src = "{{url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}"
+    container.appendChild(img);
+
+    let badge = document.createElement('span');
+    badge.classList.add("position-absolute", "top-0", "start-100", "translate-middle", "badge", "rounded-pill", "bg-success");
+    badge.style.display = "none";
+
+    let icon = document.createElement('i');
+    icon.classList.add("fa-solid", "fa-check");
+    badge.appendChild(icon);
+
+    container.appendChild(badge);
+    return container
+  }
+  
+  async function intiateScraper() {
+    if (titleInput.value.length == 0) {
+      return;
+    }
+
+    scraperStartBtn.disabled = true;
+    scraperStatusText.innerHTML = "Searching for matching titles";
+    urlInput.value = "";
+    pickIndex = undefined;
+    carouselIndex = 0;
+
+    removeImgTags(imgContainer);
+    let element = createBaseCarouselElement();
+    element.style.display = "block";
+    imgContainer.appendChild(element);
+    
+
+    let response = await fetch('/api/scraper/search_covers', {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          media_type: mediaTypeInput.value,
+          query: titleInput.value
+      }),
+    });
+    
+    let data = await response.json();
+
+    if(data.error) {
+      scraperStatusText.innerHTML = `Idle (Error: ${data.error})`;
+      scraperStartBtn.disabled = false;
+      return;
+    }
+
+    if(data.urls.length == 0) {
+      scraperStatusText.innerHTML = "Idle (Error: Nothing Found)";
+      scraperStartBtn.disabled = false;
+      return;
+    }
+    
+    removeImgTags(imgContainer);
+    for(let i = 0; i<data.urls.length; i++) {
+      let elem = createBaseCarouselElement();
+      if (i == 0) {
+        elem.style.display = "block";
+      }
+      elem.firstChild.src = "";
+      elem.firstChild.classList.remove("bg-danger");
+      elem.firstChild.classList.add("scraper-image");
+
+      if (data.with_images) {
+        elem.firstChild.src = data.urls[i]
+      }
+      console.log(elem);
+      imgContainer.appendChild(elem);
+    }
+
+    if (!data.with_images) {
+      await loadImages(data.urls); 
+    } else {
+      scraperStatusText.innerHTML = `Idle (Scraped ${data.urls.length} Images)`;
+      scraperStartBtn.disabled = false;
+    }
+  }
+
+  async function loadImages(book_urls) {
+    console.log(book_urls);
+    scraperStatusText.innerHTML = "Loading Images";
+
+    let jobs = book_urls.length;
+    book_urls.forEach(async (url) => {
+      let carouselElement = imgContainer.children.item(book_urls.indexOf(url));
+      let response = await fetch('/api/scraper/book/scrape_cover', {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              url: url
+          }),
+      });
+      
+      let data = await response.json();
+      console.log(data);
+         
+      if(!data.image_url) {
+        if (imgContainer.children.length == 1) {
+          imgContainer.appendChild(createBaseCarouselElement());
+        }
+        carouselElement.remove()
+        adjustCarousel(carouselIndex);
+
+        jobs -= 1;  
+        if (jobs == 0) {
+          if (imgContainer.children.length == 1 && isNoImg(carouselIndex)) {
+            scraperStatusText.innerHTML = `Idle (Scraped 0 Images)`;
+          } else {
+            scraperStatusText.innerHTML = `Idle (Scraped ${imgContainer.children.length} Image(s))`;
+          }
+          scraperStartBtn.disabled = false;
+        }
+        return;
+      }
+
+      carouselElement.firstChild.src = data.image_url;
+      adjustCarousel(carouselIndex);
+
+      jobs -= 1;
+      if (jobs == 0) {
+        if (imgContainer.children.length == 1 && isNoImg(carouselIndex)) {
+          scraperStatusText.innerHTML = `Idle (Scraped 0 Images)`;
+        } else {
+          scraperStatusText.innerHTML = `Idle (Scraped ${imgContainer.children.length} Image(s))`;
+        }
+        scraperStartBtn.disabled = false;
+      }
+    })
+  }
+  
 </script>
 {%endblock%}

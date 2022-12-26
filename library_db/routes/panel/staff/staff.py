@@ -1,3 +1,5 @@
+import uuid
+from pathlib import Path
 from flask import (
     Blueprint,
     session,
@@ -14,6 +16,8 @@ from library_db.utils.utils import (
     get_template_vars,
     is_admin,
     is_staff,
+    process_cover_image,
+    download_image
 )
 from library_db.utils.db_utils import (
     get_media,
@@ -32,6 +36,12 @@ from library_db.utils.db_utils import (
 
 staff_bluep = Blueprint("staff_bluep", __name__, template_folder="templates")
 
+
+
+ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg'}
+
+def allowed_file(filename):
+    return Path(filename).suffix in ALLOWED_EXTENSIONS
 
 @staff_bluep.route("/", methods=["GET"])
 def redirect_staff():
@@ -76,7 +86,6 @@ def staff_panel_alter():
     template_vars["media_error"] = request.args.get("media_error")
     template_vars["author_error"] = request.args.get("author_error")
     return render_template("staff/alter.html", **template_vars)
-
 
 @staff_bluep.route("/alter/media", methods=["POST"])
 def alter_media():
@@ -128,13 +137,26 @@ def alter_media():
 
     author = get_author_id(author)
 
+
+    filename = media.image
+    if "image" in request.files:
+        file = request.files["image"]
+        if not file.filename == '' and allowed_file(file.filename):
+            if not filename:
+                filename = uuid.uuid1().hex + ".jpg"
+            
+            save_path = Path(current_app.config['UPLOAD_FOLDER']).joinpath(filename).__str__()
+            file.save(save_path)
+            process_cover_image(save_path)
+
     update_media(
         id=id,
         title=title,
         author_id=author,
         age_limit=age_limit,
         media_type_id=media_type,
-        isbn=isbn,
+        image=filename,
+        isbn=isbn
     )
 
     current_app.logger.info(
@@ -203,6 +225,26 @@ def add_media():
         age_limit = request.form.get("age_limit", None, int)
     except KeyError:
         return ret_error("Bad Form Data")
+    
+    filename = None
+    if "image" in request.files or "url" in request.form:
+        file = request.files["image"]
+        url = request.form["url"]
+        filename = uuid.uuid1().hex + ".jpg"
+        save_path = Path(current_app.config['UPLOAD_FOLDER']).joinpath(filename).__str__()
+
+        if file.filename != '' and url != '':
+            return ret_error("Can't upload Image and use Scraper Image")
+        elif not file.filename == '' and allowed_file(file.filename):
+            file.save(save_path)
+            process_cover_image(save_path)
+        elif not url == '':
+            if download_image(url, save_path) != 1:
+                filename = None
+            else:
+                process_cover_image(save_path)
+        else:
+            filename = None
 
     if isbn:
         try:
@@ -232,6 +274,7 @@ def add_media():
         age_limit=age_limit,
         media_type_id=media_type,
         isbn=isbn,
+        image=filename
     )
 
     current_app.logger.info(f"{session['email']} Added media {title} with id {new_id}")
@@ -291,7 +334,7 @@ def remove_media():
             )
         )
 
-    delete_media(media_id)
+    delete_media(media_id, current_app.config['UPLOAD_FOLDER'])
     current_app.logger.info(
         f"{session['email']} Removed media {media} with id {media_id}"
     )
