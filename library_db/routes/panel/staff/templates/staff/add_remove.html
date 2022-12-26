@@ -500,12 +500,17 @@
     if(data.error) {
       scraperStatusText.innerHTML = `Idle (Error: ${data.error})`;
       scraperStartBtn.disabled = false;
+      imgContainer.firstChild.firstChild.classList.add('bg-danger');
+      imgContainer.firstChild.firstChild.src = "{{ url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}";
+
       return;
     }
 
     if(data.urls.length == 0) {
       scraperStatusText.innerHTML = "Idle (Error: Nothing Found)";
       scraperStartBtn.disabled = false;
+      imgContainer.firstChild.firstChild.classList.add('bg-danger');
+      imgContainer.firstChild.firstChild.src = "{{ url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}";
       return;
     }
     
@@ -565,6 +570,8 @@
         if (jobs == 0) {
           if (imgContainer.children.length == 1 && isNoImg(carouselIndex)) {
             scraperStatusText.innerHTML = `Idle (Scraped 0 Images)`;
+            imgContainer.firstChild.firstChild.classList.add('bg-danger');
+            imgContainer.firstChild.firstChild.src = "{{ url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}";
           } else {
             scraperStatusText.innerHTML = `Idle (Scraped ${imgContainer.children.length} Image(s))`;
           }
@@ -580,6 +587,8 @@
       if (jobs == 0) {
         if (imgContainer.children.length == 1 && isNoImg(carouselIndex)) {
           scraperStatusText.innerHTML = `Idle (Scraped 0 Images)`;
+          imgContainer.firstChild.firstChild.classList.add('bg-danger');
+          imgContainer.firstChild.firstChild.src = "{{ url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}";
         } else {
           scraperStatusText.innerHTML = `Idle (Scraped ${imgContainer.children.length} Image(s))`;
         }
