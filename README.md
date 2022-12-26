@@ -15,6 +15,7 @@ This is a Library Website made with [Python](https://github.com/python/cpython),
 ## Setup
 
 #### Install requirements for the Project:
+Tipp: Use a virtual Envoirment
 ```
 pip install -r requirements.txt
 ```
