@@ -6,7 +6,8 @@ This is a Library Website made with [Python](https://github.com/python/cpython),
   
 ![Screenshot 2022-10-26 at 22-27-19 Library - SQL Library](https://user-images.githubusercontent.com/63876564/198130318-6b565702-9bb9-452d-86b2-4eddf861c358.png)
 ![Screenshot 2022-12-26 at 13-30-37 Medialist - SQL Library](https://user-images.githubusercontent.com/63876564/209549290-e4e893f9-6438-45a3-a0a5-f8150abdbba4.png)
-
+![Screenshot 2022-12-26 at 13-33-07 Staff Panel - SQL Library](https://user-images.githubusercontent.com/63876564/209549499-c66d82bf-22ce-4e5e-9463-b92591abba69.png)
+![Screenshot 2022-12-26 at 13-32-18 Server Dashboard - SQL Library](https://user-images.githubusercontent.com/63876564/209549514-be405318-6204-4c7d-a8b2-030309e3828f.png)
 
 
 </details>
