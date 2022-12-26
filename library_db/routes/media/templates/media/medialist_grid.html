@@ -183,7 +183,8 @@
               style="font-weight: 430">Layout</span>
         <div class="btn-group mb-3">
           <button id="grid-btn"
-                  {% if not grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  {% if not grid %} 
+                  class="btn {% if darkmode %} text-white {% endif %}"
                   style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
                   {% else %}
                   class="btn btn-primary"
@@ -191,7 +192,8 @@
             <i class="fa-solid fa-grip"></i>
           </button>
           <button id="table-btn"
-                  {% if grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  {% if grid %} 
+                  class="btn {% if darkmode %} text-white{% endif %}"
                   style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
                   {% else %}
                   class="btn btn-primary"
@@ -246,12 +248,14 @@
         <span class="pb-1 {% if darkmode %} text-white{% endif %}"
               style="font-weight: 430">Sort Order</span>
         <div class="btn-group mb-3">
-          <button {% if sort_dir == "ASC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='ASC')}}'" class="btn {% if darkmode %} text-white{% endif %}
+          <button {% if sort_dir == "ASC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='ASC')}}'" 
+                  class="btn {% if darkmode %} text-white{% endif %}"
                   style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
                   {% endif %}>
             <i class="fa-solid fa-arrow-up-wide-short"></i>
           </button>
-          <button {% if sort_dir == "DESC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='DESC')}}'" class="btn {% if darkmode %} text-white{% endif %}
+          <button {% if sort_dir == "DESC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='DESC')}}'" 
+                  class="btn {% if darkmode %} text-white{% endif %}"
                   style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
                   {% endif %}>
             <i class="fa-solid fa-arrow-down-wide-short"></i>
