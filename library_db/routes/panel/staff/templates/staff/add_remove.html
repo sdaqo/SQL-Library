@@ -429,8 +429,8 @@
 
   function isNoImg(index) {
     let src_path = new URL(imgContainer.children.item(index).firstChild.src).pathname;
-    return ((src_path == "/static/images/noimg_light.png" ||
-             src_path == "/static/images/noimg_dark.png")) 
+    return ((src_path == "/static/images/transparent.png" ||
+             src_path == "/static/images/transparent.png")) 
   }
 
   function createBaseCarouselElement(img_height) {
@@ -449,6 +449,7 @@
       adjustCarousel(carouselIndex);
     }
     img.classList.add("rounded", "align-self-center", "scraper-image");
+    img.src = "{{url_for('static', filename='images/transparent.png')}}";
     container.appendChild(img);
 
     let badge = document.createElement('span');
