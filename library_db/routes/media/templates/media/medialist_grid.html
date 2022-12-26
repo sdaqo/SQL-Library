@@ -1,6 +1,9 @@
-{% extends "base.html"%} {% block title %} Medialist {% endblock %} {% block
-head %} {{ super() }}
-<style>
+{% extends "base.html" %}
+{% block title %}Medialist{% endblock %}
+{% block
+  head %}
+  {{ super() }}
+  <style>
   {%if darkmode%}
   body {
     background-color: #121212;
@@ -57,209 +60,252 @@ head %} {{ super() }}
  
 
 
-</style>
+  </style>
 {% endblock %}
 {% block content %}
-
-<div class="modal fade " id="mediaModal" tabindex="-1" aria-labelledby="exampleModalLabel" >
-  <div class="modal-dialog modal-dialog-centered ">
-    <div class="modal-content {% if darkmode %} bg-dark text-white {% endif %}">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalLabel"></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade "
+       id="mediaModal"
+       tabindex="-1"
+       aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content {% if darkmode %} bg-dark text-white{% endif %}">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalLabel"></h1>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="row">
+            <dt class="col-sm-7">
+              Title:
+            </dt>
+            <dd class="col-sm-5" id="titleLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Author:
+            </dt>
+            <dd class="col-sm-5" id="authorLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Age Limit:
+            </dt>
+            <dd class="col-sm-5" id="ageLimitLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Media Type:
+            </dt>
+            <dd class="col-sm-5" id="mediaTypeLabel">
+            </dd>
+            <dt class="col-sm-7">
+              ISBN:
+            </dt>
+            <dd class="col-sm-5" id="isbnLable">
+            </dd>
+            <div>
+              <hr class="px-5" />
+            </div>
+            <dt class="col-sm-7">
+              Status:
+            </dt>
+            <dd class="col-sm-5" id="statusLabel">
+            </dd>
+            <dt class="col-sm-7" id="etaLabelTitle">
+            </dt>
+            <dd class="col-sm-5" id="etaLabel">
+            </dd>
+            <dt class="col-sm-7" id="borrowerLabelTitle">
+            </dt>
+            <dd class="col-sm-5" id="borrowerLabel">
+            </dd>
+          </dl>
+          <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
+        </div>
       </div>
-      <div class="modal-body">
-        <dl class="row">
-          <dt class="col-sm-7">Title:</dt>
-          <dd class="col-sm-5" id="titleLabel"></dd>
-          <dt class="col-sm-7">Author:</dt>
-          <dd class="col-sm-5" id="authorLabel"></dd>
-          <dt class="col-sm-7">Age Limit:</dt>
-          <dd class="col-sm-5" id="ageLimitLabel"></dd>
-          <dt class="col-sm-7">Media Type:</dt>
-          <dd class="col-sm-5" id="mediaTypeLabel"></dd>
-          <dt class="col-sm-7">ISBN:</dt>
-          <dd class="col-sm-5" id="isbnLable"></dd>
-          <div><hr class="px-5"></div>
-          <dt class="col-sm-7">Status:</dt>
-          <dd class="col-sm-5" id="statusLabel"></dd>
-          <dt class="col-sm-7" id="etaLabelTitle"></dt>
-          <dd class="col-sm-5" id="etaLabel"></dd>
-          <dt class="col-sm-7" id="borrowerLabelTitle"></dt>
-          <dd class="col-sm-5" id="borrowerLabel"></dd>
-        </dl>
-        <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
+    </div>
+  </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="errorToast"
+         class="toast {% if darkmode %} bg-dark text-white {% endif %}"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true">
+      <div class="toast-header {% if darkmode %} bg-dark text-white {% endif %}">
+        <svg class="bd-placeholder-img rounded me-2"
+             width="20"
+             height="20"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true"
+             preserveAspectRatio="xMidYMid slice"
+             focusable="false">
+          <rect width="100%" height="100%" fill="#dc3545"></rect>
+        </svg>
+        <strong class="me-auto">Error</strong>
+        <button type="button"
+                class="btn-close text-white"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
       </div>
+      <div class="toast-body" id="errorToastBody"></div>
     </div>
   </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <rect width="100%" height="100%" fill="#dc3545"></rect>
-      </svg>
-      <strong class="me-auto">Error</strong>
-      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="infoToast"
+         class="toast {% if darkmode %} bg-dark text-white {% endif %}"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true"
+         data-bs-delay="700">
+      <div class="toast-header {% if darkmode %} bg-dark text-white {% endif %}">
+        <svg class="bd-placeholder-img rounded me-2"
+             width="20"
+             height="20"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true"
+             preserveAspectRatio="xMidYMid slice"
+             focusable="false">
+          <rect width="100%" height="100%" fill="#007aff"></rect>
+        </svg>
+        <strong class="me-auto">Info</strong>
+        <button type="button"
+                class="btn-close text-white"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="infoToastBody"></div>
     </div>
-    <div class="toast-body" id="errorToastBody"></div>
   </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="infoToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="700">
-    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <rect width="100%" height="100%" fill="#007aff"></rect>
-      </svg>
-      <strong class="me-auto">Info</strong>
-      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body" id="infoToastBody"></div>
-  </div>
-</div>
-
-<div class="container mt-3 mb-2">
-  <div class="d-flex flex-wrap">
-    <div class="d-flex flex-column me-4">
-      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Layout</span>
-      <div class="btn-group mb-3">
-        <button
-        id="grid-btn"
-        {% if not grid %}
-        class="btn {% if darkmode %} text-white {% endif %}"
-        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
-        {% else %} 
-        class="btn btn-primary"
-        {% endif %}>
+  <div class="container mt-3 mb-2">
+    <div class="d-flex flex-wrap">
+      <div class="d-flex flex-column me-4">
+        <span class="pb-1 {% if darkmode %} text-white{% endif %}"
+              style="font-weight: 430">Layout</span>
+        <div class="btn-group mb-3">
+          <button id="grid-btn"
+                  {% if not grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% else %}
+                  class="btn btn-primary"
+                  {% endif %}>
             <i class="fa-solid fa-grip"></i>
-        </button>
-        <button 
-        id="table-btn"
-        {% if grid %}
-        class="btn {% if darkmode %} text-white {% endif %}"
-        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
-        {% else %} 
-        class="btn btn-primary" 
-        {% endif %}>
-          <i class="fa-solid fa-table-list"></i>
-      </button>
+          </button>
+          <button id="table-btn"
+                  {% if grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% else %}
+                  class="btn btn-primary"
+                  {% endif %}>
+            <i class="fa-solid fa-table-list"></i>
+          </button>
+        </div>
+      </div>
+      <div class="d-flex flex-column me-4">
+        <span class="pb-1 {% if darkmode %} text-white{% endif %}"
+              style="font-weight: 430">Sort Field</span>
+        <div class="btn-group">
+          <button type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+            {{"Age Limit" if sort_field == "age_limit" else sort_field.capitalize()}}
+          </button>
+          <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark{% endif %}">
+            {% for i in ["title", "author", "age_limit"] %}
+              <li>
+                <a class="dropdown-item {% if sort_field == i %} active{% endif %}"
+                   href="{{ update_query_params(url, sort=i)}}">
+                  {{"Age Limit" if i == "age_limit" else i.capitalize()}}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="d-flex flex-column me-4">
+        <span class="pb-1 {% if darkmode %} text-white{% endif %}"
+              style="font-weight: 430">Status</span>
+        <div class="btn-group">
+          <button type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+            {{ borrow_status_filter.capitalize()}}
+          </button>
+          <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark{% endif %}">
+            {% for i in ["all", "borrowed", "available"] %}
+              <li>
+                <a class="dropdown-item {% if borrow_status_filter == i %} active{% endif %}"
+                   href="{{ update_query_params(url, status=i)}}">{{ i.capitalize()}}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <span class="pb-1 {% if darkmode %} text-white{% endif %}"
+              style="font-weight: 430">Sort Order</span>
+        <div class="btn-group mb-3">
+          <button {% if sort_dir == "ASC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='ASC')}}'" class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% endif %}>
+            <i class="fa-solid fa-arrow-up-wide-short"></i>
+          </button>
+          <button {% if sort_dir == "DESC" %} class="btn btn-primary" {% else %} onclick="window.location='{{ update_query_params(url, sort_type='DESC')}}'" class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% endif %}>
+            <i class="fa-solid fa-arrow-down-wide-short"></i>
+          </button>
+        </div>
       </div>
     </div>
-    <div class="d-flex flex-column me-4">
-      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Sort Field</span>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          {{"Age Limit" if sort_field == "age_limit" else sort_field.capitalize()}}
-        </button>
-        <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}">
-          {% for i in ["title", "author", "age_limit"] %}
-          <li>
-            <a 
-              class="dropdown-item {% if sort_field == i %} active {% endif %}" 
-              href="{{update_query_params(url, sort=i)}}"
-            >
-              {{"Age Limit" if i == "age_limit" else i.capitalize()}}
-            </a>
-          </li>
-          {%endfor%}
-        </ul>
-      </div>
-    </div>
-    <div class="d-flex flex-column me-4">
-      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Status</span>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          {{borrow_status_filter.capitalize()}}
-        </button>
-        <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}">
-          {% for i in ["all", "borrowed", "available"]%}
-          <li><a 
-                class="dropdown-item {% if borrow_status_filter == i %} active {% endif %}"
-                href="{{update_query_params(url, status=i)}}" >{{i.capitalize()}}</a></li>
-          {%endfor%}
-        </ul>
-      </div>
-    </div>
-    <div class="d-flex flex-column">
-      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Sort Order</span>
-      <div class="btn-group mb-3">
-        <button
-          {% if sort_dir == "ASC" %}
-          class="btn btn-primary"
-          {% else %}
-          onclick="window.location='{{update_query_params(url, sort_type='ASC')}}'"
-          class="btn {% if darkmode %} text-white {% endif %}"
-          style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"
-          {% endif %}
-        >
-          <i class="fa-solid fa-arrow-up-wide-short"></i>
-        </button>
-        <button 
-          {% if sort_dir == "DESC" %}
-          class="btn btn-primary" 
-          {% else %}
-          onclick="window.location='{{update_query_params(url, sort_type='DESC')}}'" 
-          class="btn {% if darkmode %} text-white {% endif %}"
-          style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
-          {% endif %}
-        >
-          <i class="fa-solid fa-arrow-down-wide-short"></i>
-      </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="media-grid">
-    {% for i in table_data %}
-    <div class="media-item position-relative">
-      <div class="position-relative">
-        <img 
-          onclick="show_modal({{i.id}})" 
-          src="{% if i.image %} {{url_for('static', filename='images/media/' + i.image)}} {% else %}  {{url_for('static', filename='images/noimg_light.png' if darkmode else 'images/noimg_dark.png')}} {% endif %}" 
-          class="rounded shadow img-hover {% if darkmode %} bg-dark {% endif%}"
-          onmouseover='{% if not i.image and not darkmode %}this.style.filter="drop-shadow(10px 0 0.28rem grey)"; {% endif %} this.nextElementSibling.style.display = "block"' 
-          onmouseout='{% if not i.image and not darkmode %}this.style.filter="none"; {% endif %} this.nextElementSibling.style.display = "none"'
-        />
-        <span 
-          class="position-absolute p-2 badge {%if darkmode %} text-light bg-dark {% else %} text-dark bg-light {% endif%}"
-          style="bottom: 1%; right: 2%; display: none"
-        >
-          {{i.media_type}}
-        </span>
-    </div>
-      <span class="position-absolute top-0 start-100 translate-middle p-2 rounded-circle bg-success {% if is_media_borrowed(i.id) %} bg-danger {% endif %}"></span>
-      
-      <span onclick="show_modal({{i.id}})" class="{% if darkmode %} text-white {% endif %}">{{i.title}}</span>
-    </div>
-    {% endfor %}
-  </div>
-  <nav>
-    <ul class="pagination justify-content-center">
-      <li class="page-item {% if page + 1 == 1 %} disabled {% endif %}">
-        <a class="page-link" href="{{update_query_params(url, page=page - 1)}}" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      {% for i in range(page_count) %}
-      <li class="page-item {% if i == page %} active disabled {%endif%}">
-        <a class="page-link" href="{{update_query_params(url, page=i)}}">{{i + 1}}</a>
-      </li>
+    <div id="media-grid">
+      {% for i in table_data %}
+        <div class="media-item position-relative">
+          <div class="position-relative">
+            <img onclick="show_modal({{ i.id }})"
+                 src="{% if i.image %} {{ url_for('static', filename='images/media/' + i.image)}} {% else %}  {{ url_for('static', filename='images/noimg_light.png' if darkmode else 'images/noimg_dark.png')}} {% endif %}"
+                 class="rounded shadow img-hover {% if darkmode %} bg-dark{% endif %}"
+                 onmouseover='{% if not i.image and not darkmode %}this.style.filter="drop-shadow(10px 0 0.28rem grey)";{% endif %} this.nextElementSibling.style.display = "block"'
+                 onmouseout='{% if not i.image and not darkmode %}this.style.filter="none";{% endif %} this.nextElementSibling.style.display = "none"'/>
+            <span class="position-absolute p-2 badge {% if darkmode %} text-light bg-dark {% else %} text-dark bg-light {% endif %}"
+                  style="bottom: 1%;
+                         right: 2%;
+                         display: none">
+              {{ i.media_type }}
+            </span>
+          </div>
+          <span class="position-absolute top-0 start-100 translate-middle p-2 rounded-circle bg-success {% if is_media_borrowed(i.id) %} bg-danger {% endif %}"></span>
+          <span onclick="show_modal({{ i.id }})"
+                class="{% if darkmode %} text-white{% endif %}">{{ i.title }}</span>
+        </div>
       {% endfor %}
-      <li class="page-item {% if page + 1 == page_count %} disabled {% endif %}">
-        <a class="page-link" href="{{update_query_params(url, page=page + 1)}}" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-
-    </ul>
-  </nav>
-
-</div>
-
-
-<script defer>
+    </div>
+    <nav>
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if page + 1 == 1 %} disabled{% endif %}">
+          <a class="page-link"
+             href="{{ update_query_params(url, page=page - 1)}}"
+             aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% for i in range(page_count) %}
+          <li class="page-item {% if i == page %} active disabled {% endif %}">
+            <a class="page-link" href="{{ update_query_params(url, page=i)}}">{{ i + 1 }}</a>
+          </li>
+        {% endfor %}
+        <li class="page-item {% if page + 1 == page_count %} disabled{% endif %}">
+          <a class="page-link"
+             href="{{ update_query_params(url, page=page + 1)}}"
+             aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <script defer>
   document
     .getElementById({% if not grid %} "grid-btn" {% else %} "table-btn" {%endif%})
     .addEventListener("click", function (event) {
@@ -383,5 +429,5 @@ head %} {{ super() }}
   })
 
   window.onresize
-</script>
+  </script>
 {% endblock %}

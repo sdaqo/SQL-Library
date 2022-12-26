@@ -2,142 +2,144 @@
 <html lang="en" class="h-100">
   <head>
     {% block head %}
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Library Website">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-    <link href="/static/fontawesome/css/fontawesome.css" rel="stylesheet" />
-    <link href="/static/fontawesome/css/solid.css" rel="stylesheet" />
-    <link href="/static/fontawesome/css/brands.css" rel="stylesheet" />
-    <title>{% block title %}{% endblock %} - SQL Library</title>
-    <link rel="shortcut icon" href="/static/images/favicon.ico">
-    <style>  
-    .dotted-link {
-      text-decoration-style: dotted;
-    }
-    .content-container {
-      height: calc(100vh - 30px);
-      overflow-y: auto;
-    }
-    footer {
-      height: 30px;
-    }
-  </style>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="Library Website" />
+      <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+      <script src="/static/js/bootstrap.bundle.min.js"></script>
+      <link href="/static/fontawesome/css/fontawesome.css" rel="stylesheet" />
+      <link href="/static/fontawesome/css/solid.css" rel="stylesheet" />
+      <link href="/static/fontawesome/css/brands.css" rel="stylesheet" />
+      <title>
+        {% block title %}{% endblock %}
+      - SQL Library</title>
+      <link rel="shortcut icon" href="/static/images/favicon.ico" />
+      <style>
+  .dotted-link {
+    text-decoration-style: dotted;
+  }
+  .content-container {
+    height: calc(100vh - 30px);
+    overflow-y: auto;
+  }
+  footer {
+    height: 30px;
+  }
+      </style>
     {% endblock %}
   </head>
   <body class="h-100">
     <div class="content-container">
-    <nav
-      class=" sticky-top navbar navbar-expand-xl bg-light {% if not darkmode %} shadow {% endif %} {% if darkmode %} navbar-dark bg-dark {% endif %}"
-    >
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">SQL Library</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" href="/medialist">Medialist</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Account
-              </a>
-
-              <ul
-                class="dropdown-menu {% if darkmode %} dropdown-menu-dark {% endif %}"
-              >
-                {% if logged_in %}
-                <li><a class="dropdown-item" href="{{url_for('panel_bluep.user_bluep.redirect_profile')}}">User Panel</a></li>
-                <li><a class="dropdown-item" href="{{url_for('auth_bluep.logout')}}">Logout</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <span class="dropdown-item" disabled>Hello, {{ name }}</span>
-                </li>
-                {% if is_admin %}
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="{{url_for('panel_bluep.admin_bluep.admin_panel')}}">Admin Panel</a>
-                </li>
-                {% endif %} {% if is_staff or is_admin %}
-                {%if is_staff%}<li><hr class="dropdown-divider" /></li>{% endif %}
-                <li>
-                  <a class="dropdown-item" href="{{url_for('panel_bluep.staff_bluep.redirect_staff')}}">Staff Panel</a>
-                </li>
-                {% endif %} {% else %}
-                <li><a class="dropdown-item" href="{{url_for('auth_bluep.login')}}">Login</a></li>
-                <li><a class="dropdown-item" href="{{url_for('auth_bluep.signup')}}">SignUp</a></li>
-
-                {% endif %}
-              </ul>
-            </li>
-          </ul>
-
-          <div
-            class="form-check form-switch me-2 {% if darkmode %} text-white {% endif %}"
-          >
-          <label for="darkmode-switch">
-            {%if darkmode%}<i class="fa-solid fa-moon"></i>{%else%}<i
-              class="fa-solid fa-sun"
-            ></i
-            >{%endif%}</label>
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="darkmode-switch"
-              {%if darkmode %} checked {%endif%}
-            />
-
-          </div>
-
-          <form class="d-flex" role="search" id="search-form">
-            <select
-              class="form-select {%if darkmode%} bg-dark text-white {%endif%}"
-              aria-label="Default select example"
-              style="border-radius: 0.375rem 0rem 0rem 0.375rem"
-              name="media_type"
-            >
-              <option {% if not media_type_selection %}selected {%endif%}>
-                All
-              </option>
-              {% for i in media_types %}
-              <option value="{{i}}" {% if i == media_type_selection %} selected {% endif %}>{{i}}</option>
-              {% endfor %}
-            </select>
-            <input
-              class="form-control  {%if darkmode%} bg-dark text-white {%endif%}"
-              style="border-radius: 0"
-              type="search"
-              placeholder="by(<Author>)"
-              aria-label="Search"
-              value="{{ query if query }}"
-            />
-            <button class="btn btn-outline-primary" style="border-radius: 0rem.375rem 0.375rem 0rem" type="submit">
-              Search
-            </button>
-          </form>
-        </div>
-      </div>
-    </nav>
-    <script defer>
+      <nav class=" sticky-top navbar navbar-expand-xl bg-light {% if not darkmode %} shadow{% endif %} {% if darkmode %} navbar-dark bg-dark{% endif %}">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">SQL Library</a>
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="/medialist">Medialist</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">Account</a>
+                <ul class="dropdown-menu {% if darkmode %} dropdown-menu-dark{% endif %}">
+                  {% if logged_in %}
+                    <li>
+                      <a class="dropdown-item"
+                         href="{{ url_for('panel_bluep.user_bluep.redirect_profile')}}">User Panel</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('auth_bluep.logout')}}">Logout</a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <span class="dropdown-item" disabled>Hello, {{ name }}</span>
+                    </li>
+                    {% if is_admin %}
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a class="dropdown-item"
+                           href="{{ url_for('panel_bluep.admin_bluep.admin_panel')}}">Admin Panel</a>
+                      </li>
+                    {% endif %}
+                    {% if is_staff or is_admin %}
+                      {% if is_staff %}
+                        <li>
+                          <hr class="dropdown-divider" />
+                        </li>
+                      {% endif %}
+                      <li>
+                        <a class="dropdown-item"
+                           href="{{ url_for('panel_bluep.staff_bluep.redirect_staff')}}">Staff Panel</a>
+                      </li>
+                    {% endif %}
+                  {% else %}
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('auth_bluep.login')}}">Login</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('auth_bluep.signup')}}">SignUp</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </li>
+            </ul>
+            <div class="form-check form-switch me-2 {% if darkmode %} text-white{% endif %}">
+              <label for="darkmode-switch">
+                {% if darkmode %}
+                  <i class="fa-solid fa-moon"></i>{% else %}<i class="fa-solid fa-sun"></i
+                    >{% endif %}
+                  </label>
+                  <input class="form-check-input"
+                         type="checkbox"
+                         role="switch"
+                         id="darkmode-switch"
+                         {% if darkmode %} checked {% endif %}/>
+                </div>
+                <form class="d-flex" role="search" id="search-form">
+                  <select class="form-select {% if darkmode %} bg-dark text-white {% endif %}"
+                          aria-label="Default select example"
+                          style="border-radius: 0.375rem 0rem 0rem 0.375rem"
+                          name="media_type">
+                    <option {% if not media_type_selection %}selected {% endif %}>
+                      All
+                    </option>
+                    {% for i in media_types %}
+                      <option value="{{i}}" {% if i == media_type_selection %} selected{% endif %}>
+                        {{i}}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <input class="form-control  {% if darkmode %} bg-dark text-white {% endif %}"
+                         style="border-radius: 0"
+                         type="search"
+                         placeholder="by(<Author>)"
+                         aria-label="Search"
+                         value="{{ query if query }}"/>
+                  <button class="btn btn-outline-primary"
+                          style="border-radius: 0rem.375rem 0.375rem 0rem"
+                          type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+          </nav>
+          <script defer>
       document
         .getElementById("darkmode-switch")
         .addEventListener("input", function (event) {
@@ -163,20 +165,14 @@
           mediaListURL.pathname = "{{url_for('media_bluep.show_medialist')}}";
           window.location = mediaListURL.toString();
         });
-    </script>
-    {% block content %}{% endblock %}
-
-    </div>
-    <footer
-      class="d-flex justify-content-center pb-2 m-0 {%if darkmode %} text-white {%endif%}"
-    >
-    <a class="dotted-link" href="https://github.com/sdaqo/library_website"
-      >SQL Library</a
-    >,&nbsp;made by&nbsp;<a class="dotted-link" href="https://github.com/sdaqo"
-      >sdaqo</a
-    >&nbsp;on GitHub&nbsp;<a href="https://github.com/"
-      ><i class="fa-brands fa-github"></i
-    ></a>
-  </footer>
-  </body>
-</html>
+          </script>
+          {% block content %}{% endblock %}
+        </div>
+        <footer class="d-flex justify-content-center pb-2 m-0 {% if darkmode %} text-white {% endif %}">
+          <a class="dotted-link" href="https://github.com/sdaqo/library_website">SQL Library</a
+            >,&nbsp;made by&nbsp;<a class="dotted-link" href="https://github.com/sdaqo">sdaqo</a
+            >&nbsp;on GitHub&nbsp;<a href="https://github.com/"><i class="fa-brands fa-github"></i
+          ></a>
+        </footer>
+      </body>
+    </html>

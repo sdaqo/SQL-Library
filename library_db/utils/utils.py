@@ -1,7 +1,8 @@
 import re
 import requests
-from PIL import Image, ImageFilter
+import musicbrainzngs
 from lxml import html 
+from PIL import Image, ImageFilter
 from urllib.parse import urlparse, parse_qs, urlunparse, urlencode
 from library_db.utils.db_utils import get_user_data, get_user_type, get_media_types
 
@@ -129,6 +130,25 @@ def imdb_search(query: str):
             pass
 
     return search_results
+
+def musicbrainz_search(query: str, artist_query: str):
+    musicbrainzngs.set_useragent("SQL-Library", "1.0", "https://github.com/sdaqo/library_website")
+
+    res = musicbrainzngs.search_releases(query=query, artist=artist_query, limit=7)
+    release_ids = [i['id'] for i in res['release-list']]
+    images = []  
+    for i in release_ids:
+        try:
+            img_list = musicbrainzngs.get_image_list(i)
+            for i in img_list['images']:
+                if "Front" in i['types']:
+                    images.append(
+                        i['thumbnails']['large']
+                    )
+        except musicbrainzngs.ResponseError:
+            pass
+            
+    return images
 
 def scrape_goodreads_cover(goodreads_book_url: str):
     res = requests.get(goodreads_book_url)

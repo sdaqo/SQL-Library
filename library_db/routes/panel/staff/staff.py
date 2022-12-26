@@ -1,5 +1,6 @@
 import uuid
 from pathlib import Path
+from werkzeug.datastructures import FileStorage
 from flask import (
     Blueprint,
     session,
@@ -10,7 +11,6 @@ from flask import (
     abort,
     current_app,
 )
-
 
 from library_db.utils.utils import (
     get_template_vars,
@@ -251,8 +251,8 @@ def add_media():
 
     filename = None
     if "image" in request.files or "url" in request.form:
-        file = request.files["image"]
-        url = request.form["url"]
+        file = request.files.get("image", FileStorage(filename=""))
+        url = request.form.get("url", "")
         filename = uuid.uuid1().hex + ".jpg"
         save_path = Path(current_app.config['UPLOAD_FOLDER']).joinpath(filename).__str__()
 

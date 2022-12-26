@@ -1,7 +1,8 @@
-{% extends "base.html"%} {% block title %} Login {% endblock %} {% block head %}
-{{ super() }}
-
-<style>
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
   {% if darkmode %}
     body {
       background-color: #121212;
@@ -22,43 +23,34 @@
       width: 250px;
     }
   }
-</style>
-{% endblock %} {% block content %}
-<div
-  class="position-absolute top-50 start-50 translate-middle log-in-container"
->
-  <form
-    action="/login?next={{next}}"
-    method="post"
-    id="form"
-    class="rounded d-flex flex-column bg-light p-3 {%if darkmode%} bg-dark text-white {% else %} shadow-lg border border-2 {% endif%}"
-  >
-    <p id="box-title" class="text-center my-0">Login</p>
-    <hr class="border border-secondary border-1 opacity-50 mt-1" />
-    <label for="email">Email</label>
-    <input
-      class="form-control"
-      type="email"
-      placeholder="test@mailbox.com"
-      id="email"
-      name="email"
-    />
-    <label for="password" class="mt-2">Password</label>
-    <input
-      class="form-control"
-      type="password"
-      placeholder="1234"
-      id="password"
-      name="password"
-    />
-    <label>{{ error }}</label>
-    <input
-      class="btn btn-primary mt-3"
-      type="submit"
-      value="Submit"
-      class="form-control"
-    />
-    <span class="mt-1">No Account? Signup <a href="{{url_for('auth_bluep.signup')}}">here</a></span>
-  </form>
-</div>
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="position-absolute top-50 start-50 translate-middle log-in-container">
+    <form action="/login?next={{ next }}"
+          method="post"
+          id="form"
+          class="rounded d-flex flex-column bg-light p-3 {% if darkmode %} bg-dark text-white {% else %} shadow-lg border border-2 {% endif %}">
+      <p id="box-title" class="text-center my-0">Login</p>
+      <hr class="border border-secondary border-1 opacity-50 mt-1" />
+      <label for="email">Email</label>
+      <input class="form-control"
+             type="email"
+             placeholder="test@mailbox.com"
+             id="email"
+             name="email"/>
+      <label for="password" class="mt-2">Password</label>
+      <input class="form-control"
+             type="password"
+             placeholder="1234"
+             id="password"
+             name="password"/>
+      <label>{{ error }}</label>
+      <input class="btn btn-primary mt-3"
+             type="submit"
+             value="Submit"
+             class="form-control"/>
+      <span class="mt-1">No Account? Signup <a href="{{ url_for('auth_bluep.signup')}}">here</a></span>
+    </form>
+  </div>
 {% endblock %}

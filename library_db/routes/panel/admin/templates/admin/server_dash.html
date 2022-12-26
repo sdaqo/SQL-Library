@@ -1,7 +1,8 @@
-{% extends "base.html"%}{% block title %} Server Dashboard {% endblock %} {%
-block head %} {{ super() }}
-
-<style>
+{% extends "base.html" %}
+{% block title %}Server Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
     {% if darkmode %}
       body {
         background-color: #121212;
@@ -58,184 +59,164 @@ block head %} {{ super() }}
   .active {
     display: block;
   }
-</style>
-{% endblock %} {% block content %}
-
-<div class="container mt-3">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a
-        class="nav-link {% if darkmode %} text-white {%endif%}"
-        href="{{url_for('panel_bluep.admin_bluep.user_managment')}}"
-        >User Managment</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="">Server Dashboard</a>
-    </li>
-  </ul>
-  <div
-    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
-    class="p-3 pt-5"
-  >
-    <div class="row row-cols-1 row-cols-md-1 g-4">
-      <div class="col">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="container mt-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link {% if darkmode %} text-white{% endif %}"
+           href="{{ url_for('panel_bluep.admin_bluep.user_managment')}}">User Managment</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="">Server Dashboard</a>
+        </li>
+      </ul>
+      <div style="background-color: {% if darkmode %} #212529 {% else %} #eee {% endif %};
+                  border-color: #373b3e"
+           class="p-3 pt-5">
+        <div class="row row-cols-1 row-cols-md-1 g-4">
           <div class="col">
-            <div class="card shadow {%if darkmode%}text-white {%endif%}">
-              <div class="card-body">
-                <h5>Server Info</h5>
-                <div class="col-sm-3">
-                  <p class="mb-0">Server Status</p>
-                </div>
-                <div class="col-sm-7">
-                  <p class="text-muted mb-0">Running</p>
-                </div>
-                <hr />
-                <div class="col-sm-3">
-                  <p class="mb-0">Server IP</p>
-                </div>
-                <div class="col-sm-7">
-                  <p class="text-muted mb-0">{{hostname}}</p>
-                </div>
-                <hr />
-                <div class="col-sm-3">
-                  <p class="mb-0">Server Port</p>
-                </div>
-                <div class="col-sm-7">
-                  <p class="text-muted mb-0">{{port}}</p>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+              <div class="col">
+                <div class="card shadow {% if darkmode %}text-white{% endif %}">
+                  <div class="card-body">
+                    <h5>Server Info</h5>
+                    <div class="col-sm-3">
+                      <p class="mb-0">Server Status</p>
+                    </div>
+                    <div class="col-sm-7">
+                      <p class="text-muted mb-0">Running</p>
+                    </div>
+                    <hr />
+                    <div class="col-sm-3">
+                      <p class="mb-0">Server IP</p>
+                    </div>
+                    <div class="col-sm-7">
+                      <p class="text-muted mb-0">{{ hostname }}</p>
+                    </div>
+                    <hr />
+                    <div class="col-sm-3">
+                      <p class="mb-0">Server Port</p>
+                    </div>
+                    <div class="col-sm-7">
+                      <p class="text-muted mb-0">{{ port }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card shadow {%if darkmode%}text-white {%endif%}">
-              <div class="card-body">
-                <h5>Server Logs</h5>
-                <ul class="list-group bg-dark ps-0 pt-0">
-                  <li
-                    class="list-group-item text-white border-0 ps-0 pt-0"
-                    {%if
-                    darkmode
-                    %}style="background-color: #121212"
-                    {%endif%}
-                  >
-                    <ul class="list-group mt-2">
-                      <li class="list-group-item list-group-item-info border-0">
-                        <span class="caret">
-                          <i class="fa-solid fa-chevron-right"></i>&nbsp;Info
-                          Log Files
-                        </span>
-                        <ul class="nested list-group">
-                          {% for log in info_logs %}
-                          <li class="list-group-item">
-                            <a
-                              href="{{url_for('panel_bluep.admin_bluep.get_info_log', log=log)}}"
-                              >{{log}}</a
-                            >
+              <div class="col">
+                <div class="card shadow {% if darkmode %}text-white{% endif %}">
+                  <div class="card-body">
+                    <h5>Server Logs</h5>
+                    <ul class="list-group bg-dark ps-0 pt-0">
+                      <li class="list-group-item text-white border-0 ps-0 pt-0"
+                          {% if darkmode %} style="background-color: #121212"{% endif %}>
+                        <ul class="list-group mt-2">
+                          <li class="list-group-item list-group-item-info border-0">
+                            <span class="caret">
+                              <i class="fa-solid fa-chevron-right"></i>&nbsp;Info
+                              Log Files
+                            </span>
+                            <ul class="nested list-group">
+                              {% for log in info_logs %}
+                                <li class="list-group-item">
+                                  <a href="{{ url_for('panel_bluep.admin_bluep.get_info_log', log=log)}}">{{ log }}</a
+                                    >
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            </li>
+                            <li class="list-group-item list-group-item-danger">
+                              <span class="caret"><i class="fa-solid fa-chevron-right"></i>&nbsp;Error
+                                Log Files
+                              </span>
+                              <ul class="nested list-group">
+                                {% for log in error_logs %}
+                                  <li class="list-group-item">
+                                    <a href="{{ url_for('panel_bluep.admin_bluep.get_error_log', log=log)}}">{{ log }}</a
+                                      >
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              </li>
+                            </ul>
                           </li>
-                          {%endfor%}
                         </ul>
-                      </li>
-                      <li class="list-group-item list-group-item-danger">
-                        <span class="caret"
-                          ><i class="fa-solid fa-chevron-right"></i>&nbsp;Error
-                          Log Files
-                        </span>
-                        <ul class="nested list-group">
-                          {% for log in error_logs %}
-                          <li class="list-group-item">
-                            <a
-                              href="{{url_for('panel_bluep.admin_bluep.get_error_log', log=log)}}"
-                              >{{log}}</a
-                            >
-                          </li>
-                          {%endfor%}
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-                <hr />
-                <h5>Server Actions</h5>
-                <div class="d-flex gap-2">
-                  <form
-                    action="{{url_for('panel_bluep.admin_bluep.toggel_request_filter')}}"
-                    method="post"
-                    class="mt-2"
-                  >
-                    <button type="submit" class="btn btn-primary">
-                      {% if has_filter %} Deactivate {%else %} Activate
-                      {%endif%} Debug Log Request Filter
-                    </button>
-                  </form>
-
-                  <form
-                    action="{{url_for('panel_bluep.admin_bluep.backup_db')}}"
-                    method="post"
-                    class="mt-2"
-                  >
-                    <button type="submit" class="btn btn-primary btn-success">
-                      Backup Database
-                    </button>
-                  </form>
+                        <hr />
+                        <h5>Server Actions</h5>
+                        <div class="d-flex gap-2">
+                          <form action="{{ url_for('panel_bluep.admin_bluep.toggel_request_filter')}}"
+                                method="post"
+                                class="mt-2">
+                            <button type="submit" class="btn btn-primary">
+                              {% if has_filter %}
+                                Deactivate
+                              {% else %}
+                                Activate
+                              {% endif %}
+                              Debug Log Request Filter
+                            </button>
+                          </form>
+                          <form action="{{ url_for('panel_bluep.admin_bluep.backup_db')}}"
+                                method="post"
+                                class="mt-2">
+                            <button type="submit" class="btn btn-primary btn-success">Backup Database</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card shadow {% if darkmode %}text-white{% endif %}">
+                  <div class="card-body">
+                    <h5>Live Log</h5>
+                    <div class="d-flex flex-row">
+                      <div class="d-flex flex-column me-2">
+                        <button class="btn btn-danger" onclick="clearLog()">Clear Log</button>
+                        <label for="levelSelector" class="form-label mt-1">
+                          Select Log Level
+                        </label
+                        >
+                        <select class="form-select {% if darkmode %} bg-dark text-white border-0{% endif %}"
+                                id="levelSelector">
+                          <option selected>
+                            ERROR
+                          </option>
+                          <option>
+                            INFO
+                          </option>
+                        </select>
+                        <div class="form-check mt-2">
+                          <input class="form-check-input"
+                                 id="autoScrollToggel"
+                                 type="checkbox"
+                                 checked/>
+                          <label for="autoScrollToggel" class="form-check-label">
+                            Auto Scroll
+                          </label
+                          >
+                        </div>
+                      </div>
+                      <div class="log-window border p-1 flex-fill" id="logWindow">
+                        <button class="btn btn-primary fullscreen-toggle"
+                                id="fullScreenToggel"
+                                onclick="toggleFullScreenLog()">
+                          <i class="fa-solid fa-expand"></i>
+                        </button>
+                        <pre id="serverLog" class="m-0"></pre>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card shadow {%if darkmode%}text-white {%endif%}">
-          <div class="card-body">
-            <h5>Live Log</h5>
-            <div class="d-flex flex-row">
-              <div class="d-flex flex-column me-2">
-                <button class="btn btn-danger" onclick="clearLog()">
-                  Clear Log
-                </button>
-                <label for="levelSelector" class="form-label mt-1"
-                  >Select Log Level</label
-                >
-                <select
-                  class="form-select {%if darkmode%} bg-dark text-white border-0 {%endif%}"
-                  id="levelSelector"
-                >
-                  <option selected>ERROR</option>
-                  <option>INFO</option>
-                </select>
-
-                <div class="form-check mt-2">
-                  <input
-                    class="form-check-input"
-                    id="autoScrollToggel"
-                    type="checkbox"
-                    checked
-                  />
-                  <label for="autoScrollToggel" class="form-check-label"
-                    >Auto Scroll</label
-                  >
-                </div>
-              </div>
-              <div class="log-window border p-1 flex-fill" id="logWindow">
-                <button
-                  class="btn btn-primary fullscreen-toggle"
-                  id="fullScreenToggel"
-                  onclick="toggleFullScreenLog()"
-                >
-                  <i class="fa-solid fa-expand"></i>
-                </button>
-                <pre id="serverLog" class="m-0"></pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
+        <script>
   const serverLogEl = document.getElementById("serverLog");
   const levelEl = document.getElementById("levelSelector");
   const logWin = document.getElementById("logWindow");
@@ -332,5 +313,5 @@ block head %} {{ super() }}
       }
     });
   }
-</script>
-{%endblock%}
+        </script>
+      {% endblock %}

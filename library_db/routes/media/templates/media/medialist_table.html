@@ -1,6 +1,9 @@
-{% extends "base.html"%} {% block title %} Medialist {% endblock %} {% block
-head %} {{ super() }}
-<style>
+{% extends "base.html" %}
+{% block title %}Medialist{% endblock %}
+{% block
+  head %}
+  {{ super() }}
+  <style>
   {%if darkmode%}
   body {
     background-color: #121212;
@@ -34,181 +37,245 @@ head %} {{ super() }}
   }
 
 
-</style>
+  </style>
 {% endblock %}
 {% block content %}
-
-<div class="modal fade " id="mediaModal" tabindex="-1" aria-labelledby="exampleModalLabel" >
-  <div class="modal-dialog modal-dialog-centered ">
-    <div class="modal-content {% if darkmode %} bg-dark text-white {% endif %}">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalLabel"></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade "
+       id="mediaModal"
+       tabindex="-1"
+       aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content {% if darkmode %} bg-dark text-white{% endif %}">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalLabel"></h1>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="row">
+            <dt class="col-sm-7">
+              Title:
+            </dt>
+            <dd class="col-sm-5" id="titleLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Author:
+            </dt>
+            <dd class="col-sm-5" id="authorLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Age Limit:
+            </dt>
+            <dd class="col-sm-5" id="ageLimitLabel">
+            </dd>
+            <dt class="col-sm-7">
+              Media Type:
+            </dt>
+            <dd class="col-sm-5" id="mediaTypeLabel">
+            </dd>
+            <dt class="col-sm-7">
+              ISBN:
+            </dt>
+            <dd class="col-sm-5" id="isbnLable">
+            </dd>
+            <div>
+              <hr class="px-5" />
+            </div>
+            <dt class="col-sm-7">
+              Status:
+            </dt>
+            <dd class="col-sm-5" id="statusLabel">
+            </dd>
+            <dt class="col-sm-7" id="etaLabelTitle">
+            </dt>
+            <dd class="col-sm-5" id="etaLabel">
+            </dd>
+            <dt class="col-sm-7" id="borrowerLabelTitle">
+            </dt>
+            <dd class="col-sm-5" id="borrowerLabel">
+            </dd>
+          </dl>
+          <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
+        </div>
       </div>
-      <div class="modal-body">
-        <dl class="row">
-          <dt class="col-sm-7">Title:</dt>
-          <dd class="col-sm-5" id="titleLabel"></dd>
-          <dt class="col-sm-7">Author:</dt>
-          <dd class="col-sm-5" id="authorLabel"></dd>
-          <dt class="col-sm-7">Age Limit:</dt>
-          <dd class="col-sm-5" id="ageLimitLabel"></dd>
-          <dt class="col-sm-7">Media Type:</dt>
-          <dd class="col-sm-5" id="mediaTypeLabel"></dd>
-          <dt class="col-sm-7">ISBN:</dt>
-          <dd class="col-sm-5" id="isbnLable"></dd>
-          <div><hr class="px-5"></div>
-          <dt class="col-sm-7">Status:</dt>
-          <dd class="col-sm-5" id="statusLabel"></dd>
-          <dt class="col-sm-7" id="etaLabelTitle"></dt>
-          <dd class="col-sm-5" id="etaLabel"></dd>
-          <dt class="col-sm-7" id="borrowerLabelTitle"></dt>
-          <dd class="col-sm-5" id="borrowerLabel"></dd>
-        </dl>
-        <button type="button" class="btn btn-primary" id="borrowBtn" onclick="">Borrow Media</button>
+    </div>
+  </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="errorToast"
+         class="toast {% if darkmode %} bg-dark text-white {% endif %}"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true">
+      <div class="toast-header {% if darkmode %} bg-dark text-white {% endif %}">
+        <svg class="bd-placeholder-img rounded me-2"
+             width="20"
+             height="20"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true"
+             preserveAspectRatio="xMidYMid slice"
+             focusable="false">
+          <rect width="100%" height="100%" fill="#dc3545"></rect>
+        </svg>
+        <strong class="me-auto">Error</strong>
+        <button type="button"
+                class="btn-close text-white"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
       </div>
+      <div class="toast-body" id="errorToastBody"></div>
     </div>
   </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <rect width="100%" height="100%" fill="#dc3545"></rect>
-      </svg>
-      <strong class="me-auto">Error</strong>
-      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="infoToast"
+         class="toast {% if darkmode %} bg-dark text-white {% endif %}"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true"
+         data-bs-delay="700">
+      <div class="toast-header {% if darkmode %} bg-dark text-white {% endif %}">
+        <svg class="bd-placeholder-img rounded me-2"
+             width="20"
+             height="20"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true"
+             preserveAspectRatio="xMidYMid slice"
+             focusable="false">
+          <rect width="100%" height="100%" fill="#007aff"></rect>
+        </svg>
+        <strong class="me-auto">Info</strong>
+        <button type="button"
+                class="btn-close text-white"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="infoToastBody"></div>
     </div>
-    <div class="toast-body" id="errorToastBody"></div>
   </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="infoToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="700">
-    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <rect width="100%" height="100%" fill="#007aff"></rect>
-      </svg>
-      <strong class="me-auto">Info</strong>
-      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body" id="infoToastBody"></div>
-  </div>
-</div>
-
-<div class="container mt-3">
-  <div class="d-flex">
-    <div class="d-flex flex-column">
-      <span class="pb-1 {% if darkmode %} text-white {% endif %}" style="font-weight: 430">Layout</span>
-      <div class="btn-group mb-3">
-        <button
-        id="grid-btn"
-        {% if not grid %}
-        class="btn {% if darkmode %} text-white {% endif %}"
-        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
-        {% else %} 
-        class="btn btn-primary"
-        {% endif %}>
+  <div class="container mt-3">
+    <div class="d-flex">
+      <div class="d-flex flex-column">
+        <span class="pb-1 {% if darkmode %} text-white{% endif %}"
+              style="font-weight: 430">Layout</span>
+        <div class="btn-group mb-3">
+          <button id="grid-btn"
+                  {% if not grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% else %}
+                  class="btn btn-primary"
+                  {% endif %}>
             <i class="fa-solid fa-grip"></i>
-        </button>
-        <button 
-        id="table-btn"
-        {% if grid %}
-        class="btn {% if darkmode %} text-white {% endif %}"
-        style="background-color: {% if darkmode%}  #424649 {% else %} lightgrey {% endif %};"  
-        {% else %} 
-        class="btn btn-primary" 
-        {% endif %}>
-          <i class="fa-solid fa-table-list"></i>
-      </button>
+          </button>
+          <button id="table-btn"
+                  {% if grid %} class="btn {% if darkmode %} text-white{% endif %}
+                  style="background-color: {% if darkmode %}  #424649 {% else %} lightgrey {% endif %}"
+                  {% else %}
+                  class="btn btn-primary"
+                  {% endif %}>
+            <i class="fa-solid fa-table-list"></i>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <table
-    class="table table-striped table-bordered rounded table-hover {% if darkmode %} table-dark {%endif%}"
-  >
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-        <th scope="col">
-          <a
-            href="{{update_query_params(url, sort="title", sort_type="DESC" if sort_field=='title' and sort_dir == 'ASC' else "ASC")}}"
-            class="text-decoration-none text-reset"
-            >Title&nbsp; {%if sort_field == "title"%} {% if sort_dir == "ASC" %}
-            <i class="fa-solid fa-sort-down"></i> {% else %}
-            <i class="fa-solid fa-sort-up"></i> {% endif %} {% else %}
-            <i class="fa-solid fa-sort"></i> {%endif%}</a
-          >
-        </th>
-        <th scope="col">
-          <a
-            href="{{update_query_params(url, sort="author", sort_type="DESC" if sort_field=='author' and sort_dir == 'ASC' else "ASC")}}"
-            class="text-decoration-none text-reset"
-            >Author&nbsp;{%if sort_field == "author"%} {% if sort_dir == "ASC" %}
-            <i class="fa-solid fa-sort-down"></i> 
-            {% else %}
-            <i class="fa-solid fa-sort-up"></i> {% endif %} {% else %}
-            <i class="fa-solid fa-sort"></i> {%endif%}</a
-          >
-        </th>
-
-        <th scope="col">
-          <a
-            href="{{update_query_params(url, sort="age_limit", sort_type="DESC" if sort_field=='age_limit' and sort_dir == 'ASC' else "ASC")}}"
-            class="text-decoration-none text-reset"
-            >Age Limit&nbsp;{%if sort_field == "age_limit"%} {% if sort_dir ==
-            "ASC" %} <i class="fa-solid fa-sort-down"></i> {% else %}
-            <i class="fa-solid fa-sort-up"></i> {% endif %} {% else %}
-            <i class="fa-solid fa-sort"></i> {%endif%}</a
-          >
-        </th>
-        <th scope="col">
-          <a
-            href="{{update_query_params(url, status='available' if borrow_status_filter == 'all' else ('all' if borrow_status_filter == 'borrowed' else 'borrowed'))}}" 
-            class="text-decoration-none text-reset">Status&nbsp;<i
-            class="fa-solid fa-repeat" {%if borrow_status_filter != 'all' %} style="color: {{'red' if borrow_status_filter == 'borrowed' else 'green'}}" {%endif%}
-            ></i>
-          </a>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for i in table_data %}
-      <tr>
-        <td>{{ i.media_type }}</td>
-        <th scope="row"><span onclick="show_modal({{i.id}})" class="title_text text-decoration-underline text-primary">{{ i.title }}</span></th>
-        <td>{{ i.author }}</td>
-
-        <td>{{ i.age_limit }}</td>
-        <td>{% if is_media_borrowed(i.id) %} Borrowed {% else %} Available {% endif %}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <nav>
-    <ul class="pagination justify-content-center">
-      <li class="page-item {% if page + 1 == 1 %} disabled {% endif %}">
-        <a class="page-link" href="{{update_query_params(url, page=page - 1)}}" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      {% for i in range(page_count) %}
-      <li class="page-item {% if i == page %} active disabled {%endif%}">
-        <a class="page-link" href="{{update_query_params(url, page=i)}}">{{i + 1}}</a>
-      </li>
-      {% endfor %}
-      <li class="page-item {% if page + 1 == page_count %} disabled {% endif %}">
-        <a class="page-link" href="{{update_query_params(url, page=page + 1)}}" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</div>
-
-
-<script>
+    <table class="table table-striped table-bordered rounded table-hover {% if darkmode %} table-dark {% endif %}">
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">
+            <a href="{{ update_query_params(url, sort="title", sort_type="DESC" if sort_field=='title' and sort_dir == 'ASC' else "ASC")}}"
+               class="text-decoration-none text-reset">Title&nbsp;
+              {% if sort_field == "title" %}
+                {% if sort_dir == "ASC" %}
+                  <i class="fa-solid fa-sort-down"></i>
+                {% else %}
+                  <i class="fa-solid fa-sort-up"></i>
+                {% endif %}
+              {% else %}
+                <i class="fa-solid fa-sort"></i> {% endif %}</a
+                  >
+                </th>
+                <th scope="col">
+                  <a href="{{ update_query_params(url, sort="author", sort_type="DESC" if sort_field=='author' and sort_dir == 'ASC' else "ASC")}}"
+                     class="text-decoration-none text-reset">Author&nbsp;
+                    {% if sort_field == "author" %}
+                      {% if sort_dir == "ASC" %}
+                        <i class="fa-solid fa-sort-down"></i>
+                      {% else %}
+                        <i class="fa-solid fa-sort-up"></i>
+                      {% endif %}
+                    {% else %}
+                      <i class="fa-solid fa-sort"></i> {% endif %}</a
+                        >
+                      </th>
+                      <th scope="col">
+                        <a href="{{ update_query_params(url, sort="age_limit", sort_type="DESC" if sort_field=='age_limit' and sort_dir == 'ASC' else "ASC")}}"
+                           class="text-decoration-none text-reset">Age Limit&nbsp;
+                          {% if sort_field == "age_limit" %}
+                            {% if sort_dir ==
+                              "ASC" %}
+                              <i class="fa-solid fa-sort-down"></i>
+                            {% else %}
+                              <i class="fa-solid fa-sort-up"></i>
+                            {% endif %}
+                          {% else %}
+                            <i class="fa-solid fa-sort"></i> {% endif %}</a
+                              >
+                            </th>
+                            <th scope="col">
+                            <a href="{{ update_query_params(url, status='available' if borrow_status_filter == 'all' else ('all' if borrow_status_filter == 'borrowed' else 'borrowed'))}}"
+                               class="text-decoration-none text-reset">Status&nbsp;<i class="fa-solid fa-repeat"
+   {% if borrow_status_filter != 'all' %} style="color: {{'red' if borrow_status_filter == 'borrowed' else 'green' }}" {% endif %}></i>
+                          </a>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in table_data %}
+                        <tr>
+                          <td>{{ i.media_type }}</td>
+                          <th scope="row">
+                            <span onclick="show_modal({{ i.id }})"
+                                  class="title_text text-decoration-underline text-primary">{{ i.title }}</span>
+                          </th>
+                          <td>{{ i.author }}</td>
+                          <td>{{ i.age_limit }}</td>
+                          <td>
+                            {% if is_media_borrowed(i.id) %}
+                              Borrowed
+                            {% else %}
+                              Available
+                            {% endif %}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <nav>
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item {% if page + 1 == 1 %} disabled{% endif %}">
+                        <a class="page-link"
+                           href="{{ update_query_params(url, page=page - 1)}}"
+                           aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      {% for i in range(page_count) %}
+                        <li class="page-item {% if i == page %} active disabled {% endif %}">
+                          <a class="page-link" href="{{ update_query_params(url, page=i)}}">{{ i + 1 }}</a>
+                        </li>
+                      {% endfor %}
+                      <li class="page-item {% if page + 1 == page_count %} disabled{% endif %}">
+                        <a class="page-link"
+                           href="{{ update_query_params(url, page=page + 1)}}"
+                           aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+                <script>
   document
     .getElementById({% if not grid %} "grid-btn" {% else %} "table-btn" {%endif%})
     .addEventListener("click", function (event) {
@@ -297,5 +364,5 @@ head %} {{ super() }}
   infoToast.addEventListener('hidden.bs.toast', () => {
     window.location.reload();
   })
-</script>
-{% endblock %}
+                </script>
+              {% endblock %}

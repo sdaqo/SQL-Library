@@ -1,7 +1,9 @@
-{% extends "base.html"%} {% block title %} Library {% endblock %} {% block
-head%} {{ super() }}
-
-<style>
+{% extends "base.html" %}
+{% block title %}Library{% endblock %}
+{% block
+  head%}
+  {{ super() }}
+  <style>
   body {
     background-color: #121212;
   }
@@ -65,85 +67,67 @@ head%} {{ super() }}
       margin-bottom: -20px;
     }
   }
-</style>
-{% endblock %} {% block content %}
-<div class="position-relative">
-  <section class="header-section d-flex justify-content-center pt-2">
-    <div>
-      <div class="d-flex flex-column">
-        <div class="d-flex flex-column align-self-center">
-          <span class="display-4"
-            ><img src="{{url_for('static', filename='images/books.png')}}" alt="books emoticon" /> SQL
-            Library</span
-          >
-          <span class="text-muted sub-title"
-            >Made with
-            <a href="https://github.com/pallets/flask" class="dotted-link"
-              >Flask</a
-            >,
-            <a href="https://github.com/python/cpython" class="dotted-link"
-              >Python</a
-            >
-            and SQL</span
-          >
-          <button
-            class="btn btn-primary mt-3"
-            onclick="window.location.pathname = '{{url_for('media_bluep.show_medialist')}}'"
-          >
-            Medialist
-          </button>
-          <div class="btn-group">
-            {%if  logged_in%}
-              <button
-                class="btn btn-outline-primary mt-3"
-                onclick="window.location.pathname = '/me'"
-              >
-                User Panel
-              </button>
-              {%if is_staff%}
-                <button
-                  class="btn btn-outline-primary mt-3"
-                  onclick="window.location.pathname = '/staff'"
-                >
-                  Staff Panel
-                </button>
-              {%elif is_admin%}
-                <button
-                  class="btn btn-outline-primary mt-3"
-                  onclick="window.location.pathname = '/admin'"
-                >
-                  Admin Panel
-                </button>
-              {%endif%}
-            {%else%}
-              <button
-                class="btn btn-outline-primary mt-3"
-                onclick="window.location.pathname = '{{url_for('auth_bluep.login')}}'"
-              >
-                Login
-              </button>
-              <button
-                class="btn btn-outline-primary mt-3"
-                onclick="window.location.pathname = '{{url_for('auth_bluep.signup')}}'"
-              >
-                SignUp
-              </button>
-            {%endif%}
-          </div>
-          <div class="negative-margin"></div>
-        </div>
-      </div>
-      <section class="position-relative image-section">
-        <div>
-          <img
-            id="header-image"
-            class="rounded img-fluid shadow-lg"
-            src="{{url_for('static', filename='images/library.webp')}}"
-            alt="picture of library"
-          />
-        </div>
-      </section>
-    </div>
-  </section>
-</div>
+  </style>
 {% endblock %}
+{% block content %}
+  <div class="position-relative">
+    <section class="header-section d-flex justify-content-center pt-2">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="d-flex flex-column align-self-center">
+            <span class="display-4">
+              <img height="64px"
+                   width="64px"
+                   src="{{ url_for('static', filename='images/books.png')}}"
+                   alt="books emoticon"/>
+              SQL
+              Library</span
+              >
+              <span class="text-muted sub-title">Made with
+                <a href="https://github.com/pallets/flask" class="dotted-link">Flask</a
+                  >,
+                  <a href="https://github.com/python/cpython" class="dotted-link">Python</a
+                    >
+                    and SQL</span
+                    >
+                    <button class="btn btn-primary mt-3"
+                            onclick="window.location.pathname = '{{ url_for('media_bluep.show_medialist')}}'">
+                      Medialist
+                    </button>
+                    <div class="btn-group">
+                      {% if  logged_in %}
+                        <button class="btn btn-outline-primary mt-3"
+                                onclick="window.location.pathname = '/me'">User Panel</button>
+                        {% if is_staff %}
+                          <button class="btn btn-outline-primary mt-3"
+                                  onclick="window.location.pathname = '/staff'">Staff Panel</button>
+                        {% elif is_admin %}
+                          <button class="btn btn-outline-primary mt-3"
+                                  onclick="window.location.pathname = '/admin'">Admin Panel</button>
+                        {% endif %}
+                      {% else %}
+                        <button class="btn btn-outline-primary mt-3"
+                                onclick="window.location.pathname = '{{ url_for('auth_bluep.login')}}'">
+                          Login
+                        </button>
+                        <button class="btn btn-outline-primary mt-3"
+                                onclick="window.location.pathname = '{{ url_for('auth_bluep.signup')}}'">
+                          SignUp
+                        </button>
+                      {% endif %}
+                    </div>
+                    <div class="negative-margin"></div>
+                  </div>
+                </div>
+                <section class="position-relative image-section">
+                  <div>
+                    <img id="header-image"
+                         class="rounded img-fluid shadow-lg"
+                         src="{{ url_for('static', filename='images/library.webp')}}"
+                         alt="picture of library"/>
+                  </div>
+                </section>
+              </div>
+            </section>
+          </div>
+        {% endblock %}

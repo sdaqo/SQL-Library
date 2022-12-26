@@ -1,6 +1,9 @@
-{% extends "base.html"%} {% block title %} SignUp {% endblock %} {% block head
-%} {{ super() }}
-<style>
+{% extends "base.html" %}
+{% block title %}SignUp{% endblock %}
+{% block head
+  %}
+  {{ super() }}
+  <style>
   {% if darkmode %}
     body {
       background-color: #121212;
@@ -22,140 +25,114 @@
       width: 330px;
     }
   }
-</style>
-{% endblock %} {% block content %}
-
-<div
-  class="position-absolute top-50 start-50 translate-middle sign-in-container"
->
-  <form
-    action="{{url_for('auth_bluep.signup')}}"
-    method="post"
-    id="form"
-    class="rounded bg-light p-3 d-flex flex-column {%if darkmode%} bg-dark text-white {% else %} shadow-lg border {% endif%}"
-  >
-    <p class="box-title text-center my-0">Sign in</p>
-    <hr class="border border-secondary border-1 opacity-50 mt-1" />
-    <label for="email" class="form-label">Email</label>
-    <input
-      class="form-control"
-      type="email"
-      placeholder="test@mailbox.com"
-      id="email"
-      name="email"
-      required
-    />
-    <div
-      style="display: flex; flex-direction: row; justify-content: space-between"
-    ></div>
-    <div style="display: flex; flex-direction: row">
-      <div style="display: flex; flex-direction: column; margin-right: 2px">
-        <label for="name" class="form-label">Name</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Heinz"
-          id="name"
-          name="name"
-          required
-        />
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="position-absolute top-50 start-50 translate-middle sign-in-container">
+    <form action="{{ url_for('auth_bluep.signup')}}"
+          method="post"
+          id="form"
+          class="rounded bg-light p-3 d-flex flex-column {% if darkmode %} bg-dark text-white {% else %} shadow-lg border {% endif %}">
+      <p class="box-title text-center my-0">Sign in</p>
+      <hr class="border border-secondary border-1 opacity-50 mt-1" />
+      <label for="email" class="form-label">Email</label>
+      <input class="form-control"
+             type="email"
+             placeholder="test@mailbox.com"
+             id="email"
+             name="email"
+             required/>
+      <div style="display: flex;
+                  flex-direction: row;
+                  justify-content: space-between"></div>
+      <div style="display: flex; flex-direction: row">
+        <div style="display: flex; flex-direction: column; margin-right: 2px">
+          <label for="name" class="form-label">Name</label>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Heinz"
+                 id="name"
+                 name="name"
+                 required/>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <label for="surename" class="form-label">Surename</label>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Franz"
+                 id="surename"
+                 name="surename"
+                 required/>
+        </div>
       </div>
-      <div style="display: flex; flex-direction: column">
-        <label for="surename" class="form-label">Surename</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Franz"
-          id="surename"
-          name="surename"
-          required
-        />
+      <label for="birthday" class="form-label">Birthday</label>
+      <input class="form-control"
+             type="date"
+             id="birthday"
+             name="birthday"
+             required/>
+      <label class="form-label">User Type</label>
+      <div class="form-check">
+        <div>
+          <input class="form-check-input"
+                 type="radio"
+                 id="default"
+                 name="usertype"
+                 value="5"
+                 required/>
+          <span>Default</span>
+        </div>
+        <div>
+          <input class="form-check-input"
+                 type="radio"
+                 id="teacher"
+                 name="usertype"
+                 value="2"
+                 required/>
+          <span>Teacher</span>
+        </div>
+        <div>
+          <input class="form-check-input"
+                 type="radio"
+                 id="student"
+                 name="usertype"
+                 value="1"
+                 required/>
+          <span>Student</span>
+        </div>
+        {% if is_admin %}
+          <div>
+            <input class="form-check-input"
+                   type="radio"
+                   id="student"
+                   name="usertype"
+                   value="3"
+                   required/>
+            <span>Staff</span>
+          </div>
+          <div>
+            <input class="form-check-input"
+                   type="radio"
+                   id="student"
+                   name="usertype"
+                   value="4"
+                   required/>
+            <span>Admin</span>
+          </div>
+        {% endif %}
       </div>
-    </div>
-    <label for="birthday" class="form-label">Birthday</label>
-    <input
-      class="form-control"
-      type="date"
-      id="birthday"
-      name="birthday"
-      required
-    />
-    <label class="form-label">User Type</label>
-    <div class="form-check">
-      <div>
-        <input
-          class="form-check-input"
-          type="radio"
-          id="default"
-          name="usertype"
-          value="5"
-          required
-        />
-        <span>Default</span>
-      </div>
-      <div>
-        <input
-          class="form-check-input"
-          type="radio"
-          id="teacher"
-          name="usertype"
-          value="2"
-          required
-        />
-        <span>Teacher</span>
-      </div>
-      <div>
-        <input
-          class="form-check-input"
-          type="radio"
-          id="student"
-          name="usertype"
-          value="1"
-          required
-        />
-        <span>Student</span>
-      </div>
-      {% if is_admin %}
-      <div>
-        <input
-          class="form-check-input"
-          type="radio"
-          id="student"
-          name="usertype"
-          value="3"
-          required
-        />
-        <span>Staff</span>
-      </div>
-      <div>
-        <input
-          class="form-check-input"
-          type="radio"
-          id="student"
-          name="usertype"
-          value="4"
-          required
-        />
-        <span>Admin</span>
-      </div>
-      {% endif %}
-    </div>
-    <label for="password" class="form-label">Password</label>
-    <input
-      class="form-control"
-      required
-      type="password"
-      placeholder="1234"
-      id="password"
-      name="password"
-    />
-    <label>{{ error }}</label>
-    <input
-      class="btn btn-primary mt-3"
-      type="submit"
-      value="Submit"
-      class="form-control"
-    />
-  </form>
-</div>
+      <label for="password" class="form-label">Password</label>
+      <input class="form-control"
+             required
+             type="password"
+             placeholder="1234"
+             id="password"
+             name="password"/>
+      <label>{{ error }}</label>
+      <input class="btn btn-primary mt-3"
+             type="submit"
+             value="Submit"
+             class="form-control"/>
+    </form>
+  </div>
 {% endblock %}

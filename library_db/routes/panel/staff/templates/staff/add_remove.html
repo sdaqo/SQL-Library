@@ -1,8 +1,9 @@
-{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} 
-{% block head %} 
-{{ super() }}
-<script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
-<style>
+{% extends "base.html" %}
+{% block title %}Staff Panel{% endblock %}
+{% block head %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
+  <style>
   {% if darkmode %}
     body {
       background-color: #121212;
@@ -63,213 +64,212 @@
     }
 
   }
-</style>
-{% endblock %} 
+
+  @media only screen and (min-width: 770px) and (max-width: 1000px) {
+    #scraper {
+      flex-direction: column;
+    }
+
+    #scraper-results {
+      margin-top: .75rem;
+      align-self: center;
+    }
+
+    #scraper-controls {
+      margin-right: 0rem !important;
+    }
+
+    #scraper-controls > code {
+      display: none;
+    }
+
+  }
+  </style>
+{% endblock %}
 {% block content %}
-
-<div class="container mt-3">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="">Add/Remove</a>
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
-        aria-current="page"
-        href="{{url_for('panel_bluep.staff_bluep.staff_panel_alter')}}"
-        >Alter</a
-      >
-    </li>
-  </ul>
-  <div
-    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
-    class="p-3 pt-5"
-  >
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      <div class="col">
-        <div class="card shadow">
-          <div class="card-body">
-            <h5 class="card-title">Add Media</h5>
-            <form
-              action="{{url_for('panel_bluep.staff_bluep.add_media')}}"
-              method="post"
-              class="d-flex flex-column"
-              enctype="multipart/form-data"
-            >
-              <label for="titleInput" class="form-label">Title</label>
-              <input
-                id="titleInput"
-                type="text"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                name="title"
-                placeholder="Harry Potter"
-                autocomplete="off"
-                required
-              />
-              <label for="mediaAuthorSearch" class="form-label">Author</label>
-              <input
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                type="search"
-                placeholder="Search Authors"
-                aria-label="Search"
-                id="mediaAuthorSearch"
-                autocomplete="off"
-                name="author"
-                required
-              />
-              <ul
-                class="list-group d-none"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="mediaAuthorResults"
-              ></ul>
-
-              <div class="d-flex flex">
-                <div class="d-flex flex-column flex-fill">
-                  <label for="ageLimitInput" class="form-label"
-                    >Age Limit</label
-                  >
-                  <input
-                    type="number"
-                    min="0"
-                    class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                    id="ageLimitInput"
-                    name="age_limit"
-                    placeholder="0"
-                    autocomplete="off"
-                    required
-                  />
-                </div>
-                <div class="d-flex flex-column flex-fill ms-1">
-                  <label for="mediaSelection" class="form-label"
-                    >Media Type</label
-                  >
-                  <select
-                    class="form-select {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                    aria-label="Default select example"
-                    name="media_type"
-                    id="mediaSelection"
-                    autocomplete="off"
-                    required
-                  >
-                    {% for i in media_types %}
-                    <option value="{{i}}">{{i}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-              <label for="isbnInput" class="form-label">ISBN</label>
-              <input
-                id="isbnInput"
-                type="text"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                name="isbn"
-                placeholder="Optional"
-                autocomplete="off"
-              />
-              <label for="imageUpload" class="form-label">Image</label>
-              <input 
-                id="imageUpload" 
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}" 
-                type="file" 
-                accept="image/*" 
-                name="image"
-                autocomplete="off"
-              />
-
-              <input type="hidden" name="url" id="urlInput" autocomplete="off"/>
-
-              <div id="scraper" class="d-flex mt-2 p-2 rounded {% if darkmode %} bg-dark {% endif %}" {% if not darkmode%} style="background-color: #eee" {% endif %}>
-                <div id="scraper-controls" class="d-flex flex-column me-4 flex-fill">
-                  <h5 class="ms-1" id="scraper-header">Bookcover Scraper</h2>
-                  <button class="btn btn-primary" type="button" id="scraper-start">Start Scraper</button>
-                  <button class="btn btn-success mt-2" type="button" id="scraper-pick">Use current Image</button>
-                  <code class="mt-2" style="font-size: .8rem;">Status: <span class="text-muted" id="scraper-status">Idle</span></code>
-                </div>
-                <div class="flex-fill d-flex flex-fill" id="scraper-results">
-                  <span class="fs-3 align-self-center me-1" id="left-carousel-control" style="cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></span>
-                  <div id="scraper-img-container">
-                    <div class="position-relative">
-                      <img 
-                        class="rounded bg-danger"
-                        id="scraper-img"
-                        height="180px"
-                        src="{{url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}"
-                      />
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="display: none;">
-                        <i class="fa-solid fa-check"></i>
-                        <span class="visually-hidden">unread messages</span>
-                      </span>  
-                    </div>       
+  <div class="container mt-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="">Add/Remove</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-black {% if darkmode %} text-white {% endif %}"
+           aria-current="page"
+           href="{{ url_for('panel_bluep.staff_bluep.staff_panel_alter')}}">Alter</a
+          >
+        </li>
+      </ul>
+      <div style="background-color: {% if darkmode %} #212529 {% else %} #eee {% endif %};
+                  border-color: #373b3e"
+           class="p-3 pt-5">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <div class="col">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Add Media</h5>
+                <form action="{{ url_for('panel_bluep.staff_bluep.add_media')}}"
+                      method="post"
+                      class="d-flex flex-column"
+                      enctype="multipart/form-data">
+                  <label for="titleInput" class="form-label">Title</label>
+                  <input id="titleInput"
+                         type="text"
+                         class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         name="title"
+                         placeholder="Harry Potter"
+                         autocomplete="off"
+                         required/>
+                  <label for="mediaAuthorSearch" class="form-label">Author</label>
+                  <input class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         type="search"
+                         placeholder="Search Authors"
+                         aria-label="Search"
+                         id="mediaAuthorSearch"
+                         autocomplete="off"
+                         name="author"
+                         required/>
+                  <ul class="list-group d-none"
+                      style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                      id="mediaAuthorResults">
+                  </ul>
+                  <div class="d-flex flex">
+                    <div class="d-flex flex-column flex-fill">
+                      <label for="ageLimitInput" class="form-label">
+                        Age Limit
+                      </label
+                      >
+                      <input type="number"
+                             min="0"
+                             class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                             id="ageLimitInput"
+                             name="age_limit"
+                             placeholder="0"
+                             autocomplete="off"
+                             required/>
+                    </div>
+                    <div class="d-flex flex-column flex-fill ms-1">
+                      <label for="mediaSelection" class="form-label">
+                        Media Type
+                      </label
+                      >
+                      <select class="form-select {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                              aria-label="Default select example"
+                              name="media_type"
+                              id="mediaSelection"
+                              autocomplete="off"
+                              required>
+                        {% for i in media_types %}
+                          <option value="{{i}}">
+                            {{i}}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
                   </div>
-                  <span class="fs-3 align-self-center ms-1" id="right-carousel-control" style="cursor: pointer;"><i class="fa-solid fa-chevron-right"></i></span>
-                </div>
+                  <label for="isbnInput" class="form-label">ISBN</label>
+                  <input id="isbnInput"
+                         type="text"
+                         class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         name="isbn"
+                         placeholder="Optional"
+                         autocomplete="off"/>
+                  <label for="imageUpload" class="form-label">Image</label>
+                  <input id="imageUpload"
+                         class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         type="file"
+                         accept="image/*"
+                         name="image"
+                         autocomplete="off"/>
+                  <input type="hidden" name="url" id="urlInput" autocomplete="off"/>
+                  <div id="scraper"
+                       class="d-flex mt-2 p-2 rounded {% if darkmode %} bg-dark{% endif %}"
+                       {% if not darkmode %} style="background-color: #eee"{% endif %}>
+                    <div id="scraper-controls" class="d-flex flex-column me-4 flex-fill">
+                      <h5 class="ms-1" id="scraper-header">
+                        Bookcover Scraper
+                      </h5>
+                      <button class="btn btn-primary" type="button" id="scraper-start">Start Scraper</button>
+                      <button class="btn btn-success mt-2" type="button" id="scraper-pick">Use current Image</button>
+                      <code class="mt-2" style="font-size: .8rem;">Status: <span class="text-muted" id="scraper-status">Idle</span></code>
+                    </div>
+                    <div class="flex-fill d-flex flex-fill" id="scraper-results">
+                      <span class="fs-3 align-self-center me-1"
+                            id="left-carousel-control"
+                            style="cursor: pointer"><i class="fa-solid fa-chevron-left"></i></span>
+                      <div id="scraper-img-container">
+                        <div class="position-relative">
+                          <img class="rounded bg-danger"
+                               id="scraper-img"
+                               height="180px"
+                               width="125px"
+                               src="{{ url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}"/>
+                          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                                style="display: none">
+                            <i class="fa-solid fa-check"></i>
+                            <span class="visually-hidden">unread messages</span>
+                          </span>
+                        </div>
+                      </div>
+                      <span class="fs-3 align-self-center ms-1"
+                            id="right-carousel-control"
+                            style="cursor: pointer"><i class="fa-solid fa-chevron-right"></i></span>
+                    </div>
+                  </div>
+                  {{ media_error if media_error }}
+                  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
               </div>
-              
-              {{media_error if media_error}}
-              <button type="submit" class="btn btn-primary mt-3">Submit</button>
-            </form>
-
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow">
-          <div class="card-body">
-            <h5 class="card-title">Add Author</h5>
-            <form
-              action="{{url_for('panel_bluep.staff_bluep.add_author')}}"
-              method="post"
-              class="d-flex flex-column"
-            >
-              <label for="authorInput" class="form-label">Name</label>
-              <input
-                type="text"
-                autocomplete="off"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                id="authorInput"
-                placeholder="J. K Rowling"
-                name="author"
-                required
-              />
-              {{author_error if author_error}}
-              <button type="submit" class="btn btn-primary mt-3">Submit</button>
-            </form>
-          </div>
-        </div>
-        <div class="card mt-3 shadow">
-          <div class="card-body">
-            <h5 class="card-title">Remove Media</h5>
-            <form
-              action="{{url_for('panel_bluep.staff_bluep.remove_media')}}"
-              method="post"
-              class="d-flex flex-column"
-            >
-              <label for="mediaSearch" class="form-label">Media</label>
-              <input
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                type="search"
-                placeholder="Search Media"
-                aria-label="Search"
-                id="mediaRemoveSearch"
-                autocomplete="off"
-                name="media"
-                required
-              />
-              <ul
-                class="list-group d-none"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="mediaRemoveResults"
-              ></ul>
-              {{remove_media_error if remove_media_error}}
-              <button type="submit" class="btn btn-danger mt-3">Remove</button>
-            </form>
+          <div class="col">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Add Author</h5>
+                <form action="{{ url_for('panel_bluep.staff_bluep.add_author')}}"
+                      method="post"
+                      class="d-flex flex-column">
+                  <label for="authorInput" class="form-label">Name</label>
+                  <input type="text"
+                         autocomplete="off"
+                         class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         id="authorInput"
+                         placeholder="J. K Rowling"
+                         name="author"
+                         required/>
+                  {{ author_error if author_error }}
+                  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+              </div>
+            </div>
+            <div class="card mt-3 shadow">
+              <div class="card-body">
+                <h5 class="card-title">Remove Media</h5>
+                <form action="{{ url_for('panel_bluep.staff_bluep.remove_media')}}"
+                      method="post"
+                      class="d-flex flex-column">
+                  <label for="mediaSearch" class="form-label">Media</label>
+                  <input class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                         type="search"
+                         placeholder="Search Media"
+                         aria-label="Search"
+                         id="mediaRemoveSearch"
+                         autocomplete="off"
+                         name="media"
+                         required/>
+                  <ul class="list-group d-none"
+                      style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                      id="mediaRemoveResults">
+                  </ul>
+                  {{ remove_media_error if remove_media_error }}
+                  <button type="submit" class="btn btn-danger mt-3">Remove</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<script>
+  <script>
   {% if darkmode %}
   let colors = {
     text_color: "white",
@@ -294,8 +294,8 @@
   var mediaRemoveSearchEl = document.getElementById("mediaRemoveSearch")
   var mediaRemoveResultsEl = document.getElementById("mediaRemoveResults")
   registerMiniSearch(mediaRemoveSearchEl, mediaRemoveResultsEl, "/api/mini_search/media", colors);
-</script>
-<script>
+  </script>
+  <script>
   var scraperStartBtn = document.getElementById("scraper-start");
   var scraperPickBtn = document.getElementById("scraper-pick");
   var scraperStatusText = document.getElementById("scraper-status");
@@ -306,6 +306,8 @@
   var urlInput = document.getElementById("urlInput");
   var mediaTypeInput = document.getElementById("mediaSelection"); 
   var scraperHeader = document.getElementById("scraper-header");
+  var imageUpload = document.getElementById("imageUpload");
+  var authorInput = document.getElementById("mediaAuthorSearch");
 
   mediaTypeInput.onchange = () => {
     if (mediaTypeInput.value == "Blu-Ray" || mediaTypeInput.value == "DVD") {
@@ -314,7 +316,10 @@
     } else if (mediaTypeInput.value == "Book") {
       scraperHeader.innerHTML = "Bookcover Scraper";
       scraperStartBtn.disabled = false;
-    } else {
+    } else if (mediaTypeInput.value == "CD") {
+      scraperHeader.innerHTML = "CD Cover Scraper";
+      scraperStartBtn.disabled = false;
+    } else { 
       scraperHeader.innerHTML = `No Scraper for ${mediaTypeInput.value} Covers`;
       scraperStartBtn.disabled = true;
     }
@@ -378,7 +383,7 @@
     let badge = elem.children.item(1);
 
     if (badge.style.display == "none") {
-      badge.style.display = "block";
+      badge.style.display = "flex";
     } else {
       badge.style.display = "none";
     }
@@ -386,7 +391,7 @@
 
   function adjustCarousel(last_index) {
     imgContainer.children.item(last_index).style.display = "none";
-    imgContainer.children.item(carouselIndex).style.display = "block";
+    imgContainer.children.item(carouselIndex).style.display = "flex";
     if (isNoImg(carouselIndex)) {
       scraperPickBtn.disabled = true;
     } else {
@@ -428,24 +433,28 @@
              src_path == "/static/images/noimg_dark.png")) 
   }
 
-  function createBaseCarouselElement() {
+  function createBaseCarouselElement(img_height) {
     let container = document.createElement('div');
     container.classList.add("position-relative")
     container.style.display = "none";
     container.style.cursor = "pointer";
+    container.style.height = "180px";
+    container.style.width = "125px";
     container.onclick = selectImage;
 
     let img = document.createElement('img');
     img.onload = function() { 
-      img.style.height = "180px";
+      img.style.height = `${img_height}px`;
+      img.style.width = "125px"
       adjustCarousel(carouselIndex);
     }
-    img.classList.add("rounded", "bg-danger");
-    img.src = "{{url_for('static', filename='images/noimg_light.png' if not darkmode else 'images/noimg_dark.png')}}"
+    img.classList.add("rounded", "align-self-center", "scraper-image");
     container.appendChild(img);
 
     let badge = document.createElement('span');
-    badge.classList.add("position-absolute", "top-0", "start-100", "translate-middle", "badge", "rounded-pill", "bg-success");
+    badge.classList.add("position-absolute", "start-100", "translate-middle", "badge", "rounded-pill", "bg-success");
+    let badgeTopPos = (180 - img_height) - 25
+    badge.style.top = `${(badgeTopPos < 0) ? 0 : badgeTopPos}px`;
     badge.style.display = "none";
 
     let icon = document.createElement('i');
@@ -468,8 +477,8 @@
     carouselIndex = 0;
 
     removeImgTags(imgContainer);
-    let element = createBaseCarouselElement();
-    element.style.display = "block";
+    let element = createBaseCarouselElement(180);
+    element.style.display = "flex";
     imgContainer.appendChild(element);
     
 
@@ -480,7 +489,8 @@
       },
       body: JSON.stringify({
           media_type: mediaTypeInput.value,
-          query: titleInput.value
+          query: titleInput.value,
+          artist: authorInput.value
       }),
     });
     
@@ -500,18 +510,18 @@
     
     removeImgTags(imgContainer);
     for(let i = 0; i<data.urls.length; i++) {
-      let elem = createBaseCarouselElement();
-      if (i == 0) {
-        elem.style.display = "block";
+      let elem;
+      if (mediaTypeInput.value == "CD") {
+        elem = createBaseCarouselElement(125);
+      } else {
+        elem = createBaseCarouselElement(180);
       }
-      elem.firstChild.src = "";
-      elem.firstChild.classList.remove("bg-danger");
-      elem.firstChild.classList.add("scraper-image");
-
+      if (i == 0) {
+        elem.style.display = "flex";
+      }
       if (data.with_images) {
         elem.firstChild.src = data.urls[i]
       }
-      console.log(elem);
       imgContainer.appendChild(elem);
     }
 
@@ -577,5 +587,5 @@
     })
   }
   
-</script>
-{%endblock%}
+  </script>
+  {% endblock %}

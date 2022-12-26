@@ -1,8 +1,10 @@
-{% extends "base.html"%} {% block title %} Staff Panel {% endblock %} {% block
-head %} {{ super() }}
-
-<script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
-<style>
+{% extends "base.html" %}
+{% block title %}Staff Panel{% endblock %}
+{% block
+  head %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/minisearch.js')}}"></script>
+  <style>
   {% if darkmode %}
     body {
       background-color: #121212;
@@ -27,244 +29,222 @@ head %} {{ super() }}
       color: white;
     }
   {% endif %}
-</style>
-{% endblock %} {% block content %}
-
-{% if media_error or author_error %}
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="errorToast" class="toast {% if darkmode %} bg-dark text-white {%endif%}" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header {% if darkmode %} bg-dark text-white {%endif%}">
-      <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <rect width="100%" height="100%" fill="#dc3545"></rect>
-      </svg>
-      <strong class="me-auto">Error</strong>
-      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+  </style>
+{% endblock %}
+{% block content %}
+  {% if media_error or author_error %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="errorToast"
+           class="toast {% if darkmode %} bg-dark text-white {% endif %}"
+           role="alert"
+           aria-live="assertive"
+           aria-atomic="true">
+        <div class="toast-header {% if darkmode %} bg-dark text-white {% endif %}">
+          <svg class="bd-placeholder-img rounded me-2"
+               width="20"
+               height="20"
+               xmlns="http://www.w3.org/2000/svg"
+               aria-hidden="true"
+               preserveAspectRatio="xMidYMid slice"
+               focusable="false">
+            <rect width="100%" height="100%" fill="#dc3545"></rect>
+          </svg>
+          <strong class="me-auto">Error</strong>
+          <button type="button"
+                  class="btn-close text-white"
+                  data-bs-dismiss="toast"
+                  aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="errorToastBody">{{ author_error if author_error else media_error }}</div>
+      </div>
     </div>
-    <div class="toast-body" id="errorToastBody">{{author_error if author_error else media_error}}</div>
-  </div>
-</div>
-
-<script defer> 
+    <script defer> 
   const errorToast = new bootstrap.Toast(document.querySelector('#errorToast'), {});
   const errorToastBody = document.querySelector('#errorToastBody');
   errorToast.show()
-</script>
-{% endif %}
-<div class="container mt-3">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a
-        class="nav-link text-black {% if darkmode %} text-white {%endif%}"
-        aria-current="page"
-        href="{{url_for('panel_bluep.staff_bluep.staff_panel_addremove')}}"
-        >Add/Remove</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="">Alter</a>
-    </li>
-  </ul>
-  <div
-    style="background-color: {%if darkmode%} #212529 {%else%} #eee {%endif%}; border-color: #373b3e"
-    class="p-3 pt-4"
-  >
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      <div class="col">
-        <div class="card shadow">
-          <div class="card-body">
-            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
-              Alter a Media
-            </h5>
-            <form class="d-flex flex-column">
-              <div class="input-group">
-                <input
-                  type="search"
-                  id="mediaSearch"
-                  placeholder="Search for Media"
-                  name="media"
-                  class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                />
-              </div>
-              <ul
-                class="list-group d-none"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="mediaResults"
-              ></ul>
-              {%if media_not_found %} Media not Found {%endif%}
-              <button class="btn btn-primary mt-3">Submit</button>
-            </form>
-          </div>
-        </div>
-        <div class="card mt-3 shadow">
-          <div class="card-body">
-            <h5 for="mediaSearch" class="{%if darkmode %} text-white {%endif%}">
-              Alter a Author
-            </h5>
-            <form class="d-flex flex-column">
-              <div class="input-group">
-                <input
-                  type="search"
-                  id="authorSearch"
-                  placeholder="Search for Authors"
-                  name="author"
-                  class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                />
-              </div>
-              <ul
-                class="list-group"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="authorResults"
-              ></ul>
-              {%if author_not_found %} Author not Found {%endif%}
-              <button type="submit" class="btn btn-primary mt-3">Submit</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      {% if media_item or author %}
-      <div class="col">
-        <div class="card shadow">
-          <div class="card-body">
-            {%if media_item%}
-            <h5 class="underlined {%if darkmode %} text-white {%endif%}">
-              Altering Media: {{media_item.title}}
-            </h5>
-            <form
-              class="d-flex flex-column"
-              action="{{url_for('panel_bluep.staff_bluep.alter_media')}}"
-              method="post"
-              enctype="multipart/form-data"
-            >
-              <input type="hidden" name="id" value="{{media_item.id}}" />
-              <label for="titleInput" class="form-label">Title</label>
-              <input
-                id="titleInput"
-                type="text"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                name="title"
-                placeholder="Harry Potter"
-                autocomplete="off"
-                value="{{media_item.title}}"
-              />
-              <label for="mediaAuthorSearch" class="form-label">Author</label>
-              <input
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                type="search"
-                placeholder="Search Authors"
-                aria-label="Search"
-                id="mediaAuthorSearch"
-                autocomplete="off"
-                name="author"
-                value="{{media_item.author}}"
-              />
-              <ul
-                class="list-group d-none"
-                style="border-radius: 0rem 0rem 0.375rem 0.375rem"
-                id="mediaAuthorResults"
-              ></ul>
-
-              <div class="d-flex flex">
-                <div class="d-flex flex-column flex-fill">
-                  <label for="ageLimitInput" class="form-label"
-                    >Age Limit</label
-                  >
-                  <input
-                    type="number"
-                    min="0"
-                    class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                    id="ageLimitInput"
-                    name="age_limit"
-                    placeholder="0"
-                    autocomplete="off"
-                    value="{{media_item.age_limit}}"
-                  />
-                </div>
-                <div class="d-flex flex-column flex-fill ms-1">
-                  <label for="mediaSelection" class="form-label"
-                    >Media Type</label
-                  >
-                  <select
-                    class="form-select {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                    aria-label="Default select example"
-                    name="media_type"
-                    id="mediaSelection"
-                    autocomplete="off"
-                  >
-                    {% for i in media_types %}
-                    <option value="{{i}}" {% if media_item.media_type == i %} selected {%endif%} >{{i}}</option>
-                    {% endfor %}
-                  </select>
+    </script>
+  {% endif %}
+  <div class="container mt-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link text-black {% if darkmode %} text-white {% endif %}"
+           aria-current="page"
+           href="{{ url_for('panel_bluep.staff_bluep.staff_panel_addremove')}}">Add/Remove</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="">Alter</a>
+        </li>
+      </ul>
+      <div style="background-color: {% if darkmode %} #212529 {% else %} #eee {% endif %};
+                  border-color: #373b3e"
+           class="p-3 pt-4">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <div class="col">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 for="mediaSearch" class="{% if darkmode %} text-white {% endif %}">Alter a Media</h5>
+                <form class="d-flex flex-column">
+                  <div class="input-group">
+                    <input type="search"
+                           id="mediaSearch"
+                           placeholder="Search for Media"
+                           name="media"
+                           class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"/>
+                  </div>
+                  <ul class="list-group d-none"
+                      style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                      id="mediaResults">
+                  </ul>
+                  {% if media_not_found %}
+                    Media not Found {% endif %}
+                    <button class="btn btn-primary mt-3">Submit</button>
+                  </form>
                 </div>
               </div>
-              <label for="isbnInput" class="form-label">ISBN</label>
-              <input
-                id="isbnInput"
-                type="text"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                name="isbn"
-                placeholder="Optional"
-                autocomplete="off"
-                value="{{media_item.isbn}}"
-              />
-              <div class="d-flex flex-fill">
-                <div>
-                  <label for="imageUpload" class="form-label">Image</label>
-                  <input 
-                    id="imageUpload" 
-                    class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}" 
-                    type="file" 
-                    accept="image/*" 
-                    name="image"
-                  />
+              <div class="card mt-3 shadow">
+                <div class="card-body">
+                  <h5 for="mediaSearch" class="{% if darkmode %} text-white {% endif %}">Alter a Author</h5>
+                  <form class="d-flex flex-column">
+                    <div class="input-group">
+                      <input type="search"
+                             id="authorSearch"
+                             placeholder="Search for Authors"
+                             name="author"
+                             class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"/>
+                    </div>
+                    <ul class="list-group"
+                        style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                        id="authorResults">
+                    </ul>
+                    {% if author_not_found %}
+                      Author not Found {% endif %}
+                      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                  </div>
                 </div>
-
-                <div class="d-flex flex-column-reverse ms-1">
-                  {% if media_item.image %}
-                  <button 
-                    class="btn btn-primary" 
-                    type="button" 
-                    onclick="window.open('{{ url_for('static', filename='images/media/' + media_item.image)}}', '_blank');"
-                  >
-                    View Current Image
-                  </button>
-                  {% else %}
-                  <button class="btn btn-danger" type="button" disabled>No Image Yet</button>
+              </div>
+              {% if media_item or author %}
+                <div class="col">
+                  <div class="card shadow">
+                    <div class="card-body">
+                      {% if media_item %}
+                        <h5 class="underlined {% if darkmode %} text-white {% endif %}">Altering Media: {{ media_item.title }}</h5>
+                        <form class="d-flex flex-column"
+                              action="{{ url_for('panel_bluep.staff_bluep.alter_media')}}"
+                              method="post"
+                              enctype="multipart/form-data">
+                          <input type="hidden" name="id" value="{{ media_item.id }}" />
+                          <label for="titleInput" class="form-label">Title</label>
+                          <input id="titleInput"
+                                 type="text"
+                                 class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                 name="title"
+                                 placeholder="Harry Potter"
+                                 autocomplete="off"
+                                 value="{{ media_item.title }}"/>
+                          <label for="mediaAuthorSearch" class="form-label">Author</label>
+                          <input class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                 type="search"
+                                 placeholder="Search Authors"
+                                 aria-label="Search"
+                                 id="mediaAuthorSearch"
+                                 autocomplete="off"
+                                 name="author"
+                                 value="{{ media_item.author }}"/>
+                          <ul class="list-group d-none"
+                              style="border-radius: 0rem 0rem 0.375rem 0.375rem"
+                              id="mediaAuthorResults">
+                          </ul>
+                          <div class="d-flex flex">
+                            <div class="d-flex flex-column flex-fill">
+                              <label for="ageLimitInput" class="form-label">
+                                Age Limit
+                              </label
+                              >
+                              <input type="number"
+                                     min="0"
+                                     class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                     id="ageLimitInput"
+                                     name="age_limit"
+                                     placeholder="0"
+                                     autocomplete="off"
+                                     value="{{ media_item.age_limit }}"/>
+                            </div>
+                            <div class="d-flex flex-column flex-fill ms-1">
+                              <label for="mediaSelection" class="form-label">
+                                Media Type
+                              </label
+                              >
+                              <select class="form-select {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                      aria-label="Default select example"
+                                      name="media_type"
+                                      id="mediaSelection"
+                                      autocomplete="off">
+                                {% for i in media_types %}
+                                  <option value="{{i}}" {% if media_item.media_type == i %} selected {% endif %}>
+                                    {{i}}
+                                  </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <label for="isbnInput" class="form-label">ISBN</label>
+                          <input id="isbnInput"
+                                 type="text"
+                                 class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                 name="isbn"
+                                 placeholder="Optional"
+                                 autocomplete="off"
+                                 value="{{ media_item.isbn }}"/>
+                          <div class="d-flex flex-fill">
+                            <div>
+                              <label for="imageUpload" class="form-label">Image</label>
+                              <input id="imageUpload"
+                                     class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                     type="file"
+                                     accept="image/*"
+                                     name="image"/>
+                            </div>
+                            <div class="d-flex flex-column-reverse ms-1">
+                              {% if media_item.image %}
+                                <button class="btn btn-primary"
+                                        type="button"
+                                        onclick="window.open('{{ url_for('static', filename='images/media/' + media_item.image)}}', '_blank');">
+                                  View Current Image
+                                </button>
+                              {% else %}
+                                <button class="btn btn-danger" type="button" disabled>No Image Yet</button>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <button type="submit" class="btn btn-warning mt-3">Alter</button>
+                        </form>
+                      {% elif author %}
+                        <h5 class="{% if darkmode %} text-white {% endif %}">Altering Author: {{ author[0] }}</h5>
+                        <form class="d-flex flex-column"
+                              action="{{ url_for('panel_bluep.staff_bluep.alter_author')}}"
+                              method="post">
+                          <input type="hidden" name="id" value="{{ author[1] }}" />
+                          <label for="authorName">Name</label>
+                          <input id="authorName"
+                                 class="form-control {% if darkmode %} bg-dark text-white border-dark {% endif %}"
+                                 type="text"
+                                 name="name"
+                                 autocomplete="off"
+                                 value="{{ author[0] }}"/>
+                          <button type="submit" class="btn btn-warning mt-3">Alter</button>
+                        </form>
+                      {% else %}
+                      {% endif %}
+                    </div>
                   {% endif %}
                 </div>
               </div>
-              <button type="submit" class="btn btn-warning mt-3">Alter</button>
-            </form>
-            {%elif author%}
-            <h5 class="{%if darkmode %} text-white {%endif%}">
-              Altering Author: {{author[0]}}
-            </h5>
-            <form 
-              class="d-flex flex-column"
-              action="{{url_for('panel_bluep.staff_bluep.alter_author')}}"
-              method="post"
-            >
-              <input type="hidden" name="id" value="{{author[1]}}" />
-              <label for="authorName">Name</label>
-              <input
-                id="authorName"
-                class="form-control {%if darkmode%} bg-dark text-white border-dark {%endif%}"
-                type="text"
-                name="name"
-                autocomplete="off"
-                value="{{author[0]}}"
-              />
-              <button type="submit" class="btn btn-warning mt-3">Alter</button>
-            </form>
-            {%else%}
-            {%endif%}
+            </div>
+          </div>
         </div>
-        {%endif%}
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-<script>
+        <script>
   {% if darkmode %}
   let colors = {
     text_color: "white",
@@ -293,5 +273,5 @@ head %} {{ super() }}
   var mediaAuthorSearchEl = document.getElementById("mediaAuthorSearch");
   var mediaAuthorResultEl = document.getElementById("mediaAuthorResults");
   registerMiniSearch(mediaAuthorSearchEl, mediaAuthorResultEl, "/api/mini_search/author", colors);
-</script>
-{%endblock%}
+        </script>
+      {% endblock %}
