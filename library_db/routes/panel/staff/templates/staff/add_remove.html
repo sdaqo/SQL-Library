@@ -430,7 +430,8 @@
   function isNoImg(index) {
     let src_path = new URL(imgContainer.children.item(index).firstChild.src).pathname;
     return ((src_path == "/static/images/transparent.png" ||
-             src_path == "/static/images/transparent.png")) 
+             src_path == "/static/images/noimg_light.png" ||
+             src_path == "/static/images/noimg_dark.png")) 
   }
 
   function createBaseCarouselElement(img_height) {
