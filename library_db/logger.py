@@ -15,7 +15,7 @@ class RequestHandler(WSGIRequestHandler):
         )
 
     def log_request(self, code="-", size="-"):
-        remote_addr = ":".join([str(i) for i in self.client_address])
+        remote_addr = self.client_address[0]
         self.log(
             "info",
             'Request from %s - "%s" %s %s',
