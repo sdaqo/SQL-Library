@@ -1,3 +1,8 @@
+/*!
+  * minisearch.js for SQL-Library (https://github.com/sdaqo/SQL-Library)
+  * Licensed under GPL-3.0 (https://github.com/sdaqo/SQL-Library/blob/main/LICENSE)
+  */
+
 function removeResChildren(parent) {
   while (parent.firstChild) {
     parent.firstChild.remove();
