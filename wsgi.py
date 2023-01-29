@@ -4,4 +4,4 @@ from library_db.logger import RequestHandler
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(request_handler=RequestHandler, host="0.0.0.0")
+    app.run(request_handler=RequestHandler)
