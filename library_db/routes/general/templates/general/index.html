@@ -44,9 +44,15 @@
     margin-bottom: -100px;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 786px) {
     #header-image {
-      width: 60vw;
+      width: 100%;
+      object-fit: cover;
+      height: 40%;
+    }
+
+    #header-image-cont {
+      padding: .75rem;
     }
     .image-section {
       top: 20%;
@@ -120,7 +126,7 @@
                   </div>
                 </div>
                 <section class="position-relative image-section">
-                  <div>
+                  <div id="header-image-cont">
                     <img id="header-image"
                          class="rounded img-fluid shadow-lg"
                          src="{{ url_for('static', filename='images/library.webp')}}"
