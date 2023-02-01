@@ -83,7 +83,7 @@ def get_borrower(media_id: int) -> Union[str, None]:
 def get_media_query_count(
     query: str = "", author_query: str = "", status: str = "all", media_type: Union[str, None] = None
 ) -> int:
-    media_types = ["Book", "DVD", "CD", "Blu-Ray"]
+    media_types = get_media_types()
 
     statement = f"""
         SELECT COUNT(media.title) query_count
